@@ -1,0 +1,63 @@
+<div class="flex-grow">
+    <app-navbar></app-navbar>
+</div>
+
+
+<div class=" py-5 px-2 m-5 rounded-2xl sm:p-10">
+    <div class="h-full">
+      <h1 class="mb-10 text-center text-4xl font-bold text-orange-900"> Tu carro de compras</h1>
+      <div class="mx-auto max-w-5xl justify-center px-6 flex flex-col-reverse md:flex-row md:space-x-6 xl:px-0">
+        <div class="rounded-lg md:w-2/3">
+
+          <!-- productos -->
+          <div *ngFor="let product of products; let i = index" class="justify-between my-6 md:mt-0 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-star">
+              <div>
+                  <img [src]="fixImg(product.pathImage)" alt="product-image" class="w-full rounded-lg sm:w-40" />
+                      <div class=" mt-5 flex justify-end sm:justify-center sm:mt-2 ">
+                          <i class="fa-solid fa-trash-can text-xl mx-4"></i>
+                          <i [routerLink]="['/edit-product',product._id]" class="fa-solid fa-pen-to-square text-xl mr-4"></i> 
+                      </div>
+              </div>
+            <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+              <div class="mt-5 sm:mt-0">
+                <p class="mt-1 text-xs text-gray-700">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
+                <p class="mt-1 text-xs text-gray-700">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
+                <p class="mt-1 text-xs text-gray-700">{{"Color: "+product.color.name}}</p>
+                <p class="mt-1 text-xs text-gray-700">{{"Tamaño: [x: "+product.sizeX.toFixed(0)+","+product.sizeY.toFixed(0)+","+product.sizeZ.toFixed(0)+"]"}}</p>
+              </div>
+              <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 ">
+                <div class="flex items-center border-gray-100 justify-end">
+                  <button [disabled]="product.quantity<2" (click)="decreaseQuantity(i)" class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 disabled:cursor-default hover:bg-stone-300 hover:text-blue-50"> - </button>
+                  <input disabled class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" [value]="product.quantity" min="1" />
+                  <button (click)="increaseQuantity(i)" class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-stone-300 hover:text-blue-50"> + </button>
+                </div>
+                <div class="flex flex-col items-center space-x-4 text-stone-400">
+                  <p class="text-sm">{{"Precio: $"+calculatePrice(product.weigth,1)}}</p>
+                  <p class="text-lg">{{"Total: $"+ calculatePrice(product.weigth,product.quantity)}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Sub total -->
+        <div class="mt-6 h-full rounded-lg text-stone-400 border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+          <div class="mb-2 flex justify-between ">
+            <p class="text-gray-700">PRODUCTOS:</p>
+            <p class="text-gray-700">{{"$"+totalPrice+" COP"}}</p>
+          </div>
+          <div class="flex justify-between">
+            <p class="text-gray-700">ENVIO:</p>
+            <p class="text-gray-700">$0</p>
+          </div>
+          <hr class="my-4" />
+          <div class="flex justify-between">
+            <p class="text-lg font-bold">Total</p>
+            <div class="">
+              <p class="mb-1 text-lg font-bold">{{"$"+totalPrice+" COP"}}</p>
+            </div>
+          </div>
+          <button class="mt-6 w-full bg-white py-1.5 font-medium text-orange-900 border-2 border-orange-900 rounded-3xl hover:border-orange-700 hover:bg-stone-200 hover:text-white">COMPRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
