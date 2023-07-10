@@ -1,0 +1,130 @@
+<div class="flex-grow">
+    <app-navbar></app-navbar>
+</div>
+
+<section>
+    <div class="relative mx-auto max-w-screen-xl px-4 py-8">
+      <div>
+        <h1 class="text-2xl font-bold md:text-3xl">Calculadora 3d STL</h1>
+      </div>
+  
+        <div class="flex flex-col md:flex-row mt-4">
+            <div class="w-full md:w-3/4">
+          <div class="relative">
+
+            <!-- caja drag and drop -->
+            <div class="h-72 w-full rounded-xl object-cover md:h-[600px] bg-dark relative">
+                <div (drop)="handleDrop($event)" (dragover)="handleDragOver($event)" *ngIf="stlContainerIsHidden" class="absolute z-20 flex items-center justify-center w-full h-full">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-full rounded-l-lg cursor-pointer bg-dark hover:bg-black">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg aria-hidden="true" class="w-10 h-10 mb-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                            <p class="mb-2 text-sm text-white"><span class="font-semibold">Click para subir el archivo</span> o sueltalo aca</p>
+                            <p class="text-xs text-white">STL (MAX. 20MB)</p>
+                        </div>
+                        <input #stlInput id="dropzone-file" type="file" class="hidden"  (change)="handleFileUpload(stlInput)" />
+                    </label>
+                </div> 
+
+                <div #stlContainer class="cursor-crosshair relative flex items-center justify-center bg-dark w-full h-full">
+                  <!-- carga -->
+                    <div  [class.hidden]="loadingIsHidden" class="z-10 absolute h-full w-full  flex flex-col items-center justify-center bg-dark">
+                        <svg aria-hidden="true" role="status" class="inline w-12 h-12 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                            </svg>
+                            <p class="text-xl  text-white">Cargando...</p>
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+            
+            <div [class.hidden]="!loadingIsHidden" class=" absolute bottom-4 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full bg-white px-3 py-1.5">
+              <span class="ms-1.5 text-xs"> <i class="fa-solid fa-computer-mouse text-dark"></i> Scroll para hacer zoom </span>
+            </div>
+          </div>
+        </div>
+        <div class="w-full md:w-2/5 relative">
+        <!-- configuracion -->
+        <div [@changeWidth0To100] *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px]  bg-white overflow-hidden w-full p-5 md:py-0 ">
+          <form  class="space-y-4 md:pt-8  ">
+
+            <fieldset class="h-20 overflow-hidden">
+              <legend class="text-lg font-bold">Color</legend>
+              <div class="mt-2 ">
+                <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                  <option value="" selected disabled>Elige un color</option>  
+                  <option *ngFor="let color of colors" [value]="color.code" >{{color.name}}</option>
+                </select>
+              </div>
+            </fieldset>
+            <fieldset  class="h-20 overflow-hidden">
+                <legend class="text-lg font-bold">Relleno</legend>
+                <label for="steps-range" class="block text-sm text-center font-bold text-gray-900">{{stlData.fill+"%"}}</label>
+                <input [(ngModel)]="stlData.fill" name="fill" type="range" min=10 max=100 step=10 class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+              </fieldset>
+              <fieldset class="h-24 overflow-hidden">
+                <legend class="text-lg font-bold">Tamaño</legend>
+                <div class="grid gap-6  grid-cols-3 mt-2">
+                    <div>
+                        <input disabled [value]="(scale*stlData.tamX).toFixed(1)" type="text" min="1" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 overflow-auto"  required>
+                        <p  class="block text-sm font-medium text-gray-900 text-center">X</p>
+                     </div>
+                    <div>
+                        <input disabled [value]="(scale*stlData.tamY).toFixed(1)" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Y</p>
+                      </div>
+                    <div>
+                    <input disabled [value]="(scale*stlData.tamZ).toFixed(1)" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Z</p>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="h-20 overflow-hidden">
+                <legend class="text-lg font-bold">Escala</legend>
+                <label for="steps-range" class="block text-sm text-center font-bold text-gray-900">{{scalePercentaje+"%"}}</label>
+                <input [(ngModel)]="scalePercentaje" (ngModelChange)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+              </fieldset>
+            <button type="button" (click)="getCotization()" class="w-full rounded border whitespace-nowrap overflow-hidden border-yellow-300 bg-yellow-200 px-6 py-3 text-sm font-bold uppercase tracking-wide"> 
+                Cotizar Precio
+            </button>
+            <button type="button" (click)="removeStlViewer()" class="w-full rounded border whitespace-nowrap overflow-hidden border-orange-300 bg-orange-200 px-6 py-3 text-sm font-bold uppercase tracking-wide"> 
+              Cambiar Modelo
+          </button>
+          </form>
+        </div>
+
+        <!-- precio -->
+        <div [@changeWidth0To100] *ngIf="!priceIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px] flex flex-col justify-center bg-white overflow-hidden w-fullp-5 md:py-0 ">
+          <div  class="space-y-4 md:pt-8 overflow-hidden ">
+             <div class="rounded border h-28 bg-gray-100 p-4">
+              <p class="text-sm text-center whitespace-nowrap">
+                <span class="block text-xl">Precio Final</span>
+              <span class="text-2xl font-bold">{{"$"+price}}</span>
+
+              </p>
+            </div>
+            <span class="block whitespace-nowrap text-center text-md text-gray-500">*El precio puede variar hasta comprar el archivo</span>
+
+
+  
+            <button (click)="stlAddCart()" class="w-full rounded whitespace-nowrap overflow-hidden bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+              Añadir al carrito
+            </button>
+
+            <button (click)="changeSettings()" class="w-full rounded whitespace-nowrap overflow-hidden bg-green-300 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+              Editar Modelo
+            </button>
+
+            <button (click)="removeStlViewer()" class="w-full rounded whitespace-nowrap overflow-hidden bg-blue-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+              Cotizar otro modelo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+             

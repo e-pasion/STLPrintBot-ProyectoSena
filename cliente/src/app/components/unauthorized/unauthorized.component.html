@@ -1,0 +1,20 @@
+
+<div class="flex">
+    <div *ngIf="!isClient">
+        <app-navbar-side></app-navbar-side>
+    </div>
+    <div class="flex-grow">
+        <div *ngIf="isClient">
+            <app-navbar></app-navbar>
+        </div>
+        <div *ngIf="!isClient">
+            <app-navbar-top></app-navbar-top>
+        </div>
+        
+
+
+        <p>unauthorized works!</p>
+
+
+    </div>
+</div>
