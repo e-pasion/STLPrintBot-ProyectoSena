@@ -33,8 +33,7 @@ import { CartComponent } from './components/client/cart/cart.component';
     NavbarSideComponent,
     CreateColorComponent,
     CalculatorComponent,
-    CartComponent,
-
+    CartComponent
    
   ],
   imports: [

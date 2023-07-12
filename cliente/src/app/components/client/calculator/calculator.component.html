@@ -46,6 +46,11 @@
           </div>
         </div>
         <div class="w-full md:w-2/5 relative">
+
+          <div [@changeWidth0To100] *ngIf="settingIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px]  bg-white overflow-hidden w-full p-5 md:py-0 ">
+              <p class="text-center text-4xl">Reglas</p>
+          </div>
+
         <!-- configuracion -->
         <div [@changeWidth0To100] *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px]  bg-white overflow-hidden w-full p-5 md:py-0 ">
           <form  class="space-y-4 md:pt-8  ">

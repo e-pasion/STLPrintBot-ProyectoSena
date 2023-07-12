@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Color } from 'src/app/models/Color';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { downloadFile, fixPath } from 'src/app/utils/file';
+
 import { changeWidth0To100 } from 'src/app/utils/animation';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { StlServiceService } from 'src/app/services/stl/stl-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
+import { FileServiceService } from 'src/app/services/file/file-service.service';
 declare const StlViewer:any;
 
 
@@ -33,34 +33,25 @@ export class CalculatorComponent implements OnInit {
     tamZ:0
   };
 
-
-
   stlContainerIsHidden:boolean=true;
   loadingIsHidden:boolean=false;
   settingIsHidden:boolean=true;
   priceIsHidden:boolean=true;
-
-
   stl_viewer:any=null;
   selectColor:any;
   cameraData:any;
   colors:Color[]=[];
+
   @ViewChild('stlContainer',{static:true}) stlContainer!:ElementRef<HTMLDivElement>;
   id: string | null;
   price: number=0;
 
-  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private aRoute:ActivatedRoute){
+  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private fileService:FileServiceService, private aRoute:ActivatedRoute){
     this.id=this.aRoute.snapshot.paramMap.get('id');
   };
 
   ngOnInit(): void {
     this.getAllColors()
-
-    if(this.id){
-      this.stlContainerIsHidden=false;
-      this.getProduct()
-
-    }
   }
 
 
@@ -84,24 +75,27 @@ export class CalculatorComponent implements OnInit {
   handleDrop(event: DragEvent) {//codigo para cuando se recibe el archivo por medio de drag an drop
     event.preventDefault();
     let stlFile = event.dataTransfer?.files[0];
-    this.stlContainerIsHidden=false;
-    this.file=stlFile;
-    if(this.stl_viewer){
-      this.stl_viewer.add_model({id: 2, local_file:stlFile,color:this.defaultColor,rotationx:Math.PI*1.5});
-    }else{
-      this.loadStlViewer(stlFile);
-    }  }
+    this.processSTL(stlFile);
+  }
 
-  handleFileUpload(stlInput: any) {//codigo para cuando se recibe el archivo por medio de input
+  handleFileUpload(stlInput?: any) {//codigo para cuando se recibe el archivo por medio de input
     let stlFile = stlInput.files[0];
-    this.stlContainerIsHidden=false;
-    this.file=stlFile;
-    if(this.stl_viewer){
-      this.stl_viewer.add_model({id: 2, local_file:stlFile,color:this.defaultColor,rotationx:Math.PI*1.5});
+    this.processSTL(stlFile);
+  }
+
+  processSTL(stlFile:any){
+    if(this.fileService.validateSTL(stlFile)){//si el archivo es un stl valido haga esto
+      this.stlContainerIsHidden=false;
+      this.file=stlFile;
+      if(this.stl_viewer){
+        this.stl_viewer.add_model({id: 2, local_file:stlFile,color:this.defaultColor,rotationx:Math.PI*1.5});
+      }else{
+        this.loadStlViewer(stlFile);
+      }
     }else{
-      this.loadStlViewer(stlFile);
+      this.sweetAlertService.error("El archivo subido no es valido")
+
     }
-    
   }
 
   loadStlViewer(stlFile:any){ //codigo para cuando cargo el stl
@@ -203,27 +197,6 @@ export class CalculatorComponent implements OnInit {
 
   handleDragOver(event: DragEvent) {//codigo para prevenir el comportamiento por defecto al arrastrar un archivo
     event.preventDefault();
-  }
-
-  editProduct(){
-
-  }
-
-  getProduct(){
-    this.crudService.get("calculator",this.id!).subscribe({
-      next:(data)=>{
-        console.log(data);
-        this.pathFile=fixPath(data.pathFile,"stl");
-        console.log(this.pathFile);
-      },
-      error:(e)=>console.log(e),
-      complete:()=>{
-        const index = this.pathFile.lastIndexOf('\\')
-        const productName=this.pathFile.substring(index+1)
-        const product=downloadFile(this.pathFile,productName);
-        this.loadStlViewer(product)
-      }
-    })
   }
 
 }

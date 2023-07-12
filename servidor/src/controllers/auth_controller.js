@@ -12,7 +12,8 @@ export const signUp= async(req,res)=>{
     const newUser= new User({
         fullName,
         email,
-        password:await User.encryptPassword(password)
+        password:await User.encryptPassword(password),
+        pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
     })
      const role= await Role.findOne({name:"client"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];

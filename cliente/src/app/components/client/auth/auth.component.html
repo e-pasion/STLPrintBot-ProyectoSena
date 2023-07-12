@@ -1,74 +1,118 @@
 <div class="flex-grow">
     <app-navbar></app-navbar>
 </div> 
+<div class="sm:flex sm:justify-center relative">
 
-<section class="bg-transparent " *ngIf="loginVisible">
-    <div class="flex flex-col items-center justify-center px-32 py-8 mx-auto  lg:py-0">
 
-        <div class="w-full bg-white rounded-lg shadow mt-32 sm:max-w-md xl:p-0.5">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                    Iniciar sesion
-                </h1>
-                <form [formGroup]="userForm" (submit)="login()" class="space-y-4 md:space-y-6" >
-                    <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Correo</label>
-                        <input formControlName="email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required="">
-                    </div>
-                    <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
-                        <input formControlName="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
-                    </div>
-                   
-                    <button type="submit" class="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Iniciar sesion</button>
-                    <p class="text-sm font-light text-gray-500">
-                        ¿No tienes cuenta? <a (click)="cambiarLoginRegistro()" class="font-medium text-primary-600 hover:underline cursor-pointer">Registrate</a>
-                    </p>
-                </form>
+
+    <div class="flex flex-col sm:flex-row sm:w-11/12 sm:max-w-4xl relative sm:pt-8">
+
+        <div [@changeTranslate0To100]="loginVisible ?'registerOpen':'loginOpen'" *ngIf="!userIsInMobile" class="w-1/2 h-[40rem] absolute">
+            <div class=" h-full w-full">
+                <div *ngIf="loginVisible" class="w-full h-full text-center text-white pt-48">
+                    <p class="text-4xl font-bold">¿No tienes cuenta?</p>
+                    <p class="text-md font-thin mt-10">Ingresa tus datos personales y crea una cuenta nueva</p>
+                    <button (click)="cambiarLoginRegistro()" class="bg-transparent border border-white rounded-xl py-2 px-7 mt-10 text-white">REGISTRARSE</button>
+                </div>
+                <div *ngIf="!loginVisible" class="w-full h-full text-center text-white pt-48">
+                    <p class="text-4xl font-bold">¡Bienvenido!</p>
+                    <p class="text-md font-thin mt-10">Si ya tienes una cuenta<br> ingresa con tus datos de acceso</p>
+                    <button (click)="cambiarLoginRegistro()" class="bg-transparent border border-white rounded-xl py-2 px-7 mt-10 text-white">INGRESAR</button>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="loginVisible || !userIsInMobile" class=" w-full sm:h-[40rem] sm:w-1/2 flex flex-col items-center justify-center px-4 py-8 mx-auto  sm:p-0">
+    
+            <div class="w-full sm:h-full bg-white rounded-lg sm:rounded-r-none shadow mt-32 sm:mt-0 max-w-sm sm:max-w-none sm:py-28">
+                <div class="p-6 space-y-4  sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-blue-700 md:text-2xl">
+                        Iniciar sesion
+                    </h1>
+                    <form [formGroup]="loginForm" (submit)="login()" class="space-y-4 " >
+                        <div>
+                            <label for="loginEmail" class="block mb-2 text-sm font-medium text-gray-900">Correo</label>
+                            <input formControlName="loginEmail" type="email" name="loginEmail" id="loginEmail" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required="">
+                        
+                            <div *ngIf="loginForm.get('loginEmail')!.errors && loginForm.get('loginEmail')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="loginForm.get('loginEmail')!.hasError('required')">El email es obligatorio.</div>
+                                <div *ngIf="loginForm.get('loginEmail')!.hasError('pattern')">El email no es válido.</div>
+                              </div>
+                        </div>
+                        <div>
+                            <label for="loginPassword" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
+                            <input formControlName="loginPassword" type="password" name="loginPassword" id="loginPassword" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                        
+                            <div *ngIf="loginForm.get('loginPassword')!.errors && loginForm.get('loginPassword')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="loginForm.get('loginPassword')!.hasError('required')">La contraseña es obligatoria.</div>
+                              </div>
+                        </div>
+                        
+                        <button type="submit" [disabled]="loginForm.invalid"class="w-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Iniciar sesion</button>
+                        <p *ngIf="userIsInMobile" class="text-sm font-light text-gray-500">
+                            ¿No tienes cuenta? <a (click)="cambiarLoginRegistro()" class="font-medium text-primary-600 hover:underline cursor-pointer">Registrate</a>
+                        </p>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-  </section>
-
-<section class="bg-transparent" *ngIf="!loginVisible">
-    <div class="flex flex-col items-center justify-center px-32 py-8 mx-auto  lg:py-0">
-
-        <div class="w-full bg-white rounded-lg shadow mt-8 sm:max-w-md xl:p-0.5">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                    Crear cuenta
-                </h1>
-                <form class="space-y-4 md:space-y-6" [formGroup]="userForm" (submit)="register()">
-                    <div>
-                        <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900">Nombre Completo</label>
-                        <input formControlName="fullName" type="fullName" name="fullName" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
-                    </div>
-                    <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Correo</label>
-                        <input formControlName="email" type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required="">
-                    </div>
-                    <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
-                        <input formControlName="password" type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
-                    </div>
-                    <div>
-                        <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirmar Contraseña</label>
-                        <input formControlName="password2" type="confirm-password" name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex items-center h-5">
-                          <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300" required="">
+    
+        <div *ngIf="!loginVisible || !userIsInMobile" class="w-full sm:h-[40rem] sm:w-1/2 flex flex-col items-center justify-center px-4 py-8 mx-auto  sm:p-0">
+            <div class="w-full h-full bg-white rounded-lg sm:rounded-l-none shadow mt-8 sm:mt-0 max-w-sm sm:max-w-none sm:py-10">
+                <div class="p-6 space-y-4  sm:p-8">
+                    <h1 class="text-xl font-bold leading-tight tracking-tight text-green-700 md:text-2xl">
+                        Crear cuenta
+                    </h1>
+                    <form class="space-y-4 " [formGroup]="registerForm" (submit)="register()">
+                        <div>
+                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900">Nombre Completo</label>
+                            <input formControlName="fullName" type="fullName" name="fullName" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
+                            <div *ngIf="registerForm.get('fullName')!.errors && registerForm.get('fullName')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('fullName')!.hasError('required')">El nombre es obligatorio.</div>
+                                <div *ngIf="registerForm.get('fullName')!.hasError('lengthWithoutSpaces') && !registerForm.get('fullName')!.hasError('required')">El nombre debe tener mas de 4 letras y menos de 50.</div>
+                              </div>
                         </div>
-                        <div class="ml-3 text-sm">
-                          <label for="terms" class="font-light text-gray-500">Acepto los<a class="font-medium text-blue-600 hover:underline" href="#">Terminos y condiciones</a></label>
+                        <div>
+                            <label for="registerEmail" class="block mb-2 text-sm font-medium text-gray-900">Correo</label>
+                            <input formControlName="registerEmail" type="email" name="registerEmail" id="registerEmail" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="name@company.com" required="">
+                        
+                            <div *ngIf="registerForm.get('registerEmail')!.errors && registerForm.get('registerEmail')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('registerEmail')!.hasError('required')">El email es obligatorio.</div>
+                                <div *ngIf="registerForm.get('registerEmail')!.hasError('pattern')">El email no es válido.</div>
+                              </div>
                         </div>
-                    </div>
-                    <button type="submit" class="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  ">Registrarse</button>
-                    <p class="text-sm font-light text-gray-500">
-                        ¿Ya tienes cuenta? <a (click)="cambiarLoginRegistro()" class="font-medium text-primary-600 hover:underline ">Iniciar sesion</a>
-                    </p>
-                </form>
+                        <div>
+                            <label for="registerPassword" class="block mb-2 text-sm font-medium text-gray-900">Contraseña</label>
+                            <input formControlName="registerPassword" (change)="changePassword()" type="password" name="registerPassword" id="registerPassword" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                            
+                            <div *ngIf="registerForm.get('registerPassword')!.errors && registerForm.get('registerPassword')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('registerPassword')!.hasError('required')">La contraseña es obligatoria.</div>
+                                <div *ngIf="registerForm.get('registerPassword')!.hasError('pattern')">La contraseña debe tener 1 mayuscula, 1 minuscula, un numero y minimo 8 caracteres.</div>
+                              </div>
+                        </div>
+                        <div>
+                            <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirmar Contraseña</label>
+                            <input formControlName="password2" type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                            <div *ngIf="registerForm.get('password2')!.errors && registerForm.get('password2')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('password2')!.hasError('required')">Por favor, confirma la contraseña.</div>
+                                <div *ngIf="registerForm.get('password2')!.hasError('passwordMismatch') && !registerForm.get('password2')!.hasError('required')">Las contraseñas no coinciden.</div>
+                              </div>
+                        </div>
+
+                        <button type="submit"  [disabled]="!registerForm.valid" class="w-full text-white bg-green-600 hover:bg-green-700 disabled:bg-green-400 disabled:hover:bg-green-400 focus:ring-4 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center  ">Registrarse</button>
+                        <p *ngIf="userIsInMobile" class="text-sm font-light text-gray-500">
+                            ¿Ya tienes cuenta? <a (click)="cambiarLoginRegistro()" class="font-medium text-primary-600 hover:underline ">Iniciar sesion</a>
+                        </p>
+
+                    
+                    </form>
+                </div>
             </div>
         </div>
+    
+
     </div>
-  </section>
+</div>
+
+
+    

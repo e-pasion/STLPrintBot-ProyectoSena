@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/Product';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
-import { fixPath } from 'src/app/utils/file';
+import { FileServiceService } from 'src/app/services/file/file-service.service';
 
 @Component({
   selector: 'app-cart',
@@ -10,7 +10,7 @@ import { fixPath } from 'src/app/utils/file';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private crudService:CrudServiceService){}
+  constructor(private crudService:CrudServiceService, private fileService:FileServiceService){}
 
   products:Product[]=[]
   totalPrice:number=0;
@@ -47,7 +47,7 @@ export class CartComponent implements OnInit {
   }
 
   fixImg(path:string){
-    return fixPath(path,"img")
+    return this.fileService.fixPath(path,"img")
   }
 
 

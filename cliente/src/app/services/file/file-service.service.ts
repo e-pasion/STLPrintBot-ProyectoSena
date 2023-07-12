@@ -1,6 +1,13 @@
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class FileServiceService {
 
-export const dataURLtoFile=(dataUrl:string, fileName:string)=>{
+  constructor() { }
+
+  dataURLtoFile=(dataUrl:string, fileName:string)=>{
  
     const arr = dataUrl.split(',');
     const mimeMatch = arr[0].match(/:(.*?);/);
@@ -14,7 +21,7 @@ export const dataURLtoFile=(dataUrl:string, fileName:string)=>{
     return new File([u8arr], fileName, { type: mime });
 }
 
-export const fixPath=(path:string,type:string)=>{
+fixPath=(path:string,type:string)=>{
   let fixedpath=path.replace('src\\', '');
   fixedpath.replace(/\\/g, '/'); //expresion regular para cambiar todas las barras invertidas por barras normales
   console.log(fixedpath);
@@ -23,11 +30,13 @@ export const fixPath=(path:string,type:string)=>{
   return (`http://localhost:4000/api/${fixedpath}`);
 }
 
-export const downloadFile = async (fileURL: string, fileName: string) => {
-  const response = await fetch(fileURL);
-  const arrayBuffer = await response.arrayBuffer();
-  const blob = new Blob([arrayBuffer]);
-  const archivo = new File([blob], fileName);
-  // Hacer algo con el archivo
-  return archivo;
-};
+  validateSTL=(file:File)=>{
+    const fileSizeMB = file.size / (1024 * 1024);//encuentra las megas que tiene el archivo
+    const extensionIndex=file.name.lastIndexOf(".");
+    const extensionFile=file.name.substring(extensionIndex+1);
+    if(extensionFile!=="stl" || fileSizeMB>20){
+      return false;
+    }
+    return true;
+  }
+}

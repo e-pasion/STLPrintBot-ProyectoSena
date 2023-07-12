@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { dataURLtoFile } from '../../utils/file'
+import { FileServiceService } from '../file/file-service.service';
 declare const StlViewer:any;
 
 
@@ -12,7 +12,7 @@ export class StlServiceService {
   defaultColor:string="#2196f3";
   url='http://localhost:4000/api/'
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private fileService:FileServiceService) {}
 
   cotization(file:any,fill:number):Observable<any>{
     const formData = new FormData();
@@ -22,7 +22,7 @@ export class StlServiceService {
   }
 
   takePhoto(dataUrl:string){
-    return dataURLtoFile(dataUrl,"img.png");
+    return this.fileService.dataURLtoFile(dataUrl,"img.png");
   }
 
   purchaseStl(file:any,fill:number,dataUrl:string,colorCode:string):Observable<any>{

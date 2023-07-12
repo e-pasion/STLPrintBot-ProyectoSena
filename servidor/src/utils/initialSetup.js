@@ -23,7 +23,8 @@ export const createAdmin = async ()=>{
     const newUser= new User({
       fullName:"Yuri Rios",
       email:"yuriRios@gmail.com",
-      password:await User.encryptPassword("admin123")
+      password:await User.encryptPassword("admin123"),
+      pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
   })
    const roleAdmin= await Role.findOne({name:"admin"});
    const roleEmployee= await Role.findOne({name:"employee"});
