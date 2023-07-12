@@ -3,7 +3,10 @@
         <li class="mx-1"><a routerLink="">Inicio</a></li>
         <li class="mx-1"><a routerLink="/calculator">Calculadora</a></li>
         <li class="mx-1"><a routerLink="/admin/crear-color">Admin</a></li>
-        <li class="mx-2  text-2xl"><a routerLink="/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        <li class="mx-2  text-2xl cursor-pointer"><a (click)="openCart()"><i class="fa-solid fa-cart-shopping"></i></a></li>
         <li class="mx-2 text-2xl"><a routerLink="/auth"><i class="fa-solid fa-user"></i></a></li>
     </ul>
 </nav>
+
+<app-test-cart class="z-30 absolute"  [@opacity0To100]  *ngIf="isCartOpen()"></app-test-cart>
+

@@ -16,6 +16,7 @@ import { NavbarSideComponent } from './components/dashboard/navbar-side/navbar-s
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
+import { TestCartComponent } from './components/client/test-cart/test-cart.component';
 
 
 
@@ -33,7 +34,8 @@ import { CartComponent } from './components/client/cart/cart.component';
     NavbarSideComponent,
     CreateColorComponent,
     CalculatorComponent,
-    CartComponent
+    CartComponent,
+    TestCartComponent
    
   ],
   imports: [

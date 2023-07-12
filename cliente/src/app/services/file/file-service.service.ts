@@ -24,9 +24,7 @@ export class FileServiceService {
 fixPath=(path:string,type:string)=>{
   let fixedpath=path.replace('src\\', '');
   fixedpath.replace(/\\/g, '/'); //expresion regular para cambiar todas las barras invertidas por barras normales
-  console.log(fixedpath);
   fixedpath.split(' ').join('%20');;//expresion regular que reemplaza los espacios vacios para que no haya errores
-  console.log(fixedpath);
   return (`http://localhost:4000/api/${fixedpath}`);
 }
 

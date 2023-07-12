@@ -134,6 +134,7 @@ export class AuthComponent implements OnInit {
         console.log(data)
         this.sweetAlertService.success("El registro fue exitoso")
         this.registerForm.reset()
+        this.cambiarLoginRegistro()
 
       },
       error: (e)=>{
