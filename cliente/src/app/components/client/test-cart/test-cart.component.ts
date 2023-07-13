@@ -3,11 +3,13 @@ import { Product } from 'src/app/models/Product';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
+import { changeWidth0To1002 } from 'src/app/utils/animation';
 
 @Component({
   selector: 'app-test-cart',
   templateUrl: './test-cart.component.html',
-  styleUrls: ['./test-cart.component.css'],  
+  styleUrls: ['./test-cart.component.css'],
+  animations:[changeWidth0To1002]  
 
 })
 export class TestCartComponent {

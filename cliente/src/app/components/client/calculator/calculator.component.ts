@@ -24,6 +24,7 @@ export class CalculatorComponent implements OnInit {
   maxScale=120;
   file:any;
   pathFile:string="";
+  dataUrl:any;
 
   stlData={//en este objeto se guardaran los datos que se le enviaran al backend
     color:"",
@@ -35,7 +36,7 @@ export class CalculatorComponent implements OnInit {
 
   stlContainerIsHidden:boolean=true;
   loadingIsHidden:boolean=false;
-  settingIsHidden:boolean=true;
+  settingIsHidden:boolean=false;
   priceIsHidden:boolean=true;
   stl_viewer:any=null;
   selectColor:any;
@@ -51,7 +52,8 @@ export class CalculatorComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.getAllColors()
+     this.getAllColors()
+
   }
 
 
@@ -59,6 +61,9 @@ export class CalculatorComponent implements OnInit {
     this.crudService.getAll(`color`).subscribe({
       next:(data)=>{
         this.colors=data;
+        if (this.colors.length > 0) {
+          this.stlData.color = this.colors[0].code; // Establece el primer color como valor inicial
+        }
       },
       error:(e)=>console.error(e),
       complete:()=>console.log(this.colors)
@@ -88,7 +93,7 @@ export class CalculatorComponent implements OnInit {
       this.stlContainerIsHidden=false;
       this.file=stlFile;
       if(this.stl_viewer){
-        this.stl_viewer.add_model({id: 2, local_file:stlFile,color:this.defaultColor,rotationx:Math.PI*1.5});
+        this.stl_viewer.add_model({id: 2, local_file:stlFile,color:this.stlData.color,rotationx:Math.PI*1.5});
       }else{
         this.loadStlViewer(stlFile);
       }
@@ -99,7 +104,7 @@ export class CalculatorComponent implements OnInit {
   }
 
   loadStlViewer(stlFile:any){ //codigo para cuando cargo el stl
-    this.stl_viewer = new StlViewer(this.stlContainer.nativeElement,{models: [{ id:0, filename:"cube3.stl" },{id: 2, local_file:stlFile,color:this.defaultColor,rotationx:Math.PI*1.5}],bgcolor:"#333333",allow_drag_and_drop:true,all_loaded_callback: ()=>{
+    this.stl_viewer = new StlViewer(this.stlContainer.nativeElement,{models: [{ id:0, filename:"cube3.stl" },{id: 2, local_file:stlFile,color:this.stlData.color,rotationx:Math.PI*1.5}],bgcolor:"#333333",allow_drag_and_drop:true,all_loaded_callback: ()=>{
       this.loadingIsHidden=true;
       this.settingIsHidden=false;
 
@@ -109,7 +114,6 @@ export class CalculatorComponent implements OnInit {
       this.cameraData.target.y=-((249/2)-(fileData.dims.z/2));//cambia el target para que la camara siga al modelo y no al contenedor
       this.cameraData.position.y=-46.13839012641881//mueve la posicion de la camara para mejorar la visibilidad
       this.stl_viewer.set_camera_state(this.cameraData);
-
       this.stlData.tamY= fileData.dims.y
       this.stlData.tamX= fileData.dims.x
       this.stlData.tamZ= fileData.dims.z
@@ -118,8 +122,10 @@ export class CalculatorComponent implements OnInit {
   }
 
   removeStlViewer(){
+    this.stl_viewer.set_opacity(0, 1);
+
     this.priceIsHidden=true;
-    this.settingIsHidden=true;
+    this.settingIsHidden=false;
     this.stl_viewer.remove_model(2);
     this.loadingIsHidden=false;
     this.stlContainerIsHidden=true;
@@ -127,12 +133,15 @@ export class CalculatorComponent implements OnInit {
 
     //reiniciar los campos del form de settings
     this.stlData.fill=100;
-    this.stlData.color="";
+    this.stlData.color = this.colors[0].code;
     this.scalePercentaje=100;
     this.scale=1;
+
+
   }
 
   changeSettings(){
+    this.stl_viewer.set_opacity(0, 1);
     this.priceIsHidden=true;
     this.settingIsHidden=false;
   }
@@ -140,8 +149,9 @@ export class CalculatorComponent implements OnInit {
 
 
   getCotization(){
-    this.sweetAlertService.loading("Calculando Precio...");
+    this.stl_viewer.set_opacity(0, 0);
 
+    this.sweetAlertService.loading("Calculando Precio...");
     this.stlService.cotization(this.file,this.stlData.fill).subscribe({
       next:(data)=>{
         this.price=data.price.toFixed(1);
@@ -155,12 +165,11 @@ export class CalculatorComponent implements OnInit {
       }
     })
   }
-  stlAddCart= async()=>{
-    console.log("xd"+this.file);
-    await this.stl_viewer.set_camera_state(this.cameraData);
-      let dataUrl=this.stl_viewer.renderer.domElement.toDataURL("image/png");
+
+   async stlAddCart(){
+      this.dataUrl= this.stl_viewer.renderer.domElement.toDataURL("image/png")
       this.sweetAlertService.loading("Añadiendo al carrito...");
-      this.stlService.purchaseStl(this.file,this.stlData.fill,dataUrl,this.stlData.color).subscribe({
+      this.stlService.purchaseStl(this.file,this.stlData.fill,this.dataUrl,this.stlData.color).subscribe({
         next:(data)=>{
           console.log(data);
         },error:(e)=>{
@@ -173,6 +182,14 @@ export class CalculatorComponent implements OnInit {
         }
       })
   }
+
+
+
+
+
+  warningNoSTL(){
+    this.sweetAlertService.warningTopEnd("Debes subir un archivo STL antes de elegir.")
+  }
  
    getMaxScale(){
     let scaleX=220/this.stlData.tamX;
@@ -184,8 +201,7 @@ export class CalculatorComponent implements OnInit {
   scaleModel(){
     this.scale=this.scalePercentaje/100
     this.stl_viewer.set_scale(2, this.scale,this.scale,this.scale);
-    this.stl_viewer.set_position(2, 0,-((249/2)-((this.stlData.tamZ*this.scale)/2)), 0);
-
+    this.stl_viewer.set_position(2, 0,-((249/2)-((this.stlData.tamZ*this.scale)/2)), 0)
     // aqui lo que se hace es que cada que cambie de tamaño, se sobreescriba el archivo con el nuevo tamaño
     // para que se actualice el volumen
     const modelBinaryData = this.stl_viewer.get_stl_bin(2);
