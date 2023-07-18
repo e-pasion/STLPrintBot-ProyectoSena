@@ -10,6 +10,7 @@ import { ProfileComponent } from './components/client/profile/profile.component'
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
+import { CheckoutComponent } from './components/client/checkout/checkout.component';
 
 const routes: Routes = [
   //client
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path:"calculator",component:CalculatorComponent},
   {path:"edit-product/:id",canActivate:[authGuard,clientGuard],component:CalculatorComponent},
   {path:"cart",component:CartComponent},
+  {path:"checkout",component:CheckoutComponent},
 
   //dashboard
   {path:"dashboard/create-color",canActivate:[authGuard,adminGuard],component:CreateColorComponent},

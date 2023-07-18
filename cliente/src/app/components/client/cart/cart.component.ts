@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/Product';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 
@@ -10,12 +11,13 @@ import { FileServiceService } from 'src/app/services/file/file-service.service';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private crudService:CrudServiceService, private fileService:FileServiceService){}
+  constructor(private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService){}
 
   products:Product[]=[]
   totalPrice:number=0;
 
   ngOnInit(): void {
+
     this.findProducts();
   }
 

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from 'src/app/models/Product';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
@@ -14,14 +16,18 @@ import { changeWidth0To1002 } from 'src/app/utils/animation';
 })
 export class TestCartComponent {
 
-  constructor(private navbarService:NavbarServiceService,private crudService:CrudServiceService, private fileService:FileServiceService) { 
+  constructor(private navbarService:NavbarServiceService,private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private router:Router) { 
   }
 
   products:Product[]=[]
   totalPrice:number=0;
+  toCheckout:boolean=false;//variable creada para que si es true, cuando termine la animacion cambie la pagina a checkout
 
   ngOnInit(): void {
+    if(this.authService.isClient()){
     this.findProducts();
+    }
+    
   }
 
   calculatePrice(weigth:number,quantity:number){
@@ -88,6 +94,16 @@ export class TestCartComponent {
         console.log(e);
       }    
     })
+  }
+  onAnimationCartDone(){
+    if(this.toCheckout){
+      this.router.navigate(["/checkout"]);
+    }
+  }
+
+  goToCheckout(){
+    this.navbarService.toggleCart();
+    this.toCheckout=true;
   }
 
 }
