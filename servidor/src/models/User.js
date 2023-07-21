@@ -6,6 +6,8 @@ const userSchema= new Schema({
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
     pathImage:{type:String,required:true},
+    // address:{type:String},
+    // numberPhone:{type:number},
     roles:[{
         ref:"Role",
         type: Schema.Types.ObjectId
