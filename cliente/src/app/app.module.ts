@@ -18,6 +18,7 @@ import { CalculatorComponent } from './components/client/calculator/calculator.c
 import { CartComponent } from './components/client/cart/cart.component';
 import { TestCartComponent } from './components/client/test-cart/test-cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
+import { FooterComponent } from './components/client/footer/footer.component';
 
 
 
@@ -37,7 +38,8 @@ import { CheckoutComponent } from './components/client/checkout/checkout.compone
     CalculatorComponent,
     CartComponent,
     TestCartComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    FooterComponent
    
   ],
   imports: [
