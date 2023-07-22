@@ -17,6 +17,7 @@ import { CreateColorComponent } from './components/dashboard/color/create-color/
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
 import { TestCartComponent } from './components/client/test-cart/test-cart.component';
+import { CheckoutComponent } from './components/client/checkout/checkout.component';
 
 
 
@@ -35,7 +36,8 @@ import { TestCartComponent } from './components/client/test-cart/test-cart.compo
     CreateColorComponent,
     CalculatorComponent,
     CartComponent,
-    TestCartComponent
+    TestCartComponent,
+    CheckoutComponent
    
   ],
   imports: [

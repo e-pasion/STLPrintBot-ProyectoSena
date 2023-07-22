@@ -13,8 +13,6 @@ package-lock.json
 # Archivo de configuración de Angular
 .angular-cli.json
 
-# Archivo de configuración de TypeScript
-tsconfig.json
 
 # Archivo de configuración de ambiente local de Angular
 environment.ts

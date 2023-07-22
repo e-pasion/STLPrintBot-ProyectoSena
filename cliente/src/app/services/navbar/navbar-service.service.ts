@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class NavbarServiceService {
   isCartOpen:boolean=false;
+  userInCheckout:boolean=false;
 
   constructor() { }
 
@@ -14,4 +15,7 @@ export class NavbarServiceService {
   getCartStatus(){
     return this.isCartOpen;
   }
+ 
+ 
+
 }

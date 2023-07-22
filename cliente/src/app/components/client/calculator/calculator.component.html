@@ -2,11 +2,9 @@
     <app-navbar></app-navbar>
 </div>
 
-<section>
+<div class="fondo">
     <div class="relative mx-auto max-w-screen-xl px-4 py-8">
-      <div>
-        <h1 class="text-2xl font-bold md:text-3xl">Calculadora 3d STL</h1>
-      </div>
+
   
         <div class="flex flex-col md:flex-row mt-4">
             <div class="w-full md:w-3/4">
@@ -14,6 +12,7 @@
 
             <!-- caja drag and drop -->
             <div class="h-72 w-full rounded-xl object-cover md:h-[600px] bg-dark relative">
+              <div class="h-72 w-full rounded-xl object-cover md:h-[600px] opacity-0 absolute z-10" *ngIf="!priceIsHidden"></div>
                 <div (drop)="handleDrop($event)" (dragover)="handleDragOver($event)" *ngIf="stlContainerIsHidden" class="absolute z-20 flex items-center justify-center w-full h-full">
                     <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-full rounded-l-lg cursor-pointer bg-dark hover:bg-black">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -47,19 +46,17 @@
         </div>
         <div class="w-full md:w-2/5 relative">
 
-          <div [@changeWidth0To100] *ngIf="settingIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px]  bg-white overflow-hidden w-full p-5 md:py-0 ">
-              <p class="text-center text-4xl">Reglas</p>
-          </div>
 
         <!-- configuracion -->
-        <div [@changeWidth0To100] *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px]  bg-white overflow-hidden w-full p-5 md:py-0 ">
-          <form  class="space-y-4 md:pt-8  ">
+        <div [@changeWidth0To100] *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 h-[600px]  bg-white overflow-hidden w-full   ">
+          <div *ngIf="!loadingIsHidden" (click)="warningNoSTL()" class="opacity-5 bg-black absolute z-10 w-full h-[600px]">
+          </div>
+          <form  class="space-y-4 md:pt-8 px-5 py-5 md:py-0">
 
             <fieldset class="h-20 overflow-hidden">
               <legend class="text-lg font-bold">Color</legend>
               <div class="mt-2 ">
                 <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option value="" selected disabled>Elige un color</option>  
                   <option *ngFor="let color of colors" [value]="color.code" >{{color.name}}</option>
                 </select>
               </div>
@@ -101,7 +98,7 @@
         </div>
 
         <!-- precio -->
-        <div [@changeWidth0To100] *ngIf="!priceIsHidden"  class="absolute md:stick md:top-0 md:px-5 md:h-[600px] flex flex-col justify-center bg-white overflow-hidden w-fullp-5 md:py-0 ">
+        <div [@changeWidth0To100] *ngIf="!priceIsHidden"  class="absolute md:stick md:top-0 md:px-5 h-[600px] flex flex-col justify-center bg-white overflow-hidden w-full p-5 md:py-0 ">
           <div  class="space-y-4 md:pt-8 overflow-hidden ">
              <div class="rounded border h-28 bg-gray-100 p-4">
               <p class="text-sm text-center whitespace-nowrap">
@@ -130,6 +127,6 @@
       </div>
     </div>
   </div>
-  </section>
+  </div>
 
              

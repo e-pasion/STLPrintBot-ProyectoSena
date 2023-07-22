@@ -1,23 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
-import {opacity0To100 } from 'src/app/utils/animation';
+import {opacity0To100, changeWidth0To1002} from 'src/app/utils/animation';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  animations: [opacity0To100]
+  animations: [changeWidth0To1002,opacity0To100]
 })
 export class NavbarComponent {
-
-  constructor(private navbarService:NavbarServiceService) { 
+  navbarFixed: boolean = false;
+  
+  
+  constructor(private navbarService:NavbarServiceService,private authService:AuthServiceService,private router:Router) { 
   }
 
-  openCart(){
+  @HostListener('window:scroll',['$event']) onScroll()
+{
+  console.log("object");
+}
+  
+  userIsInCheckout(){
+    return this.router.url === '/checkout';
+  }
+
+  openCart(){ 
     this.navbarService.toggleCart()
+
   }
   isCartOpen(){
     return this.navbarService.getCartStatus()
+  }
+
+  userIsLogged(){
+    return this.authService.isLoggedIn();
   }
 
 }

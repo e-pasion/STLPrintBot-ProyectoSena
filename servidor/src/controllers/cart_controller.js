@@ -16,5 +16,9 @@ export const getTotalPrice= async (req,res)=>{
   const productsFound=cartFound.products;
   const productsPrice= productsFound.map(products=>((products.weigth*80000)/1000)*products.quantity)
   const totalPrice= productsPrice.reduce((acum,price)=>acum+price,0);
-  return res.json(totalPrice.toFixed(0));
+  return res.json(adjustPrice(totalPrice));
+}
+
+const adjustPrice= (price)=>{
+  return (price-price%50).toFixed(0);
 }
