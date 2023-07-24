@@ -1,4 +1,7 @@
 import Cart from "../models/Cart.js";
+import { returnProductPrice, returnShipPrice} from "../utils/priceUtils.js";
+
+
 
 export const getCartProducts= async(req,res)=>{
     const cartFound= await Cart.findOne({userId:req.userId})
@@ -11,14 +14,14 @@ export const getCartProducts= async(req,res)=>{
     return res.json(productsFound);
 }
 
-export const getTotalPrice= async (req,res)=>{
-  const cartFound= await Cart.findOne({userId:req.userId}).populate("products");
-  const productsFound=cartFound.products;
-  const productsPrice= productsFound.map(products=>((products.weigth*80000)/1000)*products.quantity)
-  const totalPrice= productsPrice.reduce((acum,price)=>acum+price,0);
-  return res.json(adjustPrice(totalPrice));
+export const getProductPrice= async (req,res)=>{
+  const totalPrice=await returnProductPrice(req.userId);
+  return res.json(totalPrice);
 }
 
-const adjustPrice= (price)=>{
-  return (price-price%50).toFixed(0);
+
+
+export const getShipPrice=async(req,res)=>{
+  const shipPrice= await returnShipPrice(req.body.city,req.userId)
+  return res.json(shipPrice);
 }

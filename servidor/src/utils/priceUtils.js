@@ -1,14 +1,41 @@
 import Cart from "../models/Cart.js";
+import { calculatePrice } from "./stlUtils.js";
 
 
-export const getTotalPrice= async (userId)=>{
+const metropolitanCities=[
+  "Barbosa",
+  "Girardota",
+  "Copacabana",
+  "Bello",
+  "Medellín",
+  "Envigado",
+  "Itagüí",
+  "La Estrella",
+  "Sabaneta",
+  "caldas"
+]
+
+export const returnProductPrice= async (userId)=>{
   const cartFound= await Cart.findOne({userId:userId}).populate("products");
-  const productsFound=cartFound.products;
-  const productsPrice= productsFound.map(products=>((products.weigth*80000)/1000)*products.quantity)
-  const totalPrice= productsPrice.reduce((acum,price)=>acum+price,0);
+  const totalWeigth= cartFound.totalWeigth;
+  const totalPrice= calculatePrice(totalWeigth,80000)
   return adjustPrice(totalPrice);
 }
 
-const adjustPrice= (price)=>{
+export const returnShipPrice= async (city,userId)=>{
+  console.log(city);
+  if(returnProductPrice(userId)>50000){
+    return 0;
+  }
+  else if (metropolitanCities.includes(city)){
+    return 8000
+  }
+  else{
+    return 12000;
+  }
+
+}
+
+export const adjustPrice= (price)=>{
   return (price-price%50).toFixed(0);
 }

@@ -3,14 +3,15 @@ import fs from 'fs'
 import Product from '../models/Product.js';
 import Color from '../models/Color.js';
 import Cart from '../models/Cart.js';
-import { calculateWeigth,calculatePrice } from '../utils/stlUtils.js';
+import { calculatePrice, calculateWeigth } from '../utils/stlUtils.js';
+import { adjustPrice } from '../utils/priceUtils.js';
 
 
 export const cotization=async(req,res)=>{
     let stl = new nodeStl(req.file.path, {density: 1.24});
     let fill=req.body.fill/100;
     let weigth= calculateWeigth(1.24,fill,stl.volume)
-    let price= calculatePrice(weigth,80000)
+    let price= adjustPrice(calculatePrice(weigth,80000))
     console.log("peso formula 1: "+stl.weight*fill);//Esta es la mala
     console.log("Peso formula 2: "+weigth);//esta es la buena
    
@@ -39,9 +40,9 @@ export const createProduct= async(req,res)=>{
     pathFile:stlFile,
     weigth:calculateWeigth(1.24,fill/100,stl.volume),
     fill,
-    sizeX:size[0],
-    sizeY:size[1],
-    sizeZ:size[2],
+    sizeX:size[0]/10,
+    sizeY:size[1]/10,
+    sizeZ:size[2]/10,
     color:color._id,
     cantidad:1
   })
@@ -50,9 +51,14 @@ export const createProduct= async(req,res)=>{
   await Cart.findOneAndUpdate({ userId: req.userId }, 
     { $push: { products: newProduct._id } },
     { new: true });
+
+    await Cart.findOneAndUpdate(
+      { userId: req.userId },
+      { $inc: { totalWeigth: newProduct.weigth } },
+      { new: true }
+    );
+
   return res.json(savedProduct);
-
-
 }
 
 
@@ -66,3 +72,27 @@ export const updateQuantityProduct = async(req,res)=>{
   await Product.findOneAndUpdate({ _id: req.params.id },{ $set: { quantity } }  );  
   return res.json(quantity);
 }
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).send({ message: 'Producto no encontrado' });
+    }
+
+    await Cart.findOneAndUpdate(
+      { userId: req.userId },
+      { $inc: { totalWeigth: -product.weigth } },
+      { new: true }
+    );
+
+    await Product.deleteOne({_id:productId})
+    res.send({ message: 'Producto Borrado' });
+
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};

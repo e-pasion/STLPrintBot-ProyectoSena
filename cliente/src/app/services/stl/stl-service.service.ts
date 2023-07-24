@@ -25,6 +25,17 @@ export class StlServiceService {
     return this.fileService.dataURLtoFile(dataUrl,"img.png");
   }
 
+
+  sendModelToBase(){
+
+  }
+
+
+  getMaxScale(STLDims:any){
+    let {x,y,z}=STLDims;
+    return (Math.min(220/x,250/y,220/z))*100;
+}
+
   purchaseStl(file:any,fill:number,dataUrl:string,colorCode:string):Observable<any>{
     console.log(dataUrl);
     const img=this.takePhoto(dataUrl);

@@ -1,63 +1,84 @@
-<div class="flex-grow">
-    <app-navbar></app-navbar>
-</div>
+<div  [ngClass]="{'bg-gray-500': isCartOpen()?true:false,'z-40': isCartOpen()?true:false}" class="h-screen w-screen  bg-opacity-40 -z-10 duration-100 absolute top-0"></div> 
 
 
-<div class=" py-5 px-2 m-5 rounded-2xl sm:p-10">
-    <div class="h-full">
-      <h1 class="mb-10 text-center text-4xl font-bold text-orange-900"> Tu carro de compras</h1>
-      <div class="mx-auto max-w-5xl justify-center px-6 flex flex-col-reverse md:flex-row md:space-x-6 xl:px-0">
-        <div class="rounded-lg md:w-2/3">
-
-          <!-- productos -->
-          <div *ngFor="let product of products; let i = index" class="justify-between my-6 md:mt-0 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-star">
-              <div>
-                  <img [src]="fixImg(product.pathImage)" alt="product-image" class="w-full rounded-lg sm:w-40" />
-                      <div class=" mt-5 flex justify-end sm:justify-center sm:mt-2 ">
-                          <i class="fa-solid fa-trash-can text-xl mx-4"></i>
-                          <i [routerLink]="['/edit-product',product._id]" class="fa-solid fa-pen-to-square text-xl mr-4"></i> 
-                      </div>
-              </div>
-            <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-              <div class="mt-5 sm:mt-0">
-                <p class="mt-1 text-xs text-gray-700">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
-                <p class="mt-1 text-xs text-gray-700">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
-                <p class="mt-1 text-xs text-gray-700">{{"Color: "+product.color.name}}</p>
-                <p class="mt-1 text-xs text-gray-700">{{"Tamaño: [x: "+product.sizeX.toFixed(0)+"cm, y:"+product.sizeY.toFixed(0)+"cm, z:"+product.sizeZ.toFixed(0)+"cm]"}}</p>
-              </div>
-              <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6 ">
-                <div class="flex items-center border-gray-100 justify-end">
-                  <button [disabled]="product.quantity<2" (click)="decreaseQuantity(i)" class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 disabled:cursor-default hover:bg-stone-300 hover:text-blue-50"> - </button>
-                  <input disabled class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" [value]="product.quantity" min="1" />
-                  <button (click)="increaseQuantity(i)" class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-stone-300 hover:text-blue-50"> + </button>
+            <div [@changeWidth0To1002] (@changeWidth0To1002.done)="onAnimationCartDone()"  *ngIf="isCartOpen()" class="absolute max-w-sm  right-0 h-screen top-0 z-50 flex w-full flex-col overflow-y-auto bg-white shadow-xl">
+              <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                <div class="flex items-start justify-between">
+                  <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Carrito</h2>
+                  <div class="ml-3 flex h-7 items-center">
+                    <button (click)="closeCart()" type="button" class="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                      <span class="sr-only">Close panel</span>
+                      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div class="flex flex-col items-center space-x-4 text-stone-400">
-                  <p class="text-sm">{{"Precio: $"+calculatePrice(product.weigth,1)}}</p>
-                  <p class="text-lg">{{"Total: $"+ calculatePrice(product.weigth,product.quantity)}}</p>
+  
+                <div class="mt-8">
+                  <div class="flow-root">
+                    <ul role="list" class="-my-6 divide-y divide-gray-200 relative">
+
+                      <div  [class.hidden]="loadingIsHidden" class="z-10 absolute h-full w-full  flex flex-col items-center justify-center bg-white">
+                        <svg aria-hidden="true" role="status" class="inline w-12 h-12 mr-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                            </svg>
+                            <p class="text-xl  text-white">Cargando...</p>
+                    </div>
+                    <div *ngIf="products.length<1">
+                      <img src="assets/img/sadcart.png" alt="">
+                  </div>
+                      <li *ngFor="let product of products; let i = index" class="flex py-6">
+                        <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                          <img [src]="fixImg(product.pathImage)" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
+                        </div>
+  
+                        <div class="ml-4 flex flex-1 flex-col">
+                          <div>
+                            
+                            <div class="flex justify-between text-base font-medium text-gray-900">
+                              <h3><a href="#">{{"Producto "+ (i+1)}}</a></h3>
+                              <p class="ml-4">{{"$"+ calculatePrice(product.weigth,product.quantity)}}</p>
+                            </div>
+                            <div class="">
+                                <p class="mt-1 text-sm text-gray-500">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{"Color: "+product.color.name}}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.sizeX.toFixed(0)+"cm, y:"+product.sizeY.toFixed(0)+"cm, z:"+product.sizeZ.toFixed(0)+"cm]"}}</p>
+                              </div>
+                          </div>
+                          <div class="flex flex-1 items-end justify-between text-sm">
+                            <div class="mt-4 flex justify-between  ">
+                                <div class="flex items-center border-gray-100 justify-end">
+                                  <button [disabled]="product.quantity<2" (click)="decreaseQuantity(i)" class="h-8 cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 disabled:cursor-default hover:bg-stone-300 hover:text-blue-50"> - </button>
+                                  <input disabled class="h-8 w-8 border bg-white text-center text-xs outline-none" type="number" [value]="product.quantity" min="1" />
+                                  <button (click)="increaseQuantity(i)" class="h-8 cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-stone-300 hover:text-blue-50"> + </button>
+                                </div>
+                            </div>
+  
+                            <div class="flex">
+                              <button (click)="deleteProduct(product._id || '')" type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+
+                    </ul>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
+                <div class="flex justify-between text-base font-medium text-gray-900">
+                  <p>Subtotal</p>
+                  <p>{{"$"+totalPrice}}</p>
+                </div>
+                <p class="mt-0.5 text-sm text-gray-500">Para añadir codigos y ver el precio de envio continua la compra</p>
+                <div class="mt-6">
+                  <button (click)="goToCheckout()" class=" flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 w-full">Continuar</button>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- Sub total -->
-        <div class="mt-6 h-full rounded-lg text-stone-400 border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
-          <div class="mb-2 flex justify-between ">
-            <p class="text-gray-700">PRODUCTOS:</p>
-            <p class="text-gray-700">{{"$"+totalPrice+" COP"}}</p>
-          </div>
-          <div class="flex justify-between">
-            <p class="text-gray-700">ENVIO:</p>
-            <p class="text-gray-700">$0</p>
-          </div>
-          <hr class="my-4" />
-          <div class="flex justify-between">
-            <p class="text-lg font-bold">Total</p>
-            <div class="">
-              <p class="mb-1 text-lg font-bold">{{"$"+totalPrice+" COP"}}</p>
-            </div>
-          </div>
-          <button class="mt-6 w-full bg-white py-1.5 font-medium text-orange-900 border-2 border-orange-900 rounded-3xl hover:border-orange-700 hover:bg-stone-200 hover:text-white">COMPRAR</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  

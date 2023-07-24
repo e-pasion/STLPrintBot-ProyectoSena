@@ -1,15 +1,23 @@
 import mercadopago from "mercadopago"
 import { NGROKURL } from "../config/config.js";
-import { getTotalPrice } from "../utils/priceUtils.js";
+import { returnProductPrice } from "../utils/priceUtils.js";
+
+
+
+
 
 export const createOrder= async (req,res)=>{
+  console.log(req.body);
+  console.log(req.body.address);
     mercadopago.configure({
         access_token:'TEST-8133959242082900-071517-0598bf125b902a9a5c64ab882e998c61-1425002340',
     })
 
-    
-    const totalPrice=parseInt(await getTotalPrice(req.userId));
+    const shipPrice=req.body.shipPrice;
+    const productPrice=await returnProductPrice(req.userId);
+    const totalPrice=parseInt(productPrice)+parseInt(shipPrice);
     const result = await mercadopago.preferences.create({
+      
         items: [ 
           {
             "title": "Carrito",
@@ -20,6 +28,22 @@ export const createOrder= async (req,res)=>{
             "unit_price": totalPrice
           }
         ],
+        "metadata": {
+          firstName:req.body.firstName,
+          lastName:req.body.lastName,
+          numberPhone:req.body.numberPhone,
+          address:req.body.address,
+          city:req.body.city,
+          optionalNotes:req.body.optionalNotes,
+        },
+        payment_methods:{
+          "installments":1
+        },
+        shipments:{
+          cost:shipPrice,
+          mode:'not_specified'
+        },
+        binary_mode:true,
         back_urls:{
             success:"http://localhost:4000/api/payment/success",
             failure:"http://localhost:4000/api/payment/failure",
@@ -48,3 +72,4 @@ export const receiveWebhook= async (req,res)=>{
       }
 
 }
+

@@ -24,7 +24,8 @@ export class AuthComponent implements OnInit {
 
   constructor(private fb:FormBuilder,private authService:AuthServiceService,private sweetAlertService:SweetAlertServiceService,private router:Router,private aRoute:ActivatedRoute){
     this.registerForm=this.fb.group({
-      fullName:['',[Validators.required, this.rangeLengthWithoutSpacesValidator(5,50)]],
+      firstName:['',[Validators.required]],
+      lastName:['',[Validators.required]],
       registerEmail:['',[Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")]],
       registerPassword:['',[Validators.required, Validators.pattern("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)[A-Za-z\\d!$%@#£€*?&]{8,}$")]],
       password2:['',[Validators.required,this.passwordMatchValidator]]
@@ -69,21 +70,6 @@ export class AuthComponent implements OnInit {
     return null;
   }
 
-  rangeLengthWithoutSpacesValidator(minLength: number,maxLength:number): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value: string = control.value;
-      let valueWithoutSpaces="";
-      
-      if (value) {
-         valueWithoutSpaces = value.replace(/\s/g, '');
-      }
-  
-      if (valueWithoutSpaces.length < minLength || valueWithoutSpaces.length > maxLength) {
-        return { 'lengthWithoutSpaces': { requiredLength: [minLength,maxLength] } };
-      }
-      return null;
-    };
-  }
 
   changePassword(){
     this.registerForm.get('registerPassword')!.updateValueAndValidity();
@@ -92,7 +78,6 @@ export class AuthComponent implements OnInit {
 
   login(){
     const USER: User = {
-      fullName:"",
       email:this.loginForm.get('loginEmail')?.value.toLowerCase(),
       password:this.loginForm.get('loginPassword')?.value
     }
@@ -124,7 +109,8 @@ export class AuthComponent implements OnInit {
   register(){
 
     const USER: User = {
-      fullName:this.registerForm.get('fullName')?.value,
+      firstName:this.registerForm.get('firstName')?.value,
+      lastName:this.registerForm.get('lastName')?.value,
       email:this.registerForm.get('registerEmail')?.value.toLowerCase(),
       password:this.registerForm.get('registerPassword')?.value
     }

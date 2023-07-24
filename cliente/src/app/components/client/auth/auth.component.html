@@ -58,18 +58,26 @@
         </div>
     
         <div *ngIf="!loginVisible || !userIsInMobile" class="w-full sm:h-[40rem] sm:w-1/2 flex flex-col items-center justify-center px-4 py-8 mx-auto  sm:p-0">
-            <div class="w-full h-full bg-white rounded-lg sm:rounded-l-none shadow mt-8 sm:mt-0 max-w-sm sm:max-w-none sm:py-10">
+            <div class="w-full h-full bg-white rounded-lg sm:rounded-l-none shadow mt-8 sm:mt-0 max-w-sm sm:max-w-none ">
                 <div class="p-6 space-y-4  sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-green-700 md:text-2xl">
                         Crear cuenta
                     </h1>
                     <form class="space-y-4 " [formGroup]="registerForm" (submit)="register()">
                         <div>
-                            <label for="fullName" class="block mb-2 text-sm font-medium text-gray-900">Nombre Completo</label>
-                            <input formControlName="fullName" type="fullName" name="fullName" id="fullName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
-                            <div *ngIf="registerForm.get('fullName')!.errors && registerForm.get('fullName')!.touched" class="text-md font-thin text-red-600">
-                                <div *ngIf="registerForm.get('fullName')!.hasError('required')">El nombre es obligatorio.</div>
-                                <div *ngIf="registerForm.get('fullName')!.hasError('lengthWithoutSpaces') && !registerForm.get('fullName')!.hasError('required')">El nombre debe tener mas de 4 letras y menos de 50.</div>
+                            <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900">Nombre</label>
+                            <input formControlName="firstName" type="text" name="firstName" id="firstName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
+                            <div *ngIf="registerForm.get('firstName')!.errors && registerForm.get('firstName')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('firstName')!.hasError('required')">El nombre es obligatorio.</div>
+                                <div *ngIf="registerForm.get('firstName')!.hasError('lengthWithoutSpaces') && !registerForm.get('firstName')!.hasError('required')">El nombre debe tener mas de 4 letras y menos de 50.</div>
+                              </div>
+                        </div>
+
+                        <div>
+                            <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900">Apellido</label>
+                            <input formControlName="lastName" type="text" name="lastName" id="lastName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
+                            <div *ngIf="registerForm.get('lastName')!.errors && registerForm.get('lastName')!.touched" class="text-md font-thin text-red-600">
+                                <div *ngIf="registerForm.get('lastName')!.hasError('required')">El apellido es obligatorio.</div>
                               </div>
                         </div>
                         <div>

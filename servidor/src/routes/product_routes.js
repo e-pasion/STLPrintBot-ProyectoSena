@@ -6,6 +6,7 @@ import * as productController from '../controllers/product_controller.js';
 import { verifyToken } from '../middlewares/authJwt.js';
 
 router.get('/:id',[verifyToken],productController.getProduct)
+router.delete('/:id',[verifyToken],productController.deleteProduct)
 router.post('/cotization', uploadTemporalStl.single('stl'),productController.cotization);
 router.post('/',[verifyToken,uploadStlAndImg.array('dataFiles',2)],productController.createProduct);
 router.put('/quantity/:id',[verifyToken],productController.updateQuantityProduct);

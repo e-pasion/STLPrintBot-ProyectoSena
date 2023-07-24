@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
     this.crudService.get("user",this.authService.getUserId()).subscribe({
       next: (data)=>{
         this.userData={
-          name:data.fullName,
+          name:data.firstName+ " "+data.lastName,
           email:data.email
         }
       },

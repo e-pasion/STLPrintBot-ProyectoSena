@@ -21,7 +21,8 @@ export const createAdmin = async ()=>{
     if (count > 0) return;
 
     const newUser= new User({
-      fullName:"Yuri Rios",
+      firstName:"Yuri",
+      lastName:"Rios",
       email:"yuriRios@gmail.com",
       password:await User.encryptPassword("admin123"),
       pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"

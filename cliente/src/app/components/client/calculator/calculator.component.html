@@ -70,15 +70,15 @@
                 <legend class="text-lg font-bold">Tamaño</legend>
                 <div class="grid gap-6  grid-cols-3 mt-2">
                     <div>
-                        <input disabled [value]="(scale*stlData.tamX).toFixed(1)" type="text" min="1" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 overflow-auto"  required>
+                        <input disabled [value]="dimsText[0]" type="text" min="1" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 overflow-auto"  required>
                         <p  class="block text-sm font-medium text-gray-900 text-center">X</p>
                      </div>
                     <div>
-                        <input disabled [value]="(scale*stlData.tamY).toFixed(1)" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <input disabled [value]="dimsText[1]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Y</p>
                       </div>
                     <div>
-                    <input disabled [value]="(scale*stlData.tamZ).toFixed(1)" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <input disabled [value]="dimsText[2]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Z</p>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
               <fieldset class="h-20 overflow-hidden">
                 <legend class="text-lg font-bold">Escala</legend>
                 <label for="steps-range" class="block text-sm text-center font-bold text-gray-900">{{scalePercentaje+"%"}}</label>
-                <input [(ngModel)]="scalePercentaje" (ngModelChange)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                <input [(ngModel)]="scalePercentaje" (input)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
               </fieldset>
             <button type="button" (click)="getCotization()" class="w-full rounded border whitespace-nowrap overflow-hidden border-yellow-300 bg-yellow-200 px-6 py-3 text-sm font-bold uppercase tracking-wide"> 
                 Cotizar Precio

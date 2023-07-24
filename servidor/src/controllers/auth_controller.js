@@ -4,13 +4,15 @@ import Role from '../models/Role.js';
 import Cart from '../models/Cart.js';
 
 export const signUp= async(req,res)=>{
-    const { fullName,email,password}=req.body;
-    console.log(fullName)
+    const { firstName,lastName,email,password}=req.body;
+    console.log(firstName)
+    console.log(lastName);
     console.log(email)
     console.log(password)
 
     const newUser= new User({
-        fullName,
+        firstName,
+        lastName,
         email,
         password:await User.encryptPassword(password),
         pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
@@ -34,9 +36,11 @@ export const signUpEmployee= async(req,res)=>{
     const { fullName,email,password}=req.body;
 
     const newUser= new User({
-        fullName,
+        firstName,
+        lastName,
         email,
-        password:await User.encryptPassword(password)
+        password:await User.encryptPassword(password),
+        pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
     })
      const role= await Role.findOne({name:"employee"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];

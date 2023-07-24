@@ -8,6 +8,7 @@ import * as cartController from '../controllers/cart_controller.js';
 
 
 router.get('/',[verifyToken],cartController.getCartProducts)
-router.get('/price',[verifyToken],cartController.getTotalPrice)
+router.get('/price',[verifyToken],cartController.getProductPrice)
+router.post('/ship',[verifyToken],cartController.getShipPrice)
 
 export default router;

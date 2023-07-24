@@ -2,87 +2,102 @@
     <app-navbar></app-navbar>
 </div>
 <div class="my-10">
-    <div class="bg-gray-100 container p-10 rounded-lg mx-auto">
+
+    <div class=" container rounded-lg mx-auto p-2 relative">
+        <i *ngIf="mapIsEnabled" (click)="cancelDirection()" class="fa-solid fa-arrow-left-long absolute top-0 mt-7 ml-5 text-2xl cursor-pointer"></i>
         <div class="flex flex-col w-full px-0 mx-auto md:flex-row">
-            <div class="flex flex-col md:w-full">
-                <h2 class="mb-5 font-bold  mt-5  md:text-xl text-xl ">Informacion de envio
-                </h2>
-                <form class="bg-white rounded-lg p-5 justify-center w-full mx-auto" method="post" action>
+            <div class="flex flex-col md:w-full shadow">
+                <h2 class="font-bold my-4 text-xl  text-center ">Informacion de envio</h2>
+
+                <div *ngIf="mapIsEnabled">
+                    <iframe class="w-full h-[29rem]"  frameborder="0" style="border:0" [src]="mapUrl" allowfullscreen></iframe>
+                  </div>
+                <div *ngIf="!mapIsEnabled">
+
+                <div class="p-3 w-full bg-blue-50 flex items-center justify-between">
+                    <p>Usar la informacion de mi perfil</p>
+                    <button  class="bg-blue-400 hover:bg-blue-500 w-32 px-6 py-1 mr-4 text-white rounded-md">Continuar</button>
+                </div>
+                
+                <form class=" rounded-lg p-5 justify-center w-full mx-auto " >
                     <div class="">
-                        <div class="space-x-0 lg:flex lg:space-x-4">
+
+                        <div class="space-x-0 lg:flex lg:space-x-4 ">
                             <div class="w-full lg:w-1/2">
-                                <label for="firstName" class="block mb-3 text-sm font-semibold text-gray-500">Nombre</label>
-                                <input name="firstName" type="text" placeholder="Nombre"
-                                    class="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="firstName" [(ngModel)]="shipData.firstName" type="text" placeholder="Nombre" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
                             </div>
-                            <div class="w-full lg:w-1/2 ">
-                                <label for="firstName" class="block mb-3 text-sm font-semibold text-gray-500">Apellido</label>
-                                <input name="Last Name" type="text" placeholder="Apellido"
-                                    class="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="w-full">
-                                <label for="Email"
-                                    class="block mb-3 text-sm font-semibold text-gray-500">Email</label>
-                                <input name="Last Name" type="text" placeholder="Email"
-                                    class="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <div class="w-full">
-                                <label for="Address"
-                                    class="block mb-3 text-sm font-semibold text-gray-500">Direccion</label>
-                                <input
-                                    class="w-full mb-3 px-4 py-3 text-xs border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                    name="Address" placeholder="Direccion">
-                            </div>
-                        </div>
-                        <div class="space-x-0 lg:flex lg:space-x-4">
                             <div class="w-full lg:w-1/2">
-                                <label for="city"
-                                    class="block mb-3 text-sm font-semibold text-gray-500">Ciudad</label>
-                                <input name="city" type="text" placeholder="Ciudad"
-                                    class="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
-                            </div>
-                            <div class="w-full lg:w-1/2 ">
-                                <label for="postcode" class="block mb-3 text-sm font-semibold text-gray-500">
-                                    Codigo postal</label>
-                                <input name="postcode" type="text" placeholder="Codigo postal"
-                                    class="w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="lastName" [(ngModel)]="shipData.lastName" type="text" placeholder="Apellido" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
                             </div>
                         </div>
-                        <div class="relative pt-3 xl:pt-6"><label for="note"
-                                class="block mb-3 text-sm font-semibold text-gray-500"> Notas
-                                (Opcional)</label><textarea name="note"
-                                class="flex items-center w-full px-4 py-3 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-600"
-                                rows="4" placeholder="Notas adicionales"></textarea>
+
+                        <div class="mt-2">
+                            <div class="w-full">
+                                <input name="numberPhone" [(ngModel)]="shipData.numberPhone" type="text" placeholder="Telefono" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                            </div>
                         </div>
-                        <div class="flex items-center mt-4">
+    
+                        <div class="mt-2">
+                            <div class="w-full">
+                                <input name="address" [(ngModel)]="shipData.address" type="text" placeholder="Direccion" name="address" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                            </div>
+                        </div>
+
+
+                        <div class="space-x-0 lg:flex lg:space-x-4 ">
+                            <div class="w-full lg:w-1/2">
+                                <select [(ngModel)]="selectedDepartment" (ngModelChange)="getCities()" name="departments" class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                    <option value="999" disabled >Seleccione un departamento:</option>
+                                    <option *ngFor="let derpartment of departments;let i=index" [value]="derpartment.id">{{derpartment.departamento}}</option>
+                                </select>
+                            </div>
+                            <div class="w-full lg:w-1/2">
+                                <select  [(ngModel)]="shipData.city" name="cities"  class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                    <option value="999" disabled >Seleccione una ciudad:</option>
+                                    <option *ngFor="let city of cities ;let i=index" [value]="city" >{{city}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="relative pt-3"><label for="note"
+                            class="block mb-3 text-sm font-semibold text-gray-500"> Informacion Adicional
+                            (Opcional)</label><textarea [(ngModel)]="shipData.optionalNotes" name="note"
+                            class="flex items-center w-full px-4 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-600"
+                            rows="4" placeholder="Notas adicionales"></textarea>
+                    </div>
+
+                        <div class="flex items-center justify-between mt-4">
                             <label class="flex items-center text-sm group text-heading">
                                 <input type="checkbox"
                                     class="w-5 h-5 border border-gray-300 rounded focus:outline-none focus:ring-1">
-                                <span class="ml-2">Guardar informacion para la proxima </span></label>
+                                <span class="ml-2">Volver esta mi direccion principal</span>
+                            </label>
+                                <button (click)="submitDirection()"  class="bg-green-400 hover:bg-green-500 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
                         </div>
                     </div>
                 </form>
             </div>
+            </div>
+
+
+
             <div class="flex flex-col w-full ml-0 md:ml-5 lg:ml-12 lg:w-3/5">
                 <h2 class="text-xl font-bold mt-5 mb-5">Resumen de compra
                 </h2>
                 <div class="pt-12 bg-white rounded-lg p-5 md:pt-0 2xl:ps-4">
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                        Productos (2) <span class="ml-2">$40.00</span></div>
+                        Productos  <span class="ml-2">{{'$'+totalPrice}}</span></div>
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                        Envio<span class="ml-2">$10</span></div>
+                        Envio<span class="ml-2">{{'$'+shipData.shipPrice}}</span></div>
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                        Descuento por cupon<span class="ml-2">$10.00</span></div>
+                        Descuento por cupon<span class="ml-2">$0</span></div>
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                        Total<span class="ml-2">$40.00</span></div>
+                        Total<span class="ml-2">$0</span></div>
                 </div>
                 <div class="mt-5 p-5 bg-white rounded-lg">
                     <div class="">
@@ -96,9 +111,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button
-                    (click)="makePayment()"
-                        class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
+                    <button (click)="makePayment()" class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
                 </div>
             </div>
         </div>
