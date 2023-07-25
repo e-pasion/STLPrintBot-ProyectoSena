@@ -4,6 +4,7 @@ import * as Leaflet from 'leaflet';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Product } from 'src/app/models/Product';
 import { LocationServiceService } from 'src/app/services/location/location-service.service';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 
 Leaflet.Icon.Default.imagePath = 'assets/';
 
@@ -22,6 +23,7 @@ export class CheckoutComponent implements OnInit{
   selectedDepartment:any=999;
 
   shipData={
+    userId:"",
     firstName: "",
     lastName:"",
     numberPhone:"",
@@ -31,8 +33,9 @@ export class CheckoutComponent implements OnInit{
     shipPrice:0
   }
 
-  constructor(private crudService:CrudServiceService,private locationService:LocationServiceService,private sanitizer: DomSanitizer){}
+  constructor(private crudService:CrudServiceService,private authService:AuthServiceService,private locationService:LocationServiceService,private sanitizer: DomSanitizer){}
   ngOnInit(): void {
+    this.shipData.userId=this.authService.getUserId();
     this.findTotalPrice();
     this.findProducts()
     this.getDepartments()

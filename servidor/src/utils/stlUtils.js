@@ -13,3 +13,5 @@ export const calculatePrice=(weigthPerGr,pricePerKg)=>{
      return (pricePerKg*weigthPerGr/1000);
 }
 
+
+

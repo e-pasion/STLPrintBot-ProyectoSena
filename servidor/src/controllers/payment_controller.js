@@ -29,6 +29,7 @@ export const createOrder= async (req,res)=>{
           }
         ],
         "metadata": {
+          userId:req.body.userId,
           firstName:req.body.firstName,
           lastName:req.body.lastName,
           numberPhone:req.body.numberPhone,
@@ -64,6 +65,8 @@ export const receiveWebhook= async (req,res)=>{
         if (payment.type === "payment") {
           const data = await mercadopago.payment.findById(payment["data.id"]);
           console.log(data);
+          console.log('-----------------------------------------------------------');
+          console.log(data.body.metadata);
         }
         res.sendStatus(204);
       } catch (error) {
