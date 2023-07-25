@@ -13,8 +13,8 @@ import cors from "cors"
 
 
 const app= express();
-createRoles();
-createAdmin();
+// createRoles();
+// createAdmin();
 
 app.use(cors());
 app.use(express.json());

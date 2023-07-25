@@ -16,7 +16,7 @@ export const changeWidth0To100 = trigger('changeWidth0To100', [
       width: '0'
     })),
     state('*', style({
-      width: '100%'
+      width: '60%'
     })),
     transition(':enter, :leave', [
       animate('0.4s')

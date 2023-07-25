@@ -17,6 +17,7 @@ import { CreateColorComponent } from './components/dashboard/color/create-color/
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
+import { FooterComponent } from './components/client/footer/footer.component';
 
 
 
@@ -36,6 +37,7 @@ import { CheckoutComponent } from './components/client/checkout/checkout.compone
     CalculatorComponent,
     CartComponent,
     CheckoutComponent,
+    FooterComponent
    
   ],
   imports: [

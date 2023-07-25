@@ -32,7 +32,7 @@ fixPath=(path:string,type:string)=>{
     const fileSizeMB = file.size / (1024 * 1024);//encuentra las megas que tiene el archivo
     const extensionIndex=file.name.lastIndexOf(".");
     const extensionFile=file.name.substring(extensionIndex+1);
-    if(extensionFile!=="stl" || fileSizeMB>20){
+    if(extensionFile.toLowerCase()!=="stl" || fileSizeMB>20){
       return false;
     }
     return true;

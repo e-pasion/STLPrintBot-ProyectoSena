@@ -16,12 +16,12 @@ export const cotization=async(req,res)=>{
     console.log("Peso formula 2: "+weigth);//esta es la buena
    
 
-    fs.unlink(req.file.path, (err) => {//borra el archivo stl despues de usarlo
-        if (err) {
-          console.error(err);
-          return;
-        }
-        })
+    // fs.unlink(req.file.path, (err) => {//borra el archivo stl despues de usarlo
+    //     if (err) {
+    //       console.error(err);
+    //       return;
+    //     }
+    //     })
         return res.json({price});
 }
 
