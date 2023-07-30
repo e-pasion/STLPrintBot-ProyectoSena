@@ -7,16 +7,16 @@ const detailSchema= new Schema({
         ref:"Product",type:Schema.Types.ObjectId
     }],
     shipData:{
-        firstName:{type:string,required:true},
-        lastName:{type:string,required:true},
-        address:{type:string,required:true},
-        city:{type:string,required:true},
-        numberPhone:{type:string,required:true},
-        optionalNotes:{type:string,required:false},
+        firstName:{type:String,required:true},
+        lastName:{type:String,required:true},
+        address:{type:String,required:true},
+        city:{type:String,required:true},
+        numberPhone:{type:String,required:true},
+        optionalNotes:{type:String,required:false},
     },
-    totalPrice:{type:Number, required:true},
-    buyDate:{type:Date, required:true}
+    totalPrice:{type:Number, required:true}
 },{
+    timestamps:true,
     versionKey:false
 })
 

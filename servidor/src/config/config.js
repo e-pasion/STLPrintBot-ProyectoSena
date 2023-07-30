@@ -1,2 +1,2 @@
 export const PORT=4000;
-export const NGROKURL="https://76f3-2800-e2-1880-10bf-e083-9bed-23fb-6aef.ngrok.io";
+export const NGROKURL="https://68dc-2800-e2-1880-10bf-ca9-d233-c8b-530f.ngrok.io";

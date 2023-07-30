@@ -1,5 +1,8 @@
 // import Detail from "../models/Detail";
 
+import Cart from "../models/Cart.js";
+import Detail from "../models/Detail.js";
+
 
 
 // userId:{ref:"User",type: Schema.Types.ObjectId},
@@ -31,3 +34,44 @@
 //       res.status(500).send(error);
 //     }
 //   };
+
+
+export const createDetail= async(detailData,totalPrice)=>{
+    let { address, city,user_id,optional_notes,last_name,first_name,number_phone }=detailData;
+
+    const cartFound= await Cart.findOne({userId:user_id});
+
+    const cartProducts=cartFound.products
+    const newDetail= new Detail({
+      userId:user_id,
+      products:cartProducts,
+      shipData:{
+        firstName:first_name,
+        lastName:last_name,
+        address,
+        city,
+        numberPhone:number_phone,
+        optionalNotes:optional_notes
+      },
+      totalPrice
+    })
+    const savedDetail= await newDetail.save();
+    if (savedDetail) {
+        await Cart.updateOne({ _id: cartFound._id }, { $set: { products: [] } });
+        await Cart.updateOne({ _id: cartFound._id }, { $set: { totalWeigth: 0 } });
+
+    } 
+
+   
+    // await Cart.findOneAndUpdate({ userId: req.userId }, 
+    //   { $push: { products: newProduct._id } },
+    //   { new: true });
+  
+    //   await Cart.findOneAndUpdate(
+    //     { userId: req.userId },
+    //     { $inc: { totalWeigth: newProduct.weigth } },
+    //     { new: true }
+    //   );
+  
+    console.log("todo ok");
+  }

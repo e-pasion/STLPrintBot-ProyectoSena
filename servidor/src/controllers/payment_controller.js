@@ -1,6 +1,7 @@
 import mercadopago from "mercadopago"
 import { NGROKURL } from "../config/config.js";
 import { returnProductPrice } from "../utils/priceUtils.js";
+import { createDetail } from "./detail_controller.js";
 
 
 
@@ -46,7 +47,7 @@ export const createOrder= async (req,res)=>{
         },
         binary_mode:true,
         back_urls:{
-            success:"http://localhost:4000/api/payment/success",
+            success:"http://localhost:4200",
             failure:"http://localhost:4000/api/payment/failure",
             pending:"http://localhost:4000/api/payment/pending",
         },notification_url:NGROKURL+"/api/payment/webhook"
@@ -60,13 +61,16 @@ export const createOrder= async (req,res)=>{
 
 export const receiveWebhook= async (req,res)=>{
     try {
+      let data;
         const payment = req.query;
         console.log(payment);
         if (payment.type === "payment") {
-          const data = await mercadopago.payment.findById(payment["data.id"]);
+          data = await mercadopago.payment.findById(payment["data.id"]);
           console.log(data);
           console.log('-----------------------------------------------------------');
           console.log(data.body.metadata);
+          console.log(data.body.transaction_details.total_paid_amount);
+          createDetail(data.body.metadata,data.body.transaction_details.total_paid_amount)
         }
         res.sendStatus(204);
       } catch (error) {

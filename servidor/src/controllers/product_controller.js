@@ -87,6 +87,13 @@ export const deleteProduct = async (req, res) => {
       { new: true }
     );
 
+
+
+    await Cart.findOneAndUpdate(
+      { userId: req.userId },
+      { $pull: { products:productId} }
+    );
+
     await Product.deleteOne({_id:productId})
     res.send({ message: 'Producto Borrado' });
 
