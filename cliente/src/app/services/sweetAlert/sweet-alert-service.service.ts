@@ -19,6 +19,16 @@ export class SweetAlertServiceService {
     })
   }
 
+  warning(msg:string){
+    Swal.fire({
+      icon: 'warning',
+      title:msg,
+      showConfirmButton: false,
+      timer: 2000
+    
+    })
+  }
+
   warningTopEnd(msg:string){
     Swal.fire({
       icon: 'warning',

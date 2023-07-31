@@ -26,6 +26,11 @@ export class NavbarComponent {
     return this.router.url === '/checkout';
   }
 
+  userIsInHome(){
+    return this.router.url === '/';
+
+  }
+
   openCart(){ 
     this.navbarService.toggleCart()
 

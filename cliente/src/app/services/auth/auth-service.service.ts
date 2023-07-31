@@ -49,6 +49,7 @@ export class AuthServiceService {
       const userRoles = decodedToken.roles; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
       return userRoles;
     }
+    return [];
   }
 
   isClient(){

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Color } from 'src/app/models/Color';
 import { changeWidth0To100 } from 'src/app/utils/animation';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { StlServiceService } from 'src/app/services/stl/stl-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { Product } from 'src/app/models/Product';
+import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 declare const StlViewer:any;
 
 
@@ -16,9 +17,10 @@ declare const StlViewer:any;
   styleUrls: ['./calculator.component.css'],
   animations: [changeWidth0To100]
 })
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent implements OnInit,AfterViewInit {
   
   defaultColor:string="#2196f3";
+  initAnimation:boolean=true;
   scalePercentaje:number=100;
   scale=1;
   maxScale=120;
@@ -44,13 +46,17 @@ export class CalculatorComponent implements OnInit {
   id: string | null;
   price: number=0;
 
-  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private fileService:FileServiceService, private aRoute:ActivatedRoute){
+  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private aRoute:ActivatedRoute){
     this.id=this.aRoute.snapshot.paramMap.get('id');
-  };
+  }
+  
+  ngAfterViewInit(): void {
+    this.initAnimation=false;
+  }
+;
 
   ngOnInit(): void {
      this.getAllColors()
-
   }
 
 
@@ -169,6 +175,9 @@ export class CalculatorComponent implements OnInit {
   }
 
    stlAddCart(){
+    if (!this.authService.isClient()){
+      this.sweetAlertService.warning("Para comprar este producto tienes que iniciar sesion")
+    }else{
       this.dataUrl= this.stl_viewer.renderer.domElement.toDataURL("image/png")
       this.sweetAlertService.loading("Añadiendo al carrito...");
       this.stlService.purchaseStl(this.file,this.stlData.fill,this.dataUrl,this.stlData.color).subscribe({
@@ -183,6 +192,7 @@ export class CalculatorComponent implements OnInit {
           this.removeStlViewer();
         }
       })
+    }
   }
 
 

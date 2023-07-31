@@ -5,13 +5,14 @@
 
     <div class=" container rounded-lg mx-auto p-2 relative">
         <i *ngIf="mapIsEnabled" (click)="cancelDirection()" class="fa-solid fa-arrow-left-long absolute top-0 mt-7 ml-5 text-2xl cursor-pointer"></i>
+
         <div class="flex flex-col w-full px-0 mx-auto md:flex-row">
             <div class="flex flex-col md:w-full shadow">
                 <h2 class="font-bold my-4 text-xl  text-center ">Informacion de envio</h2>
 
                 <div *ngIf="mapIsEnabled">
                     <iframe class="w-full h-[29rem]"  frameborder="0" style="border:0" [src]="mapUrl" allowfullscreen></iframe>
-                  </div>
+                </div>
                 <div *ngIf="!mapIsEnabled">
 
                 <div class="p-3 w-full bg-blue-50 flex items-center justify-between">
@@ -19,50 +20,70 @@
                     <button  class="bg-blue-400 hover:bg-blue-500 w-32 px-6 py-1 mr-4 text-white rounded-md">Continuar</button>
                 </div>
                 
-                <form class=" rounded-lg p-5 justify-center w-full mx-auto " >
+                <form [formGroup]="shipForm" class=" rounded-lg p-5 justify-center w-full mx-auto " >
                     <div class="">
 
                         <div class="space-x-0 lg:flex lg:space-x-4 ">
                             <div class="w-full lg:w-1/2">
-                                <input name="firstName" [(ngModel)]="shipData.firstName" type="text" placeholder="Nombre" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="firstName" formControlName="firstName" type="text" placeholder="Nombre" class="w-full px-4 mt-2 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                
+                                <div *ngIf="shipForm.get('firstName')!.errors && shipForm.get('firstName')!.touched" class="text-md font-thin text-red-600">
+                                    <div *ngIf="shipForm.get('firstName')!.hasError('required')">El nombre es obligatorio.</div>
+                                </div>
                             </div>
                             <div class="w-full lg:w-1/2">
-                                <input name="lastName" [(ngModel)]="shipData.lastName" type="text" placeholder="Apellido" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="lastName" formControlName="lastName" placeholder="Apellido" class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <div *ngIf="shipForm.get('lastName')!.errors && shipForm.get('lastName')!.touched" class="text-md font-thin text-red-600">
+                                    <div *ngIf="shipForm.get('lastName')!.hasError('required')">El apelido es obligatorio.</div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="mt-2">
                             <div class="w-full">
-                                <input name="numberPhone" [(ngModel)]="shipData.numberPhone" type="text" placeholder="Telefono" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="numberPhone"formControlName="numberPhone" type="number" placeholder="Telefono" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <div *ngIf="shipForm.get('numberPhone')!.errors && shipForm.get('numberPhone')!.touched" class="text-md font-thin text-red-600">
+                                    <div *ngIf="shipForm.get('numberPhone')!.hasError('required')">El telefono es obligatorio.</div>
+                                </div>
                             </div>
                         </div>
     
                         <div class="mt-2">
                             <div class="w-full">
-                                <input name="address" [(ngModel)]="shipData.address" type="text" placeholder="Direccion" name="address" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <input name="address" formControlName="address" type="text" placeholder="Direccion" name="address" class="w-full px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <div *ngIf="shipForm.get('address')!.errors && shipForm.get('address')!.touched" class="text-md font-thin text-red-600">
+                                    <div *ngIf="shipForm.get('address')!.hasError('required')">La direccion es obligatoria.</div>
+                                </div>
                             </div>
                         </div>
 
 
                         <div class="space-x-0 lg:flex lg:space-x-4 ">
                             <div class="w-full lg:w-1/2">
-                                <select [(ngModel)]="selectedDepartment" (ngModelChange)="getCities()" name="departments" class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
-                                    <option value="999" disabled >Seleccione un departamento:</option>
+                                <select formControlName="department" (change)="getCities()" name="departments" class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                    <option value="" disabled >Seleccione un departamento:</option>
                                     <option *ngFor="let derpartment of departments;let i=index" [value]="derpartment.id">{{derpartment.departamento}}</option>
                                 </select>
+
+                                <div *ngIf="shipForm.get('department')?.invalid && shipForm.get('department')?.touched">
+                                    <p class="text-md font-thin text-red-600">El departamento es obligatorio</p>
+                                  </div>
                             </div>
                             <div class="w-full lg:w-1/2">
-                                <select  [(ngModel)]="shipData.city" name="cities"  class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
-                                    <option value="999" disabled >Seleccione una ciudad:</option>
+                                <select formControlName="city" name="cities"  class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                    <option value="" disabled >Seleccione una ciudad:</option>
                                     <option *ngFor="let city of cities ;let i=index" [value]="city" >{{city}}</option>
                                 </select>
+                                <div *ngIf="shipForm.get('city')?.invalid && shipForm.get('city')?.touched">
+                                    <p class="text-md font-thin text-red-600">La ciudad es obligatoria</p>
+                                  </div>
                             </div>
                         </div>
 
 
                         <div class="relative pt-3"><label for="note"
                             class="block mb-3 text-sm font-semibold text-gray-500"> Informacion Adicional
-                            (Opcional)</label><textarea [(ngModel)]="shipData.optionalNotes" name="note"
+                            (Opcional)</label><textarea formControlName="optionalNotes" name="note"
                             class="flex items-center w-full px-4 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-600"
                             rows="4" placeholder="Notas adicionales"></textarea>
                     </div>
@@ -73,7 +94,7 @@
                                     class="w-5 h-5 border border-gray-300 rounded focus:outline-none focus:ring-1">
                                 <span class="ml-2">Volver esta mi direccion principal</span>
                             </label>
-                                <button (click)="submitDirection()"  class="bg-green-400 hover:bg-green-500 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
+                                <button (click)="submitDirection()" [disabled]="!validateShip" class="disabled:bg-green-300 disabled:hover:bg-green-300 bg-green-500 hover:bg-green-600 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
                         </div>
                     </div>
                 </form>
@@ -111,7 +132,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button (click)="makePayment()" class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
+                    <button (click)="makePayment()" [disabled]="!shipForm.valid" class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
                 </div>
             </div>
         </div>

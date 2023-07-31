@@ -46,7 +46,6 @@ export const isAdmin= async (req,res,next)=>{
         next();
         return
     }else{
-        console.log("aquino")
             return res.status(401).json("Unauthoraized, need more privilegies")
     }
 }

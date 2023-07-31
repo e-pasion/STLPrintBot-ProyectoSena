@@ -48,7 +48,7 @@
 
 
         <!-- configuracion -->
-        <div [@changeWidth0To100] *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 h-[600px]  bg-white overflow-hidden w-full   ">
+        <div [@changeWidth0To100] [@.disabled]="initAnimation" *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 h-[600px]  bg-white overflow-hidden w-full   ">
           <div *ngIf="!loadingIsHidden" (click)="warningNoSTL()" class="opacity-5 bg-black absolute z-10 w-full h-[600px]">
           </div>
           <form  class="space-y-4 md:pt-8 px-5 py-5 md:py-0">

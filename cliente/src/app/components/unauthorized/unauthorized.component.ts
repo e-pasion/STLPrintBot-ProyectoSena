@@ -7,7 +7,7 @@ import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
   styleUrls: ['./unauthorized.component.css']
 })
 export class UnauthorizedComponent implements OnInit {
-  isClient:boolean=true;
+  isAdmin:boolean=true;
 
   constructor(private authService:AuthServiceService){
 
@@ -15,11 +15,11 @@ export class UnauthorizedComponent implements OnInit {
 
 
   ngOnInit(){
-    this.checkIsClient();
+    this.checkIsAdmin();
   }
 
-  checkIsClient(){
-    this.isClient=this.authService.isClient();
+  checkIsAdmin(){
+    this.isAdmin=this.authService.isAdmin();
   }
 
   

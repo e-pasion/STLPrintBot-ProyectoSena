@@ -26,8 +26,9 @@
                             </svg>
                             <p class="text-xl  text-white">Cargando...</p>
                     </div>
-                    <div *ngIf="products.length<1">
-                      <img src="assets/img/sadcart.png" alt="">
+                    <div class="w-full h-full flex flex-col items-center justify-center" *ngIf="products.length<1">
+                      <img class="mt-32 opacity-75"  src="assets/img/sadcart.png" alt="">
+                      <p class="text-lg text-zinc-500">No tienes productos en tu carrito</p>
                   </div>
                       <li *ngFor="let product of products; let i = index" class="flex py-6">
                         <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
