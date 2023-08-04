@@ -41,7 +41,7 @@ export const changeWidth0To100 = trigger('changeWidth0To100', [
     ]),
     transition(':leave', [
         style({ opacity: '1' }),
-      animate('500ms', style({ opacity: '0' }))
+      animate('5000ms', style({ opacity: '0' }))
     ])
   ])
 

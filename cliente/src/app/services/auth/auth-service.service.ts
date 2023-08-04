@@ -17,6 +17,10 @@ export class AuthServiceService {
     console.log(user)
     return this.http.post(this.url+'register',user);
   }
+  signUpEmployee(user:User):Observable<any>{
+    console.log(user)
+    return this.http.post(this.url+'register-employee',user);
+  }
 
   signIn(user:User):Observable<any>{
     return this.http.post(this.url+'login',user)
