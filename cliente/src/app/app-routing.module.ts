@@ -11,6 +11,7 @@ import { CreateColorComponent } from './components/dashboard/color/create-color/
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
+import { EmployeeComponent } from './components/dashboard/employee/employee.component';
 
 const routes: Routes = [
   //client
@@ -24,6 +25,7 @@ const routes: Routes = [
 
   //dashboard
   {path:"dashboard/create-color",canActivate:[authGuard,adminGuard],component:CreateColorComponent},
+  {path:"dashboard/employee",canActivate:[authGuard,adminGuard],component:EmployeeComponent},
 
   //messages
   {path:"unauthorized",component:UnauthorizedComponent}

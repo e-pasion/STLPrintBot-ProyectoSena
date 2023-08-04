@@ -64,6 +64,7 @@ export class AuthServiceService {
 
   isAdmin(){
     const roles=this.getUserRoles();
+    console.log(roles);
     return roles.includes('admin');
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
-import * as Leaflet from 'leaflet'; 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Product } from 'src/app/models/Product';
 import { LocationServiceService } from 'src/app/services/location/location-service.service';
@@ -8,7 +7,6 @@ import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-Leaflet.Icon.Default.imagePath = 'assets/';
 
 @Component({
   selector: 'app-checkout',

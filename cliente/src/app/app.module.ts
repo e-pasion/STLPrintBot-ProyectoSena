@@ -18,7 +18,8 @@ import { CalculatorComponent } from './components/client/calculator/calculator.c
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
 import { FooterComponent } from './components/client/footer/footer.component';
-
+import { DataTablesModule } from 'angular-datatables';
+import { EmployeeComponent } from './components/dashboard/employee/employee.component'
 
 
 
@@ -37,7 +38,8 @@ import { FooterComponent } from './components/client/footer/footer.component';
     CalculatorComponent,
     CartComponent,
     CheckoutComponent,
-    FooterComponent
+    FooterComponent,
+    EmployeeComponent
    
   ],
   imports: [
@@ -47,6 +49,7 @@ import { FooterComponent } from './components/client/footer/footer.component';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    DataTablesModule
   ],
   providers: [
     {

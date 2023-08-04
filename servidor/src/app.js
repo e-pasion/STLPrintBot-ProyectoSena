@@ -14,7 +14,7 @@ import cors from "cors"
 
 const app= express();
 // createRoles();
-// createAdmin();
+createAdmin();
 
 app.use(cors());
 app.use(express.json());
