@@ -33,7 +33,7 @@ export const signUp= async(req,res)=>{
 }
 
 export const signUpEmployee= async(req,res)=>{
-    const { fullName,email,password}=req.body;
+    const { firstName,lastName,email,password}=req.body;
 
     const newUser= new User({
         firstName,
@@ -45,7 +45,7 @@ export const signUpEmployee= async(req,res)=>{
      const role= await Role.findOne({name:"employee"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];
     const savedUser=await newUser.save()
-    res.status(200).json({token})
+    res.status(200).json({employee:'is created'})
 }
 
 

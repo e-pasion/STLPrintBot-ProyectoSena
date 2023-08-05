@@ -40,7 +40,7 @@ export class NavbarComponent {
   }
 
   userIsLogged(){
-    return this.authService.isLoggedIn();
+    return this.authService.isLoggedIn()&&this.authService.isClient();
   }
 
 }

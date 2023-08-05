@@ -41,8 +41,10 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     window.innerWidth<640 ? this.userIsInMobile=true:this.userIsInMobile=false;
     console.log(this.userIsInMobile);
-    if(this.authService.isLoggedIn()){
+    if(this.authService.isLoggedIn() && this.authService.isClient()){
       this.router.navigate(["/profile"])
+    }else if(this.authService.isLoggedIn() && (this.authService.isEmployee() || this.authService.isAdmin())){
+      this.router.navigate(["/dashboard/create-color"])
     }
   }
 

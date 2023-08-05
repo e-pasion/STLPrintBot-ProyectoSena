@@ -14,6 +14,11 @@ export class CrudServiceService {
   getAll(endPoint:String): Observable<any>{
     return this.http.get(this.url+endPoint+'/');
   }
+
+  getAllWithParams(endPoint:String,params:any){
+    return this.http.get(this.url+endPoint+'/',{ params })
+  }
+
   get(endPoint:String,id:string): Observable<any>{
     return this.http.get(this.url+endPoint+'/'+id);
   }

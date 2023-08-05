@@ -1,12 +1,11 @@
 import { Component , OnInit } from '@angular/core';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
-import { Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { opacity0To100 } from 'src/app/utils/animation';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/User';
-import { error } from 'jquery';
+import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 
 @Component({
   selector: 'app-employee',
@@ -15,11 +14,11 @@ import { error } from 'jquery';
   animations:[opacity0To100]
 })
 export class EmployeeComponent implements OnInit{
-  dtOptions: DataTables.Settings = {};
   formIsHidden=true;
   employeeForm:FormGroup
+  employees:User[]=[]
 
-  constructor(private fb:FormBuilder,private authService:AuthServiceService){
+  constructor(private fb:FormBuilder,private authService:AuthServiceService,private alertService:SweetAlertServiceService, private crudService:CrudServiceService){
     this.employeeForm=this.fb.group({
       'firstName':['',[Validators.required]],
       'lastName':['',[Validators.required]],
@@ -29,41 +28,42 @@ export class EmployeeComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.dtOptions = {
-      language: {
-        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-MX.json',
-    },
-      pagingType: 'full_numbers',
-      pageLength:10,
-      dom:'<fl<t>ip>'
-    };
+    this.getAllEmployees()
+    
   }
-
-  showCreateEmployee(){
-    this.formIsHidden=false;
-  }
-
 
   createEmployee(){
-
     const USER = new User(this.employeeForm.get('email')?.value,
     this.employeeForm.get('firstName')?.value,
     this.employeeForm.get('lastName')?.value,
-    this.employeeForm.get('password')?.value)
-    this.authService.signUp(USER).subscribe({
+    this.employeeForm.get('password')?.value);
+
+    this.authService.signUpEmployee(USER).subscribe({
       next:(data)=>{
         console.log(data)
+        this.cancelFormEmployee()
+        this.getAllEmployees()
+        this.alertService.success("Empleado creado correctamente")
       },error:(e)=>{
-        console.log(e)
+        this.alertService.error("Ocurrio un error al crear el empleado")
       }
     })
-
-
   }
 
-  cancelForm(){
-    this.formIsHidden=true;
+  getAllEmployees(){
+    this.crudService.getAll('user/employees').subscribe({
+      next:(data)=>{
+        this.employees=data;
+        console.log(this.employees);
+      }
+    })
+  }
 
+  showFormEmployee(){
+    this.formIsHidden=false;
+  }
+  cancelFormEmployee(){
+    this.formIsHidden=true;
   }
   
 
