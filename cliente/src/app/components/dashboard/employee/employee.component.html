@@ -1,51 +1,47 @@
-<div class=" bg-amber-100 relative">
+<div class=" bg-amber-100 relative py-10 h-screen">
 
-      <app-navbar-top></app-navbar-top>
-      <div class="bg-white shadow rounded-xl mx-8 lg:ml-28  overflow-x-auto overflow-y-auto">
+      <!-- <app-navbar-top></app-navbar-top> -->
+      <div class="bg-white shadow rounded-xl mx-8 lg:ml-28  overflow-x-auto overflow-y-auto ">
         <div class=" px-4 sm:px-8">
         <div class="py-8">
-          <div class="flex flex-col">
-            <div>
-                <h2 class="text-2xl font-semibold leading-tight">Empleados</h2>
+                          <h2 class="text-2xl font-semibold leading-tight">Empleados</h2>
+
+          <div class="flex flex-col justify-start items-start sm:flex-row-reverse sm:justify-between sm:items-center my-3 ">
+            <div class="">
+                <button (click)="showFormEmployee()" class="bg-blue-500 hover:bg-blue-700 text-white rounded-l border block appearance-none w-20  py-2 px-4 leading-tight ">
+                  Crear
+               </button>
             </div>
-            <div class="my-2 flex flex-col sm:flex-row">
-                <div class="flex flex-row mb-1 sm:mb-0">
-                    <div class="relative">
-                        <button (click)="showFormEmployee()" class="bg-blue-500 hover:bg-blue-700 text-white  h-full rounded-l border block appearance-none w-full  py-2 px-4 leading-tight ">
-                           Crear
-                        </button>
-                    </div>
-                    <!-- <div class="relative">
-                        <select class="h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
-                            <option>Todos</option>
-                            <option>Activos</option>
-                            <option>Inactivos</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                        </div>
-                    </div> -->
-                </div>
-                <div class="block relative w-60">
-                    <span class="h-full absolute inset-y-0 left-0 flex items-center pl-2">
-                        <svg viewBox="0 0 24 24" class="h-4 w-4 fill-current text-gray-500">
-                            <path
-                                d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z">
-                            </path>
+            <div class="my-2 flex flex-col sm:flex-row my-3">
+              <div class="flex">
+                
+                <select [(ngModel)]="statusQuery" (ngModelChange)="searchEmployeeStatus()" class="flex-shrink-0 py-2.5 px-2 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200">
+                    <option value="">Todos</option>
+                    <option value=true>Activos</option> 
+                    <option value=false>Inactivos</option> 
+ 
+                  </select>
+              
+                <div class="relative w-full">
+                    <input [(ngModel)]="searchQuery" type="search" class="block p-2.5 w-full h-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Buscar">
+                    <button (click)="search()" class="absolute top-0 right-0 h-full p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
-                    </span>
-                    <input placeholder="Buscar"
-                        class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+                    </button>
                 </div>
+            </div>
+
             </div>
           </div>
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4">
                 <div class="inline-block shadow rounded-lg w-full">
 
-                  <div class=" overflow-x-auto shadow-md sm:rounded-lg h-[400px] ">
+                  <div class=" overflow-x-auto shadow-md  h-[400px] ">
                     <table class=" text-sm text-left w-full text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
+                                <th></th>
                                 <th scope="col" class="px-6 py-3"> Nombre</th>
                                 <th scope="col" class="px-6 py-3">Apellido</th>
                                 <th scope="col" class="px-6 py-3"> Correo </th>
@@ -54,10 +50,14 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let employee of employees"class="bg-white border-b">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900"> {{employee.firstName}}</th>
-                                <td class="px-6 py-4">{{employee.lastName}}</td>
-                                <td class="px-6 py-4"> {{employee.email}} </td>
-                                <td class="px-6 py-4"><a href="#" class="font-medium text-blue-600 hover:underline">Edit</a></td>
+                                <td><input [checked]="employee.status" (click)="toggleEmployeeStatus(employee._id)" type="checkbox" value="" class="w-4 h-4 mx-4 accent-orange-600 rounded focus:ring-yellow-500"></td>
+                                <td class="px-6 py-3 font-medium text-gray-900"> {{employee.firstName}}</td>
+                                <td class="px-6 py-3">{{employee.lastName}}</td>
+                                <td class="px-6 py-3"> {{employee.email}} </td>
+                                <td class="px-6 py-3 flex">
+                                  <i class="fa-solid fa-pen text-orange-500 cursor-pointer" (click)="showFormEditEmployee(employee._id)" ></i> 
+                                  <i class="fa-solid fa-trash mx-2 text-red-400 cursor-pointer" (click)="removeEmployee(employee._id)"></i>
+                                </td>
                             </tr>
                         
                         </tbody>
@@ -65,16 +65,14 @@
                 </div>
                     <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between w-full ">
                         <span class="text-xs xs:text-sm text-gray-900">
-                            Showing 1 to 4 of 50 Entries
+                            {{showingRange}}
                         </span>
                         <div class="inline-flex mt-2 xs:mt-0">
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                                Prev
+                            <button (click)="changePage(paginationData.prevPage)" [disabled]="!paginationData.hasPrevPage" class="text-sm bg-gray-300 disabled:bg-gray-100 hover:bg-gray-400 disabled:hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                                Anterior
                             </button>
-                            <button
-                                class="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                                Next
+                            <button (click)="changePage(paginationData.nextPage)" [disabled]="!paginationData.hasNextPage" class="text-sm bg-gray-300 disabled:bg-gray-100 hover:bg-gray-400 disabled:hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-r">
+                                Siguiente
                             </button>
                         </div>
                     </div>
@@ -91,7 +89,7 @@
 <div  *ngIf="!formIsHidden" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-60"></div>
     <div [@opacity0To100] class="bg-white p-6 rounded-lg shadow-lg z-10 w-80 max-w-80 opacity-100">
-      <h2 class="text-xl font-semibold mb-4">Crear Usuario</h2>
+      <h2 class="text-xl font-semibold mb-4">{{ createEmployeeTitle }}</h2>
       <form [formGroup]="employeeForm" (submit)="createEmployee()">
         <div class="mb-4">
           <label for="nombre" class="block text-sm font-medium">Nombre</label>
@@ -128,7 +126,7 @@
         </div>
         <div class="flex justify-between">
           <button (click)="cancelFormEmployee()" type="button" class="px-4 py-2 bg-red-500 text-white rounded-md">Cancelar</button>
-          <button type="submit" [disabled]="!employeeForm.valid" class="px-4 py-2 bg-blue-500 text-white rounded-md">Crear Usuario</button>
+          <button type="submit" [disabled]="!employeeForm.valid" class="px-4 py-2 bg-blue-500 text-white rounded-md"> {{ createEmployeeButton }} </button>
         </div>
       </form>
 

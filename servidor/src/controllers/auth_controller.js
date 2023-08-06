@@ -14,8 +14,7 @@ export const signUp= async(req,res)=>{
         firstName,
         lastName,
         email,
-        password:await User.encryptPassword(password),
-        pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
+        password:await User.encryptPassword(password)
     })
      const role= await Role.findOne({name:"client"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];
@@ -40,7 +39,7 @@ export const signUpEmployee= async(req,res)=>{
         lastName,
         email,
         password:await User.encryptPassword(password),
-        pathImage:"https://www.dreamstime.com/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-image179376714"
+        status:true
     })
      const role= await Role.findOne({name:"employee"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];

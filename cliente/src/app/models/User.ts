@@ -4,6 +4,7 @@ export class User {
     lastName?: string;
     email: string;
     password: string;
+    status?:boolean;
   
     constructor(email: string, firstName:string="",lastName:string="", password: string) {
       this.email=email;
