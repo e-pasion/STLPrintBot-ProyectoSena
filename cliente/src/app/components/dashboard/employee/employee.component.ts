@@ -1,6 +1,5 @@
 import { Component , OnInit } from '@angular/core';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
-import Swal from 'sweetalert2';
 import { opacity0To100 } from 'src/app/utils/animation';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -163,20 +162,25 @@ export class EmployeeComponent implements OnInit{
   }
 
   removeEmployee(id:any){
-    if(this.employees.length==1 && this.paginationData.prevPage!=null){
-      this.currentPage=this.currentPage-1;
-      this.params=this.params.set('page', this.currentPage);
+    this.alertService.question('¿Seguro quieres borrar este empleado?','Borrar','No borrar')
+        .then((result) => {
+      if (result.isConfirmed) {
+        if(this.employees.length==1 && this.paginationData.prevPage!=null){
+          this.currentPage=this.currentPage-1;
+          this.params=this.params.set('page', this.currentPage);
+
+        }
+
+        this.crudService.delete(id,"user/employee").subscribe({
+          complete:()=>{
+            console.log('Employee deleted');
+            this.getAllEmployees();
+          },error:()=>{
+            console.log('Error deleted employee');
+          }
+        })
+      } 
     }
-
-    this.crudService.delete(id,"user/employee").subscribe({
-      complete:()=>{
-        console.log('Employee deleted');
-        this.getAllEmployees();
-      },error:()=>{
-        console.log('Error deleted employee');
-      }
-    })
+    )
   }
-
-
 }

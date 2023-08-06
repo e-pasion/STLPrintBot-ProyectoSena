@@ -1,12 +1,34 @@
-<div class="flex">
-    <app-navbar-side></app-navbar-side>
-    <div class="flex-grow">
-        <app-navbar-top></app-navbar-top>
-        <div class="px-4 py-6 h-20 text-center lg:mt-8">
-            <h1 class="text-4xl font-bold text-gray-900">Colores</h1>
+<div class=" bg-amber-100 relative py-10 h-screen">
+    <h1 class="text-4xl mx-28 mt-20 font-semibold"> {{createColorTitle}} </h1>
+    <div class="flex items-center flex-col lg:flex-row mx-28 lg:mt-14">
+        <div class="mx-2 bg-white flex items-center flex-col h-72 w-80 md:w-4/5 rounded-lg lg:mx-0 lg:h-96">
+            <form action="" id="formColor" [formGroup]="colorForm" (ngSubmit)="createColor()"  class="px-5 py-5 flex justify-center flex-col h-full w-4/5">
+                <div class="mb-6">
+                <label for="colorName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre color</label>
+                <input type="text" id="colorName" class="h-10 bg-gray-50 border border-gray-300 text-gray-900  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" formControlName="name" placeholder="Verde Pastel" required/>
+                <div class="text-red-600" *ngIf="colorForm.get('name')?.hasError('required')&&colorForm.get('name')?.touched">El campo no debe estar vacio</div>
+                </div>
+                <div class="mb-6">
+                    <label for="colorCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo Color</label>
+                    <div class="flex border border-gray-300 rounded-lg h-10 relative overflow-hidden">
+                        <input #colorCode (input)="changeColor(colorCode.value)" type="color"  class="h-14 -top-2 -left-1 absolute appearance-none border-0" [value]="selectColor"/>
+                        <input #colorText (input)="changeColor(colorText.value)" [value]="selectColor" type="text"  id="colorCode" placeholder={{selectColor}} class="bg-gray-50 ml-10  text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" maxlength="7" />
+                    </div>
+                    
+                    <div class="text-red-600" *ngIf="colorForm.get('code')?.hasError('required')&& colorForm.get('code')?.touched" >El campo no debe estar vacio</div>
+                    <div class="text-red-600" *ngIf="colorForm.get('code')?.hasError('minlength')&& colorForm.get('code')?.touched" >El color debe tener minimo 7 digitos</div>
+                    <div class="text-red-600" *ngIf="colorForm.get('code')?.hasError('pattern')&& colorForm.get('code')?.touched" >El formato del color es incorrecto</div>
+                </div>
+                <div class="flex justify-evenly">
+                    <button id="submitColor" type="submit" class="text-black bg-green-100 hover:bg-green-200 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-4/12 py-2.5 text-center  disabled:bg-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none" [disabled]="!colorForm.valid"> {{createColorButton}} </button>
+                    <a routerLink="/dashboard/color" class="text-black bg-yellow-100 hover:bg-yellow-200 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-4/12  py-2.5 text-center">Ver Colores</a>
+                </div>
+            </form>               
+        </div> 
+        <div  class="bg-purple-100 flex flex-col justify-center items-center h-72 w-80 md:w-4/5 lg:h-96">
+            <div #stlCont class="h-full w-full cursor-crosshair	">
+            </div>
         </div>
-
-        <p>create-color works!</p>
-
     </div>
+    <app-navbar-side ></app-navbar-side>
 </div>

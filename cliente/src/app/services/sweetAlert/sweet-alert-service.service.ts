@@ -66,4 +66,17 @@ export class SweetAlertServiceService {
       timer: 2000
     })
   }
+
+
+  question(msg:string,confirmtext:string,denyText:string){
+   return Swal.fire({
+      title: msg,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText:denyText,
+      confirmButtonText: confirmtext
+    })
+  }
 }

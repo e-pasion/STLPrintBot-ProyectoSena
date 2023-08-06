@@ -10,5 +10,8 @@ router.post('/', colorController.createColor);
 router.get('/', colorController.getAllColors);
 router.get('/:id', colorController.getColor);
 router.put('/:id', colorController.updateColor);
+router.put('/status/:id', colorController.toggleColorStatus);
+router.delete('/:id',colorController.deleteColor)
+
 
 export default router;

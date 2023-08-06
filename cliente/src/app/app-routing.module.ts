@@ -7,11 +7,16 @@ import { authGuard } from './shared/guard/auth-guard/auth.guard';
 import { clientGuard } from './shared/guard/client-guard/client.guard';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { ProfileComponent } from './components/client/profile/profile.component';
-import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
 import { EmployeeComponent } from './components/dashboard/employee/employee.component';
+import { ColorComponent } from './components/dashboard/color/color.component';
+import { StatsComponent } from './components/dashboard/stats/stats.component';
+import { CodeComponent } from './components/dashboard/code/code.component';
+import { PriceComponent } from './components/dashboard/price/price.component';
+import { OrderComponent } from './components/dashboard/order/order.component';
+import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 
 const routes: Routes = [
   //client
@@ -24,8 +29,14 @@ const routes: Routes = [
   {path:"checkout",component:CheckoutComponent},
 
   //dashboard
-  {path:"dashboard/create-color",canActivate:[authGuard,adminGuard],component:CreateColorComponent},
+  {path:"dashboard/stats",canActivate:[authGuard,adminGuard],component:StatsComponent},
   {path:"dashboard/employee",canActivate:[authGuard,adminGuard],component:EmployeeComponent},
+  {path:"dashboard/color",canActivate:[authGuard,adminGuard],component:ColorComponent},
+  {path:"dashboard/color/create",canActivate:[authGuard,adminGuard],component:CreateColorComponent},
+  {path:"dashboard/color/edit/:id",canActivate:[authGuard,adminGuard],component:CreateColorComponent},
+  {path:"dashboard/code",canActivate:[authGuard,adminGuard],component:CodeComponent},
+  {path:"dashboard/price",canActivate:[authGuard,adminGuard],component:PriceComponent},
+  {path:"dashboard/order",canActivate:[authGuard,adminGuard],component:OrderComponent},
 
   //messages
   {path:"unauthorized",component:UnauthorizedComponent}
