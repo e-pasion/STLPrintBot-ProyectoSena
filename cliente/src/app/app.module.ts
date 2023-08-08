@@ -20,7 +20,8 @@ import { CheckoutComponent } from './components/client/checkout/checkout.compone
 import { FooterComponent } from './components/client/footer/footer.component';
 import { DataTablesModule } from 'angular-datatables';
 import { EmployeeComponent } from './components/dashboard/employee/employee.component';
-import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component'
+import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
+import { EditAddressComponent } from './components/client/edit-address/edit-address.component'
 
 
 
@@ -41,7 +42,8 @@ import { EditProfileComponent } from './components/client/edit-profile/edit-prof
     CheckoutComponent,
     FooterComponent,
     EmployeeComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    EditAddressComponent
    
   ],
   imports: [
