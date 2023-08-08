@@ -13,6 +13,7 @@ import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
 import { EmployeeComponent } from './components/dashboard/employee/employee.component';
 import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
+import { EditAddressComponent } from './components/client/edit-address/edit-address.component';
 
 const routes: Routes = [
   //client
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path:"auth",component:AuthComponent},
   {path:"profile",canActivate:[authGuard,clientGuard],component:ProfileComponent},
   {path:"edit-profile",canActivate:[authGuard,clientGuard],component:EditProfileComponent},
+  {path:"edit-address",canActivate:[authGuard,clientGuard],component:EditAddressComponent},
   {path:"calculator",component:CalculatorComponent},
   {path:"edit-product/:id",canActivate:[authGuard,clientGuard],component:CalculatorComponent},
   {path:"cart",component:CartComponent},
