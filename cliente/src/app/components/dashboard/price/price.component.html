@@ -1,1 +1,39 @@
-<p>price works!</p>
+<div class=" bg-amber-100 relative py-10 h-screen">
+
+    <!-- <app-navbar-top></app-navbar-top> -->
+    <div class="bg-white shadow rounded-xl mx-8 lg:ml-28  overflow-x-auto overflow-y-auto ">
+      <div class=" px-4 sm:px-8">
+      <div class="py-8">
+                        <h2 class="text-2xl font-semibold leading-tight">Codigos</h2>
+
+          <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4">
+              <div class="inline-block shadow rounded-lg w-full">
+
+                <div class=" overflow-x-auto shadow-md  h-[400px] ">
+                  <table class=" text-sm text-left w-full text-gray-500">
+                      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                          <tr>
+                              <th scope="col" class="px-6 py-3"> Nombre</th>
+                              <th scope="col" class="px-6 py-3">Valor</th>
+                              <th scope="col" class="px-6 py-3">Acciones</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let price of priceData"class="bg-white border-b">
+                              <td class="px-6 py-3">{{ price.name}}</td>
+                              <td class="px-6 py-3"> {{price.value}} </td>
+                          </tr>
+                      
+                      </tbody>
+                  </table>
+              </div>
+               
+              </div>
+          </div>
+      </div>
+      </div>
+    </div>
+    <app-navbar-side ></app-navbar-side>
+
+
+</div>

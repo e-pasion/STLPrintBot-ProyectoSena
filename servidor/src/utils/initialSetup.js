@@ -1,3 +1,4 @@
+import Price from '../models/Price.js';
 import Role from '../models/Role.js'
 import User from '../models/User.js';
 
@@ -33,4 +34,27 @@ export const createAdmin = async ()=>{
    } catch (error) {
         console.error(error)
    }
+}
+
+export const createPrices = async ()=>{
+
+   try {
+      const count = await Price.estimatedDocumentCount();
+      if(count>0) return;
+
+
+      const values = await Promise.all([
+         new Price({name:"Precio minimo de envio gratis",value:50000}).save(),
+         new Price({name:"Costo del envio en el area metropolitana",value:8000}).save(),
+         new Price({name:"Costo del envio en el resto del pais",value:12000}).save(),
+         new Price({name:"Costo del filamento por KG",value:80000}).save(),
+         new Price({name:"Porcentaje de error",value:10}).save(),
+         new Price({name:"Porcentaje de ganancia",value:50}).save(),
+
+      ])
+      
+   } catch (error) {
+      console.error(error)
+   }
+  
 }

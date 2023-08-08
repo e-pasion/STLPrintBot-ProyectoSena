@@ -44,7 +44,7 @@ export class AuthComponent implements OnInit {
     if(this.authService.isLoggedIn() && this.authService.isClient()){
       this.router.navigate(["/profile"])
     }else if(this.authService.isLoggedIn() && (this.authService.isEmployee() || this.authService.isAdmin())){
-      this.router.navigate(["/dashboard/create-color"])
+      this.router.navigate(["/dashboard/color"])
     }
   }
 
