@@ -18,7 +18,7 @@
                             <p class="text-xs sm:text-base dark:text-gray-400 ">{{userData.email}}</p>
                         </div>
                         <div class="flex justify-end pt-2 space-x-4 align-center">
-                            <i class="fa-solid cursor-pointer fa-gear" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
+                            <i class="fa-solid cursor-pointer fa-gear" routerLink="/edit-profile" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
                             <i class="fa-solid cursor-pointer fa-arrow-right-from-bracket" (click)="logout()" [ngClass]="{'fa-flip': isHoveredExit}" (mouseenter)="isHoveredExit = true" (mouseleave)="isHoveredExit = false"></i>
                         </div>
                     </div>

@@ -12,12 +12,14 @@ import { CalculatorComponent } from './components/client/calculator/calculator.c
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
 import { EmployeeComponent } from './components/dashboard/employee/employee.component';
+import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
 
 const routes: Routes = [
   //client
   {path:"",component:HomeComponent},
   {path:"auth",component:AuthComponent},
   {path:"profile",canActivate:[authGuard,clientGuard],component:ProfileComponent},
+  {path:"edit-profile",canActivate:[authGuard,clientGuard],component:EditProfileComponent},
   {path:"calculator",component:CalculatorComponent},
   {path:"edit-product/:id",canActivate:[authGuard,clientGuard],component:CalculatorComponent},
   {path:"cart",component:CartComponent},
