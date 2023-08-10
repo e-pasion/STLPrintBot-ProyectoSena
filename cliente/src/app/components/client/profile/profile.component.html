@@ -6,7 +6,7 @@
     <div class="flex flex-col items-center w-full sm:flex-row sm:justify-center sm:h-[90vh]">
         <!-- menu side -->
         <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-20 flex items-center sm:mt-0 sm:shadow-md bg-white sm:h-[400px] sm:max-w-xs ">
+            <div class="w-full sm:w-9/12 max-w-lg mt-20 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[400px] sm:max-w-xs ">
                 <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
                     <img src="https://source.unsplash.com/150x150/?portrait?3" alt="" class="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square">
                     <div class="space-y-4 divide-y divide-gray-700">
@@ -18,7 +18,7 @@
                             <p class="text-xs sm:text-base dark:text-gray-400 ">{{userData.email}}</p>
                         </div>
                         <div class="flex justify-end pt-2 space-x-4 align-center">
-                            <i class="fa-solid cursor-pointer fa-gear" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
+                            <i class="fa-solid cursor-pointer fa-gear" routerLink="/edit-profile" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
                             <i class="fa-solid cursor-pointer fa-arrow-right-from-bracket" (click)="logout()" [ngClass]="{'fa-flip': isHoveredExit}" (mouseenter)="isHoveredExit = true" (mouseleave)="isHoveredExit = false"></i>
                         </div>
                     </div>
@@ -27,14 +27,14 @@
             </div>
         </div>
         <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 sm:shadow-md bg-white sm:h-[600] sm:max-w-xs ">
+            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[600] sm:max-w-xs ">
                 <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
                     <div class="space-y-4 divide-y divide-gray-700">
                         <div class="my-2 space-y-1">
                             <h1 class="text-xl font-light sm:text-2xl break-words">Libreta de direcciones</h1>
                             <hr>
                             <h2 class="text-l font-medium sm:text-2xl break-words">Direccion de facturacion predeterminada</h2>
-                            <p class="text-xs sm:text-base dark:text-gray-400">Pepito Perez</p>
+                            <p class="text-xs sm:text-base dark:text-gray-400">{{userData.name}}</p>
                             <p class="text-xs sm:text-base dark:text-gray-400">3217858964</p>
                             <p class="text-xs sm:text-base dark:text-gray-400">CL 10 25 59 MEDELLIN, ANT.</p>
                             
@@ -45,7 +45,7 @@
                         
                         </div>
                         <div class="flex justify-end pt-2 space-x-4 align-center">
-                            <i class="fa-solid cursor-pointer fa-gear" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
+                            <i class="fa-solid cursor-pointer fa-gear" routerLink="/edit-address" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
                             <i class="fa-solid cursor-pointer fa-location-dot" [ngClass]="{'fa-bounce': isHoveredDirections}" (mouseenter)="isHoveredDirections = true" (mouseleave)="isHoveredDirections = false"></i>
     
                         </div>
@@ -54,9 +54,9 @@
                 </div>
             </div>
         </div>
-    
+        
         <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 sm:shadow-md bg-white sm:h-[600] sm:max-w-xs ">
+            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[600] sm:max-w-xs ">
                 <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
                     <div class="space-y-4 divide-y divide-gray-700">
                         <div class="my-2 space-y-1">
@@ -64,7 +64,7 @@
                             <hr>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 1001148506</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 21/07/2023</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> Pepito Perez</span></h2>
+                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $348.500</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-green-400"> Enviado</span></h2>
                             <div class="flex justify-end pt-2 space-x-4 align-center">
@@ -73,7 +73,7 @@
                             <hr>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 100297585</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 11/12/19</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> Valen Tino</span></h2>
+                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $48.500</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-yellow-400"> Pendiente</span></h2>
                             <div class="flex justify-end pt-2 space-x-4 align-center">
@@ -82,7 +82,7 @@
                             <hr>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 100304831</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 19/12/19</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> Juan Alberto</span></h2>
+                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $80.500</span></h2>
                             <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-red-400"> Cancelado</span></h2>
                             <div class="flex justify-end pt-2 space-x-4 align-center">

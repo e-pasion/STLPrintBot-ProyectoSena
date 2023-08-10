@@ -17,12 +17,16 @@ import { CodeComponent } from './components/dashboard/code/code.component';
 import { PriceComponent } from './components/dashboard/price/price.component';
 import { OrderComponent } from './components/dashboard/order/order.component';
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
+import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
+import { EditAddressComponent } from './components/client/edit-address/edit-address.component';
 
 const routes: Routes = [
   //client
   {path:"",component:HomeComponent},
   {path:"auth",component:AuthComponent},
   {path:"profile",canActivate:[authGuard,clientGuard],component:ProfileComponent},
+  {path:"edit-profile",canActivate:[authGuard,clientGuard],component:EditProfileComponent},
+  {path:"edit-address",canActivate:[authGuard,clientGuard],component:EditAddressComponent},
   {path:"calculator",component:CalculatorComponent},
   {path:"edit-product/:id",canActivate:[authGuard,clientGuard],component:CalculatorComponent},
   {path:"cart",component:CartComponent},
