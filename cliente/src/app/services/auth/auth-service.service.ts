@@ -34,9 +34,10 @@ export class AuthServiceService {
     return localStorage.getItem('access_token');
   }
 
+  
+
   getUserId(){
     const token = this.getToken();
-  
     if (token) {
       const decodedToken: any = jwt_decode(token);
       const userId = decodedToken.id; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
@@ -52,6 +53,17 @@ export class AuthServiceService {
       const decodedToken: any = jwt_decode(token);
       const userRoles = decodedToken.roles; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
       return userRoles;
+    }
+    return [];
+  }
+
+  getUserName(){
+    const token = this.getToken();
+  
+    if (token) {
+      const decodedToken: any = jwt_decode(token);
+      const name = decodedToken.name; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
+      return name;
     }
     return [];
   }

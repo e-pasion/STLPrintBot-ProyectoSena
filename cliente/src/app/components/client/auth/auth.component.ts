@@ -22,7 +22,7 @@ export class AuthComponent implements OnInit {
 
 
 
-  constructor(private fb:FormBuilder,private authService:AuthServiceService,private sweetAlertService:SweetAlertServiceService,private router:Router,private aRoute:ActivatedRoute){
+  constructor(private fb:FormBuilder,private authService:AuthServiceService,private alertService:SweetAlertServiceService,private router:Router,private aRoute:ActivatedRoute){
     this.registerForm=this.fb.group({
       firstName:['',[Validators.required]],
       lastName:['',[Validators.required]],
@@ -88,18 +88,18 @@ export class AuthComponent implements OnInit {
     this.authService.signIn(USER).subscribe({
       next: (data)=>{
         console.log(data)
-        this.sweetAlertService.success("Logeo exitoso")
+        this.alertService.success("Inicio de sesión exitoso")
         this.authService.setToken(data.token)
         if(this.authService.isClient()){
           this.router.navigate(["/profile"])
         }else{
-          this.router.navigate(["/dashboard/create-color"])
+          this.router.navigate(["/dashboard/color"])
         }
         this.loginForm.reset()
 
       },
       error: (e)=>{
-        this.sweetAlertService.error("Hubo un error al iniciar sesion")
+        this.alertService.error("Hubo un error al iniciar sesion")
         this.loginForm.reset()
       },
     }
@@ -120,13 +120,13 @@ export class AuthComponent implements OnInit {
     this.authService.signUp(USER).subscribe({
       next: (data)=>{
         console.log(data)
-        this.sweetAlertService.success("El registro fue exitoso")
+        this.alertService.success("El registro fue exitoso")
         this.registerForm.reset()
         this.cambiarLoginRegistro()
 
       },
       error: (e)=>{
-        this.sweetAlertService.error("Hubo un error en el registro intentelo denuevo")
+        this.alertService.error("Hubo un error en el registro intentelo denuevo")
         this.registerForm.reset()
       },
     }

@@ -59,6 +59,7 @@ export class CheckoutComponent implements OnInit{
       const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}&zoom=20&key=AIzaSyCEX3tGvVECoFH9a0Na8lPk2oChRALPnkc`;
       this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
       this.findShipPrice()
+      this.getDaysShip();
   }
 
   cancelDirection(){
@@ -87,6 +88,14 @@ export class CheckoutComponent implements OnInit{
       error:(e)=>{
         console.log(e);
       }    
+    })
+  }
+
+  getDaysShip(){
+    this.crudService.getAll('cart/days').subscribe({
+      next:(data)=>{
+        console.log(data);
+      }
     })
   }
 

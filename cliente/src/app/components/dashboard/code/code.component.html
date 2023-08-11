@@ -1,7 +1,7 @@
 <div class=" bg-amber-100 relative py-10 h-screen">
 
     <!-- <app-navbar-top></app-navbar-top> -->
-    <div class="bg-white shadow rounded-xl mx-8 lg:ml-28  overflow-x-auto overflow-y-auto ">
+    <div class="bg-white shadow rounded-xl mx-8 ml-28  overflow-x-auto overflow-y-auto ">
       <div class=" px-4 sm:px-8">
       <div class="py-8">
                         <h2 class="text-2xl font-semibold leading-tight">Codigos</h2>
@@ -43,8 +43,8 @@
                           <tr>
                               <th></th>
                               <th scope="col" class="px-6 py-3"> Codigo</th>
-                              <th scope="col" class="px-6 py-3">Fecha Inicial</th>
-                              <th scope="col" class="px-6 py-3"> Fecha Final </th>
+                              <th scope="col" class="px-6 py-3">Fecha Final</th>
+                              <th scope="col" class="px-6 py-3"> Descuento </th>
                               <th scope="col" class="px-6 py-3">Acciones</th>
                           </tr>
                       </thead>
@@ -52,8 +52,8 @@
                           <tr *ngFor="let code of codes"class="bg-white border-b">
                               <td><input [checked]="code.status" (click)="toggleCodeStatus(code._id)" type="checkbox" value="" class="w-4 h-4 mx-4 accent-orange-600 rounded focus:ring-yellow-500"></td>
                               <td class="px-6 py-3 font-medium text-gray-900"> {{code.code}}</td>
-                              <td class="px-6 py-3">{{ code.startDate}}</td>
                               <td class="px-6 py-3"> {{code.finalDate}} </td>
+                              <td class="px-6 py-3">{{ code.discount}}</td>
                               <td class="px-6 py-3 flex">
                                 <i class="fa-solid fa-pen text-orange-500 cursor-pointer" (click)="showFormEditCode(code._id)" ></i> 
                                 <i class="fa-solid fa-trash mx-2 text-red-400 cursor-pointer" (click)="removeCode(code._id)"></i>
@@ -99,11 +99,11 @@
         </div>
       </div>
       <div class="mb-4">
-        <label for="startDate" class="block text-sm font-medium">Fecha Inicial</label>
-        <input formControlName="startDate" type="date" id="startDate" name="startDate" class="w-full px-3 py-2 border rounded-md">
+        <label for="discount" class="block text-sm font-medium">Porcentaje de descuento</label>
+        <input formControlName="discount" type="number" id="discount" name="discount" placeholder="10" class="w-full px-3 py-2 border rounded-md">
 
-        <div *ngIf="codeForm.get('startDate')!.errors && codeForm.get('startDate')!.touched" class="text-md font-thin text-red-600">
-          <div *ngIf="codeForm.get('startDate')!.hasError('required')">La fecha inicial es obligatoria.</div>
+        <div *ngIf="codeForm.get('discount')!.errors && codeForm.get('discount')!.touched" class="text-md font-thin text-red-600">
+          <div *ngIf="codeForm.get('discount')!.hasError('required')">El descuento es obligatorio.</div>
         </div>
       </div>
       <div class="mb-4">

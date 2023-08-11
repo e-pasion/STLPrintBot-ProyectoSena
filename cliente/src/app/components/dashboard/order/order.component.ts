@@ -7,4 +7,17 @@ import { Component } from '@angular/core';
 })
 export class OrderComponent {
 
+  statusToggle:any={
+    inProcess:true,
+    inSend:false,
+    inFinished:false
+  };
+
+  changeStatus(status:String){
+    Object.keys(this.statusToggle).map((key) => {
+      this.statusToggle[key]=(key==status)?true:false;
+      console.log(this.statusToggle[key]);
+    });
+  }
+
 }

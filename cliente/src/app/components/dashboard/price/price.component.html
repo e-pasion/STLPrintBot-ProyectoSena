@@ -1,33 +1,41 @@
 <div class=" bg-amber-100 relative py-10 h-screen">
 
     <!-- <app-navbar-top></app-navbar-top> -->
-    <div class="bg-white shadow rounded-xl mx-8 lg:ml-28  overflow-x-auto overflow-y-auto ">
+    <div class="bg-white shadow rounded-xl mx-8 ml-28  overflow-x-auto overflow-y-auto mt-16">
       <div class=" px-4 sm:px-8">
       <div class="py-8">
-                        <h2 class="text-2xl font-semibold leading-tight">Codigos</h2>
+                        <h2 class="text-2xl font-semibold leading-tight">Precios</h2>
 
-          <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4">
+          <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 mt-5">
               <div class="inline-block shadow rounded-lg w-full">
 
                 <div class=" overflow-x-auto shadow-md  h-[400px] ">
-                  <table class=" text-sm text-left w-full text-gray-500">
+                  <table class=" text-sm w-full text-gray-500 text-center">
                       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                           <tr>
                               <th scope="col" class="px-6 py-3"> Nombre</th>
                               <th scope="col" class="px-6 py-3">Valor</th>
-                              <th scope="col" class="px-6 py-3">Acciones</th>
+                              <th scope="col" class=" py-3">Acciones</th>
                           </tr>
                       </thead>
                       <tbody>
                           <tr *ngFor="let price of priceData"class="bg-white border-b">
-                              <td class="px-6 py-3">{{ price.name}}</td>
-                              <td class="px-6 py-3"> {{price.value}} </td>
+                              <td class="px-6 py-3  text-gray-900">{{ price.name}}</td>
+                              <td class="px-6 py-3  text-gray-900"><input #priceInput type="number" class="disabled:bg-transparent bg-yellow-100 text-center" [(ngModel)]="price.value" (ngModelChange)="activeSaveButton()" (blur)="disableInput(priceInput)" disabled ></td>
+                              <td class="flex justify-center items-center">
+                                <i (click)="toggleInput(priceInput)" class="my-3 fa-solid fa-pen text-orange-500 cursor-pointer" ></i> 
+                              </td>
                           </tr>
                       
                       </tbody>
                   </table>
+                  <div class="w-full flex justify-end pt-6 pr-4">
+                    <button type="button" (click)="updateChanges()" [disabled]="buttonIsDisabled" class="focus:outline-none text-white disabled:bg-orange-200 bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                        Guardar Cambios
+                        </button>
+                  </div>
               </div>
-               
+
               </div>
           </div>
       </div>

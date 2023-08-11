@@ -94,7 +94,7 @@
                                     class="w-5 h-5 border border-gray-300 rounded focus:outline-none focus:ring-1">
                                 <span class="ml-2">Volver esta mi direccion principal</span>
                             </label>
-                                <button (click)="submitDirection()" [disabled]="!validateShip" class="disabled:bg-green-300 disabled:hover:bg-green-300 bg-green-500 hover:bg-green-600 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
+                                <button (click)="submitDirection()" [disabled]="!shipForm.valid" class="disabled:bg-green-300 disabled:hover:bg-green-300 bg-green-500 hover:bg-green-600 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
                         </div>
                     </div>
                 </form>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button (click)="makePayment()" [disabled]="!shipForm.valid" class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
+                    <button (click)="makePayment()" [disabled]="!validateShip" class="bg-amber-500 hover:bg-amber-400 w-full px-6 py-2 text-white rounded-md">Pagar</button>
                 </div>
             </div>
         </div>

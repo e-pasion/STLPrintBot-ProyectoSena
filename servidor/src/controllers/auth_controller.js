@@ -5,11 +5,6 @@ import Cart from '../models/Cart.js';
 
 export const signUp= async(req,res)=>{
     const { firstName,lastName,email,password}=req.body;
-    console.log(firstName)
-    console.log(lastName);
-    console.log(email)
-    console.log(password)
-
     const newUser= new User({
         firstName,
         lastName,
@@ -26,8 +21,6 @@ export const signUp= async(req,res)=>{
     })
 
     await newCart.save();
-
-
     res.status(200).json({user:"Is created"})
 }
 
@@ -43,7 +36,7 @@ export const signUpEmployee= async(req,res)=>{
     })
      const role= await Role.findOne({name:"employee"});//busca el id del rol que se le pase para asignarlo al
      newUser.roles=[role._id];
-    const savedUser=await newUser.save()
+    await newUser.save()
     res.status(200).json({employee:'is created'})
 }
 
@@ -56,7 +49,7 @@ export const signIn= async(req,res)=>{
     if (!matchPassword) return res.status(401).json({token:null,message:"La contraseña es incorrecta"})
     const roleNames= userFound.roles.map((rol)=>rol.name)
     //el segundo parametro es la llave secreta, lo recomendable es exportarla desde una configuracion
-    const token=jwt.sign({id: userFound._id,roles:roleNames},'api-ava3d',{
+    const token=jwt.sign({id: userFound._id,name:[userFound.firstName,userFound.lastName],roles:roleNames},'api-ava3d',{
         expiresIn:86400//24 horas en segundos
     })
 

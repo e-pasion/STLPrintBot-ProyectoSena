@@ -33,8 +33,9 @@ export class CodeComponent {
   constructor(private fb:FormBuilder,private authService:AuthServiceService,private alertService:SweetAlertServiceService, private crudService:CrudServiceService){
     this.codeForm=this.fb.group({
       'code':['',[Validators.required]],
-      'startDate':['',[Validators.required]],
       'finalDate':['',[Validators.required]],
+      'discount':['',[Validators.required]],
+
     })
   }
 
@@ -48,7 +49,7 @@ export class CodeComponent {
 
   createCode(){
     const CODE = new Code(this.codeForm.get('code')?.value,
-    this.codeForm.get('startDate')?.value,
+    this.codeForm.get('discount')?.value,
     this.codeForm.get('finalDate')?.value,
     )
     if(this.actualId==""){

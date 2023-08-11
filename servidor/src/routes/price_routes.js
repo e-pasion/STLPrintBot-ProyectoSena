@@ -6,6 +6,7 @@ const router = Router();
 
 
 router.get('/', priceController.getPriceData);
+router.put('/:id', priceController.updatePrice);
 
 
 

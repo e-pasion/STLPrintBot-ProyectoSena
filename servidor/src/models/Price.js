@@ -1,8 +1,12 @@
 import { model,Schema } from "mongoose";
 
 const priceSchema= new Schema({
-    name:{type:String,require:true},
-    value:{type:Number,require:true}
+    settings: [
+        {
+            name: { type: String, required: true },
+            value: { type: Number, required: true }
+        }
+    ]
 
     // priceFreeDelivery:{type:Number,require:true},
     // priceLocalDelivery:{type:Number,require:true},

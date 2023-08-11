@@ -26,8 +26,8 @@ export const getCodes = async (req, res)=>{
         const formattedCodes = result.docs.map((code) => ({
             _id: code._id,
             code: code.code,
-            startDate: code.startDate.toISOString().split('T')[0],
             finalDate: code.finalDate.toISOString().split('T')[0],
+            discount:code.discount,
             status: code.status,
          }));
   
@@ -50,8 +50,8 @@ export const getCode = async (req, res)=>{
         const formattedCode={
             _id:code._id,
             code:code.code,
-            startDate: code.startDate.toISOString().split('T')[0],
             finalDate: code.finalDate.toISOString().split('T')[0],
+            discount:code.discount,
             status: code.status,
         }
 
@@ -63,13 +63,15 @@ export const getCode = async (req, res)=>{
 
 export const createCode = async (req, res) => {
     try {
-        const {code, startDate, finalDate }= req.body;
+        const {code, discount, finalDate }= req.body;
         const newCode = new Code({
             code,
-            startDate,
+            discount,
             finalDate,
         });
+        console.log(newCode);
         const savedCode = await newCode.save();
+        console.log(savedCode);
         res.status(200).json({savedCode})
         
     } catch (error) {
