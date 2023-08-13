@@ -13,6 +13,7 @@ const detailSchema= new Schema({
         city:{type:String,required:true},
         numberPhone:{type:String,required:true},
         optionalNotes:{type:String,required:false},
+        estimatedDate:{type:String,required:true},
     },
     totalPrice:{type:Number, required:true}
 },{

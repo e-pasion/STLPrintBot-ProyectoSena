@@ -6,8 +6,9 @@ const router = Router();
 
 
 router.post('/', codeController.createCode);
+router.post('/verify',verifyToken,codeController.verifyCode)
 router.get('/', codeController.getCodes);
-router.get('/:id', codeController.getCode);
+router.get('/:id',verifyToken, codeController.getCode);
 router.put('/:id', codeController.updateCode);
 router.put('/status/:id', codeController.toggleCodeStatus);
 router.delete('/:id',codeController.deleteCode)

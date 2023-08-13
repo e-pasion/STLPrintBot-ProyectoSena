@@ -4,7 +4,7 @@ import Product from '../models/Product.js';
 import Color from '../models/Color.js';
 import Cart from '../models/Cart.js';
 import { calculatePrice, calculateWeigth } from '../utils/stlUtils.js';
-import { adjustPrice } from '../utils/priceUtils.js';
+import { adjustPrice } from '../utils/shipUtils.js';
 
 
 export const cotization=async(req,res)=>{

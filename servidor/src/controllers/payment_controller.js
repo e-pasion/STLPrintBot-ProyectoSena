@@ -1,6 +1,6 @@
 import mercadopago from "mercadopago"
 import { NGROKURL } from "../config/config.js";
-import { returnProductPrice } from "../utils/priceUtils.js";
+import { returnProductPrice, returnShipPrice, returnShipDate, returnDiscountPrice } from "../utils/shipUtils.js";
 import { createDetail } from "./detail_controller.js";
 
 
@@ -14,9 +14,10 @@ export const createOrder= async (req,res)=>{
         access_token:'TEST-8133959242082900-071517-0598bf125b902a9a5c64ab882e998c61-1425002340',
     })
 
-    const shipPrice=req.body.shipPrice;
+    const shipPrice= await returnShipPrice(req.body.city,req.userId)
+    const shipDate= await returnShipDate(req.body.city,req.userId)
     const productPrice=await returnProductPrice(req.userId);
-    const totalPrice=parseInt(productPrice)+parseInt(shipPrice);
+    const discountPrice=await returnDiscountPrice(req.body.code,productPrice);
     const result = await mercadopago.preferences.create({
       
         items: [ 
@@ -26,23 +27,25 @@ export const createOrder= async (req,res)=>{
             "description": "Comprando el carrito",
             "category_id": "stl",
             "quantity": 1,
-            "unit_price": totalPrice
+            "unit_price": parseInt(productPrice-discountPrice)
           }
         ],
         "metadata": {
-          userId:req.body.userId,
+          userId:req.userId,
           firstName:req.body.firstName,
           lastName:req.body.lastName,
           numberPhone:req.body.numberPhone,
           address:req.body.address,
           city:req.body.city,
           optionalNotes:req.body.optionalNotes,
+          shipDate,
+          codeName:req.body.code
         },
         payment_methods:{
           "installments":1
         },
         shipments:{
-          cost:shipPrice,
+          cost:parseInt(shipPrice),
           mode:'not_specified'
         },
         binary_mode:true,
