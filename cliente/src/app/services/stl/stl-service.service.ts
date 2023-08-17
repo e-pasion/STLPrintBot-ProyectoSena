@@ -14,20 +14,15 @@ export class StlServiceService {
 
   constructor(private http: HttpClient,private fileService:FileServiceService) {}
 
-  cotization(file:any,fill:number):Observable<any>{
-    const formData = new FormData();
-      formData.append('stl', file);
-      formData.append('fill', fill.toString());
-    return this.http.post(this.url+'calculator/cotization/',formData);
+  cotization(volume:number,fill:number):Observable<any>{
+    return this.http.post(this.url+'calculator/cotization/',{
+      volume,
+      fill
+    });
   }
 
   takePhoto(dataUrl:string){
     return this.fileService.dataURLtoFile(dataUrl,"img.png");
-  }
-
-
-  sendModelToBase(){
-
   }
 
 
