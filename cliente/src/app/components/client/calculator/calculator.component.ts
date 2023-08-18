@@ -6,7 +6,6 @@ import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { StlServiceService } from 'src/app/services/stl/stl-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
-import { Product } from 'src/app/models/Product';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 declare const StlViewer:any;
 
@@ -157,22 +156,20 @@ export class CalculatorComponent implements OnInit,AfterViewInit {
 
   getCotization(){
     this.stl_viewer.set_opacity(0, 0);
-
+    const volume=this.stl_viewer.get_model_info(2).volume/1000;
     this.sweetAlertService.loading("Calculando Precio...");
-    this.stlService.cotization(this.file,this.stlData.fill).subscribe({
+    this.stlService.cotization(volume,(this.stlData.fill/100)).subscribe({
       next:(data)=>{
         console.log(data);
         this.price=data.price;
-      },error:(e)=>{
-        this.sweetAlertService.terminateLoading()
-        console.log(e);
-      },complete:()=>{
         this.sweetAlertService.terminateLoading()
         this.settingIsHidden=true;
         this.priceIsHidden=false;
-      }
-    })
-  }
+      },error:(e)=>{
+        this.sweetAlertService.terminateLoading()
+        console.log(e);
+      }})
+}
 
    stlAddCart(){
     if (!this.authService.isClient()){
@@ -180,7 +177,7 @@ export class CalculatorComponent implements OnInit,AfterViewInit {
     }else{
       this.dataUrl= this.stl_viewer.renderer.domElement.toDataURL("image/png")
       this.sweetAlertService.loading("Añadiendo al carrito...");
-      this.stlService.purchaseStl(this.file,this.stlData.fill,this.dataUrl,this.stlData.color).subscribe({
+      this.stlService.purchaseStl(this.file,this.stlData.fill/100,this.dataUrl,this.stlData.color).subscribe({
         next:(data)=>{
           console.log(data);
         },error:(e)=>{

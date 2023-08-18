@@ -1,4 +1,5 @@
 import Code from "../models/Code.js";
+import User from "../models/User.js"
 
 export const getCodes = async (req, res)=>{
 
@@ -46,7 +47,6 @@ export const getCode = async (req, res)=>{
     try {
         const code = await Code.findById(req.params.id);
         if (!code)return res.status(404).json({ message: 'Code not found' });
-        
         const formattedCode={
             _id:code._id,
             code:code.code,
@@ -56,6 +56,32 @@ export const getCode = async (req, res)=>{
         }
 
         res.status(200).json(formattedCode)
+    } catch (error) {
+        res.status(400).send(error.message);  
+    }
+}
+
+export const verifyCode= async(req,res)=>{
+    try {
+        const code = await Code.findOne({ code: req.body.code });
+        if (!code)return res.status(404).json({ message: 'Code not found' });
+        const currentDate = new Date();
+        console.log(currentDate);
+        console.log(code.finalDate);
+        if (currentDate>code.finalDate) return res.status(400).json({message:'expired code'})
+        const user= await User.findById(req.userId);
+        console.log(user);
+        if(user.codesUsed.includes(code._id)){
+            return res.status(400).json({message:'Code already used'})
+        }
+        console.log(req.body.price);
+        const price=Math.round(req.body.price*(code.discount/100)/50)*50;
+        console.log(price);
+        return res.json({
+            discount:code.discount,
+            price
+        })
+        
     } catch (error) {
         res.status(400).send(error.message);  
     }

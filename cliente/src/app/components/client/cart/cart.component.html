@@ -32,7 +32,7 @@
                   </div>
                       <li *ngFor="let product of products; let i = index" class="flex py-6">
                         <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img [src]="fixImg(product.pathImage)" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
+                          <img [src]="product.path.downloadImg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
                         </div>
   
                         <div class="ml-4 flex flex-1 flex-col">
@@ -40,13 +40,13 @@
                             
                             <div class="flex justify-between text-base font-medium text-gray-900">
                               <h3><a href="#">{{"Producto "+ (i+1)}}</a></h3>
-                              <p class="ml-4">{{"$"+ calculatePrice(product.weigth,product.quantity)}}</p>
+                              <p class="ml-4">{{"$"+ product.price*product.quantity}}</p>
                             </div>
                             <div class="">
                                 <p class="mt-1 text-sm text-gray-500">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
                                 <p class="mt-1 text-sm text-gray-500">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
                                 <p class="mt-1 text-sm text-gray-500">{{"Color: "+product.color.name}}</p>
-                                <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.sizeX.toFixed(0)+"cm, y:"+product.sizeY.toFixed(0)+"cm, z:"+product.sizeZ.toFixed(0)+"cm]"}}</p>
+                                <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.size.x.toFixed(0)+"cm, y:"+product.size.y.toFixed(0)+"cm, z:"+product.size.z.toFixed(0)+"cm]"}}</p>
                               </div>
                           </div>
                           <div class="flex flex-1 items-end justify-between text-sm">

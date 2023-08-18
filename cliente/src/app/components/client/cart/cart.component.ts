@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from 'src/app/models/Product';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
+import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { changeWidth0To1002 } from 'src/app/utils/animation';
 
 @Component({
@@ -16,11 +16,11 @@ import { changeWidth0To1002 } from 'src/app/utils/animation';
 })
 export class CartComponent implements OnInit {
 
-  constructor(private navbarService:NavbarServiceService,private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private router:Router) { 
+  constructor(private navbarService:NavbarServiceService,private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private router:Router,private alertService:SweetAlertServiceService) { 
   }
 
   loadingIsHidden:boolean=false;
-  products:Product[]=[]
+  products:any=[]
   totalPrice:number=0;
   toCheckout:boolean=false;//variable creada para que si es true, cuando termine la animacion cambie la pagina a checkout
 
@@ -34,8 +34,9 @@ export class CartComponent implements OnInit {
     
   }
 
-  calculatePrice(weigth:number,quantity:number){
-    return this.adjustPrice((weigth*quantity*80000)/1000)
+  calculatePrice(price:number,quantity:number){
+    console.log(price);
+    return this.adjustPrice(price*quantity)
 
   }
    adjustPrice(price:number){
@@ -82,6 +83,7 @@ export class CartComponent implements OnInit {
     this.crudService.getAll('cart/').subscribe({
       next:(data)=>{
         this.products=data;
+        console.log(data);
       },
       error:(e)=>{
         console.log(e);
@@ -94,14 +96,20 @@ export class CartComponent implements OnInit {
   }
 
   deleteProduct(id:string){
-    this.crudService.delete(id,"calculator").subscribe({
-      complete:()=>{
-        this.findProducts()
-      },
-      error:(e)=>{
-        console.error(e);
-      }
-    })
+    this.alertService.question('¿Seguro quieres borrar el archivo?','Borrar','No borrar')
+    .then((result) => {
+      if (result.isConfirmed) {
+        this.alertService.loading('Borrando archivo')
+        this.crudService.delete(id,"calculator").subscribe({
+          complete:()=>{
+            this.findProducts()
+            this.alertService.terminateLoading()
+          },
+          error:(e)=>{
+            console.error(e);
+          }
+        })
+      }})
   }
 
   findTotalPrice(){
