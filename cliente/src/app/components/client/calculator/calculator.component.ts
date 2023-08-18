@@ -6,7 +6,6 @@ import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { StlServiceService } from 'src/app/services/stl/stl-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
-import { Product } from 'src/app/models/Product';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 declare const StlViewer:any;
 
