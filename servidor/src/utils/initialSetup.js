@@ -1,4 +1,4 @@
-import Price from '../models/Price.js';
+import Setting from '../models/Setting.js';
 import Role from '../models/Role.js'
 import User from '../models/User.js';
 
@@ -39,7 +39,7 @@ export const createAdmin = async ()=>{
 export const createPrices = async ()=>{
 
    try {
-      const count = await Price.estimatedDocumentCount();
+      const count = await Setting.estimatedDocumentCount();
       if(count>0) return;
       const settings=[
          {name:"Precio minimo de envio gratis",value:50000},
@@ -49,7 +49,7 @@ export const createPrices = async ()=>{
          {name:"Porcentaje de error",value:10},
          {name:"Porcentaje de ganancia",value:50}
       ]
-      const newPriceDocument = new Price({ settings });
+      const newPriceDocument = new Setting({ settings });
       newPriceDocument.save()
    } catch (error) {
       console.error(error)

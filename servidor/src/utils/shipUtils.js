@@ -1,7 +1,7 @@
 import Cart from "../models/Cart.js";
 import Code from "../models/Code.js"
 import User from "../models/User.js"
-import { calculatePrice } from "./stlUtils.js";
+import { calculateStlPrice } from "./stlUtils.js";
 
 
 const metropolitanCities=[
@@ -17,13 +17,20 @@ const metropolitanCities=[
   "caldas"
 ]
 
+// export const returnProductPrice= async (userId)=>{
+//   const cartFound= await Cart.findOne({userId:userId}).populate("products");
+//   const totalWeigth= cartFound.totalWeigth;
+//   return calculateStlPrice(totalWeigth);
+// }
 export const returnProductPrice= async (userId)=>{
+  let totalPrice=0;
   const cartFound= await Cart.findOne({userId:userId}).populate("products");
-  const totalWeigth= cartFound.totalWeigth;
-  const totalPrice= calculatePrice(totalWeigth,80000)
-  return adjustPrice(totalPrice);
+  let productsFound=cartFound.products;
+  for (let product of productsFound) {
+    totalPrice+= parseFloat(await calculateStlPrice(product.weigth))*product.quantity
+  }
+  return totalPrice;
 }
-
 export const returnDiscountPrice = async(codeName,price)=>{
   const code = await Code.findOne({ code: codeName });
   if(!code) return 0;
@@ -32,11 +39,6 @@ export const returnDiscountPrice = async(codeName,price)=>{
   return discountPrice;
 }
 
-// export const returnShipDays= async (city)=>{
-//   console.log(city);
-//   const days= (metropolitanCities.includes(city))?1:3;
-//   return days;
-// }
 
 export const returnShipDate=async(city,userId)=>{
   console.log(city);

@@ -1,16 +1,20 @@
-import nodeStl from 'node-stl'
+import Setting from "../models/Setting.js";
+import { adjustPrice } from "./shipUtils.js";
 
-export const calculateWeigth=( density, fill,  volumen)=>{
-     let weigth=0;
-     let l= Math.pow(volumen, 1 / 3);//calcular un lado
-     let innerwall=l*l;//la pared exterior sera igual a el area de la figura
-     let outerwall=(volumen-innerwall)*fill;//la pared interna es igual al volumen interno por el relleno
-     weigth=((innerwall+outerwall)*(density));
-     return weigth.toFixed(0);
+
+export const calculateWeigth=(fill,  volume)=>{
+     const outerwall=Math.pow(volume,2/3); //volumen externo de la figura
+     const innerwall=fill*(volume-outerwall);//volumen interno de la figura
+     return (outerwall+innerwall)*1.24;
 }
 
-export const calculatePrice=(weigthPerGr,pricePerKg)=>{
-     return (pricePerKg*weigthPerGr/1000);
+export const calculateStlPrice= async (weigthPerGr)=>{
+     const setting= await Setting.find();
+     const pricePerKg= setting[0].settings[3].value;//obtener la configuracion con los precios
+     const failPercenaje =setting[0].settings[4].value;
+     const gainsPercenaje =setting[0].settings[5].value;
+     const productPrice=(pricePerKg*weigthPerGr/1000) * (1+((failPercenaje+gainsPercenaje)/100)); //calcula el precio y le añade porcentaje de perdida y ganancia
+     return adjustPrice(productPrice);
 }
 
 

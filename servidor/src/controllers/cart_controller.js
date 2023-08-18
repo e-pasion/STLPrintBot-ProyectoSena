@@ -1,5 +1,7 @@
 import Cart from "../models/Cart.js";
 import { returnProductPrice, returnShipDate, returnShipPrice} from "../utils/shipUtils.js";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { calculateStlPrice } from "../utils/stlUtils.js";
 
 
 
@@ -10,7 +12,12 @@ export const getCartProducts= async(req,res)=>{
         populate: {
           path: "color",
         },})
-    const productsFound=cartFound.products;
+    let productsFound=cartFound.products;
+    for (let product of productsFound) {
+      let price = await calculateStlPrice(product.weigth);
+      product.price=price;
+    }
+    console.log(productsFound);
     return res.json(productsFound);
 }
 

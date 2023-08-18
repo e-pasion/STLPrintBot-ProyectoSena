@@ -2,14 +2,6 @@ import multer from 'multer';
 
 let stlExtension= ".stl";
 
-const storageTemporalStl = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null,'src/uploads/tempStl');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
 
 const storageStlAndImg = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,8 +19,4 @@ const storageStlAndImg = multer.diskStorage({
 });
 
 
-export const upload = multer({
-  dest: 'uploads/',// Directorio donde se guardarán las imágenes
-})
-export const uploadTemporalStl = multer({ storage: storageTemporalStl });
 export const uploadStlAndImg = multer({ storage: storageStlAndImg });

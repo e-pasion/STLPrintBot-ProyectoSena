@@ -1,13 +1,20 @@
 import { model,Schema } from "mongoose";
 
 const productSchema= new Schema({
-    pathImage:{type:String,required:true},
-    pathFile:{type:String,required:true},
+    path:{    
+        pathImg:{type:String,required:true},
+        pathStl:{type:String,required:true},
+        downloadImg:{type:String,required:true},
+        downloadStl:{type:String,required:true}
+    },size:{
+        x:{type:Number,required:true},
+        y:{type:Number,required:true},
+        z:{type:Number,required:true}
+    },
     weigth:{type:Number,required:true},
     fill:{type:Number,required:true},
-    sizeX:{type:Number,required:true},
-    sizeY:{type:Number,required:true},
-    sizeZ:{type:Number,required:true},
+    price:{type:Number},
+   
     color:{ref:"Color",type: Schema.Types.ObjectId},
     quantity:{type:Number,required:true,default:1}
 },{
