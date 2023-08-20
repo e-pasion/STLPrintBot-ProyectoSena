@@ -84,12 +84,11 @@ export class AuthComponent implements OnInit {
       password:this.loginForm.get('loginPassword')?.value
     }
 
-
+    console.log(USER);
     this.authService.signIn(USER).subscribe({
       next: (data)=>{
         console.log(data)
         this.alertService.success("Inicio de sesión exitoso")
-        this.authService.setToken(data.token)
         if(this.authService.isClient()){
           this.router.navigate(["/profile"])
         }else{
@@ -99,6 +98,7 @@ export class AuthComponent implements OnInit {
 
       },
       error: (e)=>{
+        console.log(e);
         this.alertService.error("Hubo un error al iniciar sesion")
         this.loginForm.reset()
       },

@@ -1,20 +1,21 @@
-<div class="flex-grow">
+<div class="relative">
+<div class="flex-grow absolute top-0 w-full">
     <app-navbar></app-navbar>
 </div>
 
-<div class="fondo">
+<div  class="pt-16 bg-white">
     <div class="relative mx-auto max-w-screen-xl px-4 py-8">
 
   
-        <div class="flex flex-col md:flex-row mt-4">
-            <div class="w-full md:w-3/4">
-          <div class="relative">
+        <div class="flex flex-col md:flex-row md:justify-center mt-2">
+          <div class="w-full md:w-2/4 shadow-md"> 
+            <div class="relative">
 
             <!-- caja drag and drop -->
-            <div class="h-72 w-full rounded-xl object-cover md:h-[600px] bg-dark relative">
-              <div class="h-72 w-full rounded-xl object-cover md:h-[600px] opacity-0 absolute z-10" *ngIf="!priceIsHidden"></div>
+            <div class="h-72 w-full rounded-xl md:h-[420px] bg-dark relative">
+              <div class="h-72 w-full rounded-xl  md:h-[420px] opacity-0 absolute z-10" *ngIf="!priceIsHidden"></div>
                 <div (drop)="handleDrop($event)" (dragover)="handleDragOver($event)" *ngIf="stlContainerIsHidden" class="absolute z-20 flex items-center justify-center w-full h-full">
-                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-full rounded-l-lg cursor-pointer bg-dark hover:bg-black">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-full rounded-l-lg cursor-pointer bg-slate-700 hover:bg-slate-800 shadow-md">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <svg aria-hidden="true" class="w-10 h-10 mb-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                             <p class="mb-2 text-sm text-white"><span class="font-semibold">Click para subir el archivo</span> o sueltalo aca</p>
@@ -44,61 +45,65 @@
             </div>
           </div>
         </div>
-        <div class="w-full md:w-2/5 relative">
 
-
+        <div class="w-full md:w-1/4 relative">
         <!-- configuracion -->
-        <div [@changeWidth0To100] [@.disabled]="initAnimation" *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 h-[600px]  bg-white overflow-hidden w-full   ">
-          <div *ngIf="!loadingIsHidden" (click)="warningNoSTL()" class="opacity-5 bg-black absolute z-10 w-full h-[600px]">
+        <div [@changeWidth0To100] [@.disabled]="initAnimation" *ngIf="!settingIsHidden"  class="absolute md:stick md:top-0 h-[420px]  bg-white overflow-hidden w-full   ">
+          <div *ngIf="!loadingIsHidden" (click)="warningNoSTL()" class="opacity-10 bg-black absolute z-10 w-full h-[420px]">
           </div>
-          <form  class="space-y-4 md:pt-8 px-5 py-5 md:py-0">
+          <form  class="md:pt-8 px-5 py-5 md:py-0">
 
-            <fieldset class="h-20 overflow-hidden">
-              <legend class="text-lg font-bold">Color</legend>
-              <div class="mt-2 ">
-                <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <fieldset>
+              <legend class="text-sm font-semibold">Color</legend>
+              <div class="mt-1 ">
+                <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option *ngFor="let color of colors" [value]="color.code" >{{color.name}}</option>
                 </select>
               </div>
             </fieldset>
-            <fieldset  class="h-20 overflow-hidden">
-                <legend class="text-lg font-bold">Relleno</legend>
-                <label for="steps-range" class="block text-sm text-center font-bold text-gray-900">{{stlData.fill+"%"}}</label>
+            <fieldset class="mt-5">
+                <legend class="text-sm font-semibold">Relleno</legend>
+                <div class="flex mt-1">
+                <label for="steps-range" class="block text-xs text-center font-bold text-gray-900 mx-2">{{stlData.fill+"%"}}</label>
                 <input [(ngModel)]="stlData.fill" name="fill" type="range" min=10 max=100 step=10 class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+              </div>
               </fieldset>
-              <fieldset class="h-24 overflow-hidden">
-                <legend class="text-lg font-bold">Tamaño</legend>
-                <div class="grid gap-6  grid-cols-3 mt-2">
+              <fieldset class="mt-5">
+                <legend class="text-sm font-semibold">Tamaño</legend>
+                <div class="grid gap-6  grid-cols-3 mt-1">
                     <div>
-                        <input disabled [value]="dimsText[0]" type="text" min="1" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 overflow-auto"  required>
+                        <input disabled [value]="dimsText[0]" type="text" min="1" class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 overflow-auto"  required>
                         <p  class="block text-sm font-medium text-gray-900 text-center">X</p>
                      </div>
                     <div>
-                        <input disabled [value]="dimsText[1]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <input disabled [value]="dimsText[1]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1">
                         <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Y</p>
                       </div>
                     <div>
-                    <input disabled [value]="dimsText[2]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <input disabled [value]="dimsText[2]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                     <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Z</p>
                   </div>
                 </div>
               </fieldset>
-              <fieldset class="h-20 overflow-hidden">
-                <legend class="text-lg font-bold">Escala</legend>
-                <label for="steps-range" class="block text-sm text-center font-bold text-gray-900">{{scalePercentaje+"%"}}</label>
-                <input [(ngModel)]="scalePercentaje" (input)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+              <fieldset class="mt-5"> 
+                <legend class="text-sm font-semibold">Escala</legend>
+                <div class="flex mt-1">
+                <label for="steps-range" class="block text-xs text-center font-bold text-gray-900 mx-2">{{scalePercentaje+"%"}}</label>
+                <input [(ngModel)]="scalePercentaje" (input)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 text-xs bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                </div>
               </fieldset>
-            <button type="button" (click)="getCotization()" class="w-full rounded border whitespace-nowrap overflow-hidden border-yellow-300 bg-yellow-200 px-6 py-3 text-sm font-bold uppercase tracking-wide"> 
+
+            <button type="button" (click)="getCotization()" class="w-full mt-5 rounded border whitespace-nowrap overflow-hidden border-green-400 bg-green-300 px-6 py-2 text-xs font-bold uppercase tracking-wide"> 
                 Cotizar Precio
             </button>
-            <button type="button" (click)="removeStlViewer()" class="w-full rounded border whitespace-nowrap overflow-hidden border-orange-300 bg-orange-200 px-6 py-3 text-sm font-bold uppercase tracking-wide"> 
+            <button type="button" (click)="removeStlViewer()" class="w-full mt-3 rounded border whitespace-nowrap overflow-hidden border-blue-400 bg-blue-300 px-6 py-2 text-xs font-bold uppercase tracking-wide"> 
               Cambiar Modelo
           </button>
           </form>
         </div>
 
         <!-- precio -->
-        <div [@changeWidth0To100] *ngIf="!priceIsHidden"  class="absolute md:stick md:top-0 md:px-5 h-[600px] flex flex-col justify-center bg-white overflow-hidden w-full p-5 md:py-0 ">
+        <div [@changeWidth0To100] *ngIf="!priceIsHidden"  class="absolute md:stick md:top-0 md:px-5 h-[420px] flex flex-col justify-center bg-white overflow-hidden w-full p-5 md:py-0 ">
           <div  class="space-y-4 md:pt-8 overflow-hidden ">
              <div class="rounded border h-28 bg-gray-100 p-4">
               <p class="text-sm text-center whitespace-nowrap">
@@ -107,26 +112,56 @@
 
               </p>
             </div>
-            <span class="block whitespace-nowrap text-center text-md text-gray-500">*El precio puede variar hasta comprar el archivo</span>
+            <span class="block whitespace-nowrap text-center text-md text-gray-500">*El precio puede variar hasta comprar</span>
 
 
   
-            <button (click)="stlAddCart()" class="w-full rounded whitespace-nowrap overflow-hidden bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+            <button (click)="stlAddCart()" class="w-full rounded whitespace-nowrap overflow-hidden bg-red-300 px-6 py-3 text-xs font-bold uppercase -tracking-wide">
               Añadir al carrito
             </button>
 
-            <button (click)="changeSettings()" class="w-full rounded whitespace-nowrap overflow-hidden bg-green-300 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+            <button (click)="changeSettings()" class="w-full rounded whitespace-nowrap overflow-hidden bg-green-200 px-6 py-3 text-xs font-bold uppercase -tracking-wide">
               Editar Modelo
             </button>
 
-            <button (click)="removeStlViewer()" class="w-full rounded whitespace-nowrap overflow-hidden bg-blue-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white">
+            <button (click)="removeStlViewer()" class="w-full rounded whitespace-nowrap overflow-hidden bg-blue-300 px-6 py-3 text-xs font-bold uppercase tracking-wide">
               Cotizar otro modelo
             </button>
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
   </div>
+  <p class="text-center text-2xl font-semibold mb-8 hidden md:block text-purple-950">Tus productos en 4 simples pasos</p>
+  <div class="w-full hidden sm:flex justify-center items-start ">
+    <div class="flex justify-around w-2/3">
+      <div class="flex flex-col items-center text-center w-20">
+        <img class="w-20 h-20" src="assets/img/p1.png" alt="" srcset="">
+        <p class="text-xs text-purple-950 font-semibold mt-1">1. Sube tu archivo 3d</p>
+      </div>
+
+      <div class="flex flex-col items-center text-center w-20">
+        <img class="w-20 h-20" src="assets/img/p2.png" alt="" srcset="">
+        <p class="text-xs text-purple-950 font-semibold mt-1">2. Obten una cotizacion al instante</p>
+      </div>
+
+      <div class="flex flex-col items-center text-center w-20">
+        <img class="w-20 h-20" src="assets/img/p3.png" alt="" srcset="">
+        <p class="text-xs text-purple-950 font-semibold mt-1">3. Imprimimos tus archivos</p>
+      </div>
+
+      <div class="flex flex-col items-center text-center w-20">
+        <img class="w-20 h-20" src="assets/img/p4.png" alt="" srcset="">
+        <p class="text-xs text-purple-950 font-semibold mt-1">4. Recibe tus productos</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
 
              

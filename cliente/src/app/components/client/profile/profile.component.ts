@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {  Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
+import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 
 @Component({
   selector: 'app-profile',
@@ -16,25 +17,33 @@ export class ProfileComponent implements OnInit {
     name:"",
     email:""
   }
-  constructor(private crudService:CrudServiceService,private authService:AuthServiceService,private router:Router){}
+  constructor(private crudService:CrudServiceService,private authService:AuthServiceService,private router:Router,private alertService:SweetAlertServiceService){}
 
   ngOnInit(): void {
-    this.crudService.get("user",this.authService.getUserId()).subscribe({
-      next: (data)=>{
-        this.userData={
-          name:data.firstName+ " "+data.lastName,
-          email:data.email
-        }
-      },
-      error: (e)=>{
-        console.log(e)
-      },
-    })
+    // this.crudService.get("user",this.authService.getUserId()).subscribe({
+    //   next: (data)=>{
+    //     this.userData={
+    //       name:data.firstName+ " "+data.lastName,
+    //       email:data.email
+    //     }
+    //   },
+    //   error: (e)=>{
+    //     console.log(e)
+    //   },
+    // })
   }
 
   logout(){
-    this.authService.doLogout();
-    this.router.navigate(["/auth"])
+    this.alertService.loading("Cerrando sesión")
+    this.authService.doLogout().subscribe({
+      complete:()=>{
+        this.alertService.terminateLoading()
+        this.router.navigate(["/auth"])
+      },error:(err)=>{
+        this.alertService.terminateLoading()
+        this.alertService.error("Hubo un error al cerrar sesion")
+      }
+    });
   }
 
 }

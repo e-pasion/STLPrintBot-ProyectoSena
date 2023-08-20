@@ -5,6 +5,7 @@ import { User } from 'src/app/models/User';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,33 +23,36 @@ export class AuthServiceService {
     return this.http.post(this.url+'register-employee',user);
   }
 
+
   signIn(user:User):Observable<any>{
-    return this.http.post(this.url+'login',user)
+    return this.http.post(this.url+'login',user,{withCredentials:true})
   }
 
-  setToken(token:string){
-    localStorage.setItem('access_token',token);
-  }
 
   getToken() {
-    return localStorage.getItem('access_token');
-  }
-
-  
-
-  getUserId(){
-    const token = this.getToken();
-    if (token) {
-      const decodedToken: any = jwt_decode(token);
-      const userId = decodedToken.id; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
-      return userId;
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + 'token' + "=");
+    if (parts.length === 2) {
+      return parts.pop()?.split(";").shift();
     }
     return "";
   }
 
-  getUserRoles(){
-    const token = this.getToken();
   
+
+  // getUserId(){
+  //   console.log(this.getToken());
+  //   const token = this.getToken();
+  //   if (token) {
+  //     const decodedToken: any = jwt_decode(token);
+  //     const userId = decodedToken.id; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
+  //     return userId;
+  //   }
+  //   return "";
+  // }
+
+  getUserRoles(){
+    const token = this.getToken();  
     if (token) {
       const decodedToken: any = jwt_decode(token);
       const userRoles = decodedToken.roles; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
@@ -59,7 +63,6 @@ export class AuthServiceService {
 
   getUserName(){
     const token = this.getToken();
-  
     if (token) {
       const decodedToken: any = jwt_decode(token);
       const name = decodedToken.name; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
@@ -85,11 +88,11 @@ export class AuthServiceService {
   }
 
   isLoggedIn(): boolean {
-    let authToken = localStorage.getItem('access_token');
+    let authToken = this.getToken();
     return authToken !== null ? true : false;
   }
   
-  doLogout() {
-    localStorage.removeItem('access_token');
+  doLogout():Observable<any> {
+    return this.http.post(this.url+'logout',{},{withCredentials:true});
   }
 }

@@ -16,17 +16,17 @@ export class EditProfileComponent implements OnInit {
   constructor(private crudService:CrudServiceService,private authService:AuthServiceService,private router:Router){}
 
   ngOnInit(): void {
-    this.crudService.get("user",this.authService.getUserId()).subscribe({
-      next: (data)=>{
-        this.userData={
-          name:data.firstName+ " "+data.lastName,
-          email:data.email
-        }
-      },
-      error: (e)=>{
-        console.log(e)
-      },
-    })
+    // this.crudService.get("user",this.authService.getUserId()).subscribe({
+    //   next: (data)=>{
+    //     this.userData={
+    //       name:data.firstName+ " "+data.lastName,
+    //       email:data.email
+    //     }
+    //   },
+    //   error: (e)=>{
+    //     console.log(e)
+    //   },
+    // })
   }
 
 }

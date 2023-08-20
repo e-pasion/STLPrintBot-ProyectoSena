@@ -1,15 +1,13 @@
 
 <div class="flex">
-    <div *ngIf="!isAdmin">
+    <div *ngIf="checkIsAdminOrEmployee()">
         <app-navbar-side></app-navbar-side>
     </div>
     <div class="flex-grow">
-        <div *ngIf="isAdmin">
+        <div *ngIf="!checkIsAdminOrEmployee()">
             <app-navbar></app-navbar>
         </div>
-        <div *ngIf="!isAdmin">
-            <app-navbar-top></app-navbar-top>
-        </div>
+
         
 
 

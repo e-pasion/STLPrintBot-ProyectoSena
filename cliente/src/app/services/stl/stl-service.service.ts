@@ -18,7 +18,7 @@ export class StlServiceService {
     return this.http.post(this.url+'calculator/cotization/',{
       volume,
       fill
-    });
+    },{withCredentials:true});
   }
 
   takePhoto(dataUrl:string){
