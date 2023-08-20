@@ -1,19 +1,23 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Role from "../models/Role.js";
+export const SECRET_KEY='api-ava3d';
+
 
 export const verifyToken= async (req,res,next)=>{
     try {
-        const token=req.headers["x-access-token"]
-        if(!token) return res.status(403).json("No token provided")
-        const decoded=jwt.verify(token,'api-ava3d')
-        req.userId=decoded.id;
-        const userFound=User.findById(req.userId,{password:false})//se trae al usuario y se excluye su contraseña
-        if(!userFound) return res.status(404).json({message:"No user found"})
-        console.log(decoded);
-        next();
+        const {token}= req.cookies
+        console.log(token);
+        if(!token) return res.status(401).json({message:'No token Provided'})
+
+        jwt.verify(token,SECRET_KEY,(err,user)=>{
+            if(err) return res.status(400).json({message:'No valid token'})
+            req.userId=user.id;
+            next();
+
+        })
     } catch (error) {
-        return res.status(401).json("Unauthoraized")
+        return res.status(401).json("Unauthorized")
     }
 }
 

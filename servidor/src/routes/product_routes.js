@@ -21,7 +21,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/:id',[verifyToken],productController.getProduct)
 router.delete('/:id',[verifyToken],productController.deleteProduct)
-router.post('/cotization',productController.cotization);
+router.post('/cotization',verifyToken,productController.cotization);
 // router.post('/',[verifyToken,uploadStlAndImg.array('dataFiles',2)],productController.createProduct);
 router.post('/',[verifyToken,upload.array('dataFiles',2)],productController.createProduct);
 router.put('/quantity/:id',[verifyToken],productController.updateQuantityProduct);

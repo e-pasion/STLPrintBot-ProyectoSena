@@ -9,6 +9,6 @@ import * as authController from '../controllers/auth_controller.js';
 router.post('/login', authController.signIn);
 router.post('/register-employee',[verifyToken,isAdmin,duplicateEmail],authController.signUpEmployee)
 router.post('/register',[duplicateEmail], authController.signUp);
-
+router.post('/logout',verifyToken,authController.logout)
 
 export default router;

@@ -1,4 +1,6 @@
 import express from "express"
+import morgan from "morgan";
+import cookieParser from 'cookie-parser';
 import dbConnect from './config/db.js'
 import colorRoutes from './routes/color_routes.js';
 import authRoutes from './routes/auth_routes.js';
@@ -20,8 +22,13 @@ const app= express();
 createAdmin();
 createPrices();
 
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:4200",
+    credentials: true
+}))
 app.use(express.json());
+app.use(cookieParser())
+app.use(morgan('dev'));
 app.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
 
 app.use('/api/uploads', express.static('src/uploads'));
