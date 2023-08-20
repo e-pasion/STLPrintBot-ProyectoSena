@@ -56,7 +56,7 @@
             <fieldset>
               <legend class="text-sm font-semibold">Color</legend>
               <div class="mt-1 ">
-                <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <select [(ngModel)]="stlData.color" (ngModelChange)="changeColor()" name="selectColor" class="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1">
                   <option *ngFor="let color of colors" [value]="color.code" >{{color.name}}</option>
                 </select>
               </div>
@@ -65,7 +65,7 @@
                 <legend class="text-sm font-semibold">Relleno</legend>
                 <div class="flex mt-1">
                 <label for="steps-range" class="block text-xs text-center font-bold text-gray-900 mx-2">{{stlData.fill+"%"}}</label>
-                <input [(ngModel)]="stlData.fill" name="fill" type="range" min=10 max=100 step=10 class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                <input [(ngModel)]="stlData.fill" name="fill" type="range" min=10 max=100 step=10 class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer">
               </div>
               </fieldset>
               <fieldset class="mt-5">
@@ -80,7 +80,7 @@
                         <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Y</p>
                       </div>
                     <div>
-                    <input disabled [value]="dimsText[2]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                    <input disabled [value]="dimsText[2]" type="text"  class="text-center bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1" required>
                     <p  class="block text-sm font-medium text-gray-900 text-center dark:text-white">Z</p>
                   </div>
                 </div>
@@ -89,7 +89,7 @@
                 <legend class="text-sm font-semibold">Escala</legend>
                 <div class="flex mt-1">
                 <label for="steps-range" class="block text-xs text-center font-bold text-gray-900 mx-2">{{scalePercentaje+"%"}}</label>
-                <input [(ngModel)]="scalePercentaje" (input)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 text-xs bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+                <input [(ngModel)]="scalePercentaje" (input)="scaleModel()" name="fill" type="range" min="10" [max]="maxScale" value="100" step="2" class="w-full h-3 text-xs bg-gray-200 rounded-lg appearance-none cursor-pointer">
                 </div>
               </fieldset>
 
