@@ -2,6 +2,7 @@ import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import Role from '../models/Role.js';
 import Cart from '../models/Cart.js';
+import { SECRET_KEY } from '../config/config.js';
 
 export const signUp= async(req,res)=>{
     const { firstName,lastName,email,password}=req.body;
@@ -11,8 +12,8 @@ export const signUp= async(req,res)=>{
         email,
         password:await User.encryptPassword(password)
     })
-     const role= await Role.findOne({name:"client"});//busca el id del rol que se le pase para asignarlo al
-     newUser.roles=[role._id];
+    const role= await Role.findOne({name:"client"});//busca el id del rol que se le pase para asignarlo al
+    newUser.roles=[role._id];
     const savedUser=await newUser.save()
     
     const newCart= new Cart({
@@ -23,6 +24,7 @@ export const signUp= async(req,res)=>{
     await newCart.save();
     res.status(200).json({user:"Is created"})
 }
+
 
 export const signUpEmployee= async(req,res)=>{
     const { firstName,lastName,email,password}=req.body;
@@ -48,11 +50,9 @@ export const signIn= async(req,res)=>{
     const matchPassword=await User.comparePassword(req.body.password, userFound.password)
     if (!matchPassword) return res.status(401).json({token:null,message:"La contraseña es incorrecta"})
     const roleNames= userFound.roles.map((rol)=>rol.name)
-    //el segundo parametro es la llave secreta, lo recomendable es exportarla desde una configuracion
-    const token=jwt.sign({id: userFound._id,name:[userFound.firstName,userFound.lastName],roles:roleNames},'api-ava3d',{
+    const token=jwt.sign({id: userFound._id,name:[userFound.firstName,userFound.lastName],roles:roleNames},SECRET_KEY,{
         expiresIn:86400//24 horas en segundos
     })
-
     res.json({token})
 }
 
