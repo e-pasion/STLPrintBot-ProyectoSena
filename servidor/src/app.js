@@ -10,6 +10,8 @@ import cartRoutes from './routes/cart_routes.js'
 import paymentRoutes from './routes/payment_routes.js'
 import codeRoutes from './routes/code_routes.js'
 import priceRoutes from './routes/price_routes.js'
+import detailRoutes from './routes/detail_routes.js'
+
 
 import { createRoles,createAdmin, createPrices } from "./utils/initialSetup.js";
 import { PORT } from "./config/config.js";
@@ -40,6 +42,8 @@ app.use('/api/cart',cartRoutes);
 app.use('/api/payment',paymentRoutes)
 app.use('/api/code',codeRoutes)
 app.use('/api/price',priceRoutes)
+app.use('/api/detail',detailRoutes)
+
 
 
 app.listen(PORT,()=>{

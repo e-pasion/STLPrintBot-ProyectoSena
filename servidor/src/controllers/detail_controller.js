@@ -1,5 +1,5 @@
 // import Detail from "../models/Detail";
-
+// import {parse} from "date-fns"
 import Cart from "../models/Cart.js";
 import Code from "../models/Code.js";
 import Detail from "../models/Detail.js";
@@ -42,7 +42,6 @@ export const createDetail= async(detailData,totalPrice)=>{
     const savedDetail= await newDetail.save();
     if (savedDetail) {
         await Cart.updateOne({ _id: cartFound._id }, { $set: { products: [] } });
-        await Cart.updateOne({ _id: cartFound._id }, { $set: { totalWeigth: 0 } });
 
     } 
     console.log("todo ok");
@@ -52,3 +51,28 @@ export const createDetail= async(detailData,totalPrice)=>{
   }
    
   }
+
+  export const getAllDetails = async (req, res) => {
+    try {
+     const {page, limit, status} = req.query;
+     const query = {
+      status
+     };
+     
+     const options = {
+       page:parseInt(page,10) || 1,
+       limit: parseInt(limit,10) || 10,
+       populate:{
+        path : 'products',
+        populate : {
+          path : 'color'
+        }
+      }
+     }
+     const result = await Detail.paginate(query,options);
+     res.json(result);
+   } catch (error) {
+    console.log(error);
+     res.status(400).send(error.message)
+   }
+ };

@@ -25,7 +25,7 @@ export class AuthServiceService {
 
 
   signIn(user:User):Observable<any>{
-    return this.http.post(this.url+'login',user,{withCredentials:true})
+    return this.http.post(this.url+'login',user)
   }
 
 
@@ -38,24 +38,12 @@ export class AuthServiceService {
     return "";
   }
 
-  
-
-  // getUserId(){
-  //   console.log(this.getToken());
-  //   const token = this.getToken();
-  //   if (token) {
-  //     const decodedToken: any = jwt_decode(token);
-  //     const userId = decodedToken.id; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
-  //     return userId;
-  //   }
-  //   return "";
-  // }
 
   getUserRoles(){
     const token = this.getToken();  
     if (token) {
       const decodedToken: any = jwt_decode(token);
-      const userRoles = decodedToken.roles; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
+      const userRoles = decodedToken.roles;
       return userRoles;
     }
     return [];
@@ -65,7 +53,7 @@ export class AuthServiceService {
     const token = this.getToken();
     if (token) {
       const decodedToken: any = jwt_decode(token);
-      const name = decodedToken.name; // Asegúrate de que 'rol' coincida con el nombre de la reclamación en tu token
+      const name = decodedToken.name;
       return name;
     }
     return [];
@@ -93,6 +81,6 @@ export class AuthServiceService {
   }
   
   doLogout():Observable<any> {
-    return this.http.post(this.url+'logout',{},{withCredentials:true});
+    return this.http.post(this.url+'logout',{});
   }
 }

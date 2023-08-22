@@ -14,7 +14,7 @@ const metropolitanCities=[
   "Itagüí",
   "La Estrella",
   "Sabaneta",
-  "caldas"
+  "Caldas"
 ]
 
 // export const returnProductPrice= async (userId)=>{
@@ -31,6 +31,17 @@ export const returnProductPrice= async (userId)=>{
   }
   return totalPrice;
 }
+
+export const returnTotalWeigth= async (userId)=>{
+  let weigth=0;
+  const cartFound= await Cart.findOne({userId:userId}).populate("products");
+  let productsFound=cartFound.products;
+  for (let product of productsFound) {
+    weigth+= product.weigth;
+  }
+  return weigth;
+}
+
 export const returnDiscountPrice = async(codeName,price)=>{
   const code = await Code.findOne({ code: codeName });
   if(!code) return 0;
@@ -43,8 +54,7 @@ export const returnDiscountPrice = async(codeName,price)=>{
 export const returnShipDate=async(city,userId)=>{
   console.log(city);
   const printSpeedInGrPerS=0.0022;
-  const cartFound= await Cart.findOne({userId:userId});
-  const timeInS= (cartFound.totalWeigth/printSpeedInGrPerS);//se obtiene el tiempo de impresion en segundos
+  const timeInS= (await returnTotalWeigth(userId)/printSpeedInGrPerS);//se obtiene el tiempo de impresion en segundos
   const timeInDays=timeInS/86400; //se pasa el tiempo en segundos a tiempo en dias
   const printDays=Math.ceil(timeInDays)+1; //redondeamos el tiempo en dias y le aumentamos un dia de preparacion
   const shipDays=(metropolitanCities.includes(city))?1:3;
@@ -67,6 +77,7 @@ export const returnShipPrice= async (city,userId)=>{
 }
 
 function calculateEstimatedDate(shipDays) {
+  console.log(shipDays);
   const currentDate = new Date();
   const estimatedDate = new Date(currentDate);
   estimatedDate.setDate(currentDate.getDate() + shipDays);

@@ -27,10 +27,8 @@ export class CartComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("hola");
-    if(this.authService.isClient()){
     this.findProducts();
-    }
+
     
   }
 
@@ -86,7 +84,7 @@ export class CartComponent implements OnInit {
         console.log(data);
       },
       error:(e)=>{
-        console.log(e);
+        this.loadingIsHidden=true;
       },
       complete:()=>{
         this.findTotalPrice();

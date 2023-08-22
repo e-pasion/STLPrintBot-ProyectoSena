@@ -10,13 +10,13 @@
             <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px">
                     <li class="mr-2">
-                        <a (click)="changeStatus('inProcess')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.inProcess}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En proceso</a>
+                        <a (click)="changeStatus('processing')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.processing}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En proceso</a>
                     </li>
                     <li class="mr-2">
-                        <a (click)="changeStatus('inSend')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.inSend}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En envio</a>
+                        <a (click)="changeStatus('sending')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.sending}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En envio</a>
                     </li>
                     <li class="mr-2">
-                        <a (click)="changeStatus('inFinished')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.inFinished}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">Terminados</a>
+                        <a (click)="changeStatus('finished')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.finished}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">Terminados</a>
                     </li>
                     
                 </ul>
@@ -27,38 +27,35 @@
                   <table class=" text-sm text-left w-full text-gray-500">
                       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                           <tr>
-                              <th></th>
                               <th scope="col" class="px-6 py-3"> ID</th>
                               <th scope="col" class="px-6 py-3">Fecha de entrega</th>
                               <th scope="col" class="px-6 py-3">Acciones</th>
                           </tr>
                       </thead>
                       <tbody>
-                          <!-- <tr *ngFor="let employee of employees"class="bg-white border-b">
-                              <td><input [checked]="employee.status" (click)="toggleEmployeeStatus(employee._id)" type="checkbox" value="" class="w-4 h-4 mx-4 accent-orange-600 rounded focus:ring-yellow-500"></td>
-                              <td class="px-6 py-3 font-medium text-gray-900"> {{employee.firstName}}</td>
-                              <td class="px-6 py-3">{{employee.lastName}}</td>
-                              <td class="px-6 py-3"> {{employee.email}} </td>
+                          <tr *ngFor="let order of orders"class="bg-white border-b">
+                              <td class="px-6 py-3">{{order._id}}</td>
+                              <td class="px-6 py-3"> {{order.shipData.estimatedDate}} </td>
                               <td class="px-6 py-3 flex">
-                                <i class="fa-solid fa-pen text-orange-500 cursor-pointer" (click)="showFormEditEmployee(employee._id)" ></i> 
-                                <i class="fa-solid fa-trash mx-2 text-red-400 cursor-pointer" (click)="removeEmployee(employee._id)"></i>
+                                <i class="fa-solid fa-eye  text-orange-500 cursor-pointer" (click)="getProducts(order._id)"></i>
+                                <i class="fa-solid fa-check mx-2 text-red-400 cursor-pointer"></i>
                               </td>
-                          </tr> -->
+                          </tr>
                       
                       </tbody>
                   </table>
               </div>
                   <div class="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between w-full ">
                       <span class="text-xs xs:text-sm text-gray-900">
-                          <!-- {{showingRange}} -->
+                          {{showingRange}}
                       </span>
                       <div class="inline-flex mt-2 xs:mt-0">
-                          <!-- <button (click)="changePage(paginationData.prevPage)" [disabled]="!paginationData.hasPrevPage" class="text-sm bg-gray-300 disabled:bg-gray-100 hover:bg-gray-400 disabled:hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l">
+                          <button (click)="changePage(paginationData.prevPage)" [disabled]="!paginationData.hasPrevPage" class="text-sm bg-gray-300 disabled:bg-gray-100 hover:bg-gray-400 disabled:hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-l">
                               Anterior
                           </button>
                           <button (click)="changePage(paginationData.nextPage)" [disabled]="!paginationData.hasNextPage" class="text-sm bg-gray-300 disabled:bg-gray-100 hover:bg-gray-400 disabled:hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-r">
                               Siguiente
-                          </button> -->
+                          </button>
                       </div>
                   </div>
               </div>
@@ -70,3 +67,41 @@
 
 
 </div>
+
+<div  *ngIf="!productsIsHidden"  class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="absolute inset-0 bg-black opacity-60"></div>
+    <div [@opacity0To100] class="bg-white  pt-6  rounded-lg shadow-lg z-10 w-80 max-w-80 opacity-100">
+        <div class="flex justify-between px-6">
+            <p class="text-xl">Productos</p>
+            <i class="fa-solid fa-xmark  text-orange-500 cursor-pointer" (click)="closeProducts()"></i>
+        </div>
+        <div class="max-h-56 overflow-auto w-full px-6 snap-y snap-mandatory">
+        <div *ngFor="let product of products; let i = index" class="flex py-6 snap-start">
+            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+              <img [src]="product.path.downloadImg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
+            </div>
+
+            <div class="ml-4 flex flex-1 flex-col">
+              <div>
+                
+                <div class="flex justify-between text-base font-medium text-gray-900 ">
+                  <h3><a href="#">{{"Producto "+ (i+1)}}</a></h3>
+                </div>
+                <div class="">
+                    <p class="mt-1 text-sm text-gray-500">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Color: "+product.color.name}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.size.x.toFixed(0)+"cm, y:"+product.size.y.toFixed(0)+"cm, z:"+product.size.z.toFixed(0)+"cm]"}}</p>
+                  </div>
+              </div>
+              <div class="flex w-full justify-end mt-3">
+                <a href="{{product.path.downloadStl}}"><i class="fa-solid fa-download"></i></a>
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+      
+
+    </div>

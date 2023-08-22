@@ -25,9 +25,17 @@ export class NavbarSideComponent implements OnInit {
     this.userMenuIsHidden=!this.userMenuIsHidden;
   }
 
-  signOut(){
-    this.authService.doLogout();
-    this.router.navigate(["/auth"])
+  logout(){
+    this.alertService.loading("Cerrando sesión")
+    this.authService.doLogout().subscribe({
+      complete:()=>{
+        this.alertService.terminateLoading()
+        this.router.navigate(["/auth"])
+      },error:(err)=>{
+        this.alertService.terminateLoading()
+        this.alertService.error("Hubo un error al cerrar sesion")
+      }
+    });
   }
 
 

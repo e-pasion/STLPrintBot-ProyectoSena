@@ -22,18 +22,20 @@ export const verifyToken= async (req,res,next)=>{
 }
 
 export const isEmployee= async (req,res,next)=>{
-
+    let employeeRoleFound=false;
     const user= await User.findById(req.userId);
     console.log(user)
     const rolesFound= await Role.find({_id:{$in:user.roles }})
     rolesFound.forEach((role)=>{
         if(role.name==="employee"){
-            next();
-            return
-        }else{
-            return res.status(401).json("Unauthoraized, need more privilegies")
+            employeeRoleFound=true;
         }
-    })  
+    })
+    if(employeeRoleFound){
+        next();
+    }else{
+        return res.status(401).json("Unauthorized, need more privilegies")
+    }
 }
 
 export const isAdmin= async (req,res,next)=>{
@@ -50,6 +52,6 @@ export const isAdmin= async (req,res,next)=>{
         next();
         return
     }else{
-            return res.status(401).json("Unauthoraized, need more privilegies")
+        return res.status(401).json("Unauthoraized, need more privilegies")
     }
 }

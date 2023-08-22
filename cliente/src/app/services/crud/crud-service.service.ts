@@ -20,6 +20,10 @@ export class CrudServiceService {
     return this.http.get(this.url+endPoint+'/',{ params })
   }
 
+  getFile(endPoint:String):Observable<any>{
+    return this.http.get(this.url+endPoint+'/', { responseType: 'blob' });
+  }
+
   get(endPoint:String,id:string): Observable<any>{
     return this.http.get(this.url+endPoint+'/'+id);
   }

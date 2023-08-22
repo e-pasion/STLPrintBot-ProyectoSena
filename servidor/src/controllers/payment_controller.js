@@ -3,10 +3,6 @@ import { NGROKURL } from "../config/config.js";
 import { returnProductPrice, returnShipPrice, returnShipDate, returnDiscountPrice } from "../utils/shipUtils.js";
 import { createDetail } from "./detail_controller.js";
 
-
-
-
-
 export const createOrder= async (req,res)=>{
   console.log(req.body);
   console.log(req.body.address);

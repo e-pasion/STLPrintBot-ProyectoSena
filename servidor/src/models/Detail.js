@@ -1,4 +1,5 @@
 import { model,Schema } from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const detailSchema= new Schema({
     
@@ -15,10 +16,12 @@ const detailSchema= new Schema({
         optionalNotes:{type:String,required:false},
         estimatedDate:{type:String,required:true},
     },
-    totalPrice:{type:Number, required:true}
+    totalPrice:{type:Number, required:true},
+    status:{type:String, default:'processing'}
 },{
     timestamps:true,
     versionKey:false
 })
+detailSchema.plugin(mongoosePaginate);
 
 export default model("Detail",detailSchema)
