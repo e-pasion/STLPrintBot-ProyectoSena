@@ -2,20 +2,22 @@
     <app-navbar></app-navbar>
 </div>
 
-<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex flex-col justify-center items-center">
+<body class="bg-gradient-to-br from-blue-900 to-purple-900 min-h-screen flex flex-col justify-center items-center">
     <div class="bg-white w-11/12 max-w-3xl p-6 rounded-lg shadow-lg">
         <div class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-semibold text-purple-600">¡Hola, Usuario!</h1>
-            <a href="#" class="text-blue-500 hover:underline">Cerrar sesión</a>
+            <h1 class="text-3xl font-semibold text-purple-900">¡Hola, Usuario!</h1>
+            <a (click)="logout()" class="text-blue-500 hover:underline">Cerrar sesión</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div class="bg-purple-100 p-6 rounded-lg">
-                <h2 class="text-xl font-semibold text-purple-700 mb-4">Información de la cuenta</h2>
-                <!-- Contenido de la información de la cuenta -->
+                <h2 class="text-xl font-medium text-purple-900 mb-4">Información de la cuenta</h2>
+                <h3 class="text-l font-semibold ">Datos de Contacto</h3>
+                <p class="text-xs sm:text-base dark:text-gray-400">Juanito Alimaña<!-- {{userData.name}} --></p>
+                <p class="text-xs sm:text-base dark:text-gray-400 ">juanito@gmail.com<!-- {{userData.email}} --></p>
             </div>
             <div class="bg-purple-100 p-6 rounded-lg">
-                <h2 class="text-xl font-semibold text-purple-700 mb-4">Libreta de direcciones</h2>
+                <h2 class="text-xl font-semibold text-purple-900 mb-4">Libreta de direcciones</h2>
                 <!-- Contenido de la libreta de direcciones -->
             </div>
         </div>
