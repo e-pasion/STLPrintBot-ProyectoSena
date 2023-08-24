@@ -2,101 +2,36 @@
     <app-navbar></app-navbar>
 </div>
 
-<div class="fondo">
-    <div class="flex flex-col items-center w-full sm:flex-row sm:justify-center sm:h-[90vh]">
-        <!-- menu side -->
-        <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-20 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[400px] sm:max-w-xs ">
-                <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
-                    <img src="https://source.unsplash.com/150x150/?portrait?3" alt="" class="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square">
-                    <div class="space-y-4 divide-y divide-gray-700">
-                        <div class="my-2 space-y-1">
-                            <h1 class="text-xl font-light sm:text-2xl break-words">Informacion de la cuenta</h1>
-                            <hr>
-                            <h2 class="text-l font-medium sm:text-2xl break-words">Datos de Contacto</h2>
-                            <p class="text-xs sm:text-base dark:text-gray-400">{{userData.name}}</p>
-                            <p class="text-xs sm:text-base dark:text-gray-400 ">{{userData.email}}</p>
-                        </div>
-                        <div class="flex justify-end pt-2 space-x-4 align-center">
-                            <i class="fa-solid cursor-pointer fa-gear" routerLink="/edit-profile" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
-                            <i class="fa-solid cursor-pointer fa-arrow-right-from-bracket" (click)="logout()" [ngClass]="{'fa-flip': isHoveredExit}" (mouseenter)="isHoveredExit = true" (mouseleave)="isHoveredExit = false"></i>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex flex-col justify-center items-center">
+    <div class="bg-white w-11/12 max-w-3xl p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-semibold text-purple-600">¡Hola, Usuario!</h1>
+            <a href="#" class="text-blue-500 hover:underline">Cerrar sesión</a>
         </div>
-        <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[600] sm:max-w-xs ">
-                <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
-                    <div class="space-y-4 divide-y divide-gray-700">
-                        <div class="my-2 space-y-1">
-                            <h1 class="text-xl font-light sm:text-2xl break-words">Libreta de direcciones</h1>
-                            <hr>
-                            <h2 class="text-l font-medium sm:text-2xl break-words">Direccion de facturacion predeterminada</h2>
-                            <p class="text-xs sm:text-base dark:text-gray-400">{{userData.name}}</p>
-                            <p class="text-xs sm:text-base dark:text-gray-400">3217858964</p>
-                            <p class="text-xs sm:text-base dark:text-gray-400">CL 10 25 59 MEDELLIN, ANT.</p>
-                            
-                            <hr>
 
-                            <h2 class="text-l font-medium sm:text-2xl break-words">Direccion de envio predeterminada</h2>
-                            <p class="text-l font-light sm:text-2xl break-words">No se ha establecido una direccion de envio por defecto.</p>
-                        
-                        </div>
-                        <div class="flex justify-end pt-2 space-x-4 align-center">
-                            <i class="fa-solid cursor-pointer fa-gear" routerLink="/edit-address" [ngClass]="{'fa-spin': isHoveredSettings}" (mouseenter)="isHoveredSettings = true" (mouseleave)="isHoveredSettings = false"></i>
-                            <i class="fa-solid cursor-pointer fa-location-dot" [ngClass]="{'fa-bounce': isHoveredDirections}" (mouseenter)="isHoveredDirections = true" (mouseleave)="isHoveredDirections = false"></i>
-    
-                        </div>
-                    </div>
-                    
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-purple-100 p-6 rounded-lg">
+                <h2 class="text-xl font-semibold text-purple-700 mb-4">Información de la cuenta</h2>
+                <!-- Contenido de la información de la cuenta -->
+            </div>
+            <div class="bg-purple-100 p-6 rounded-lg">
+                <h2 class="text-xl font-semibold text-purple-700 mb-4">Libreta de direcciones</h2>
+                <!-- Contenido de la libreta de direcciones -->
             </div>
         </div>
-        
-        <div class="w-3/5 sm:w-2/5 flex justify-center">
-            <div class="w-full sm:w-9/12 max-w-lg mt-10 flex items-center sm:mt-0 rounded-2xl shadow-md bg-white sm:h-[600] sm:max-w-xs ">
-                <div class="flex flex-col  w-full  justify-center  p-6 shadow-md rounded-xl sm:px-12 sm:shadow-none"> 
-                    <div class="space-y-4 divide-y divide-gray-700">
-                        <div class="my-2 space-y-1">
-                            <h1 class="text-xl font-light sm:text-2xl break-words">Pedidos recientes</h1>
-                            <hr>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 1001148506</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 21/07/2023</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $348.500</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-green-400"> Enviado</span></h2>
-                            <div class="flex justify-end pt-2 space-x-4 align-center">
-                                <i class="fa-solid fa-eye cursor-pointer" ></i>
-                            </div>
-                            <hr>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 100297585</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 11/12/19</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $48.500</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-yellow-400"> Pendiente</span></h2>
-                            <div class="flex justify-end pt-2 space-x-4 align-center">
-                                <i class="fa-solid fa-eye cursor-pointer"></i>
-                            </div>
-                            <hr>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Pedido #:<span class="text-xs sm:text-base dark:text-gray-400"> 100304831</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Fecha:<span class="text-xs sm:text-base dark:text-gray-400"> 19/12/19</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Enviar a:<span class="text-xs sm:text-base dark:text-gray-400"> {{userData.name}}</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Total:<span class="text-xs sm:text-base dark:text-gray-400"> $80.500</span></h2>
-                            <h2 class="text-sm font-medium sm:text-2xl break-words">Estado:<span class="text-xs sm:text-base dark:text-red-400"> Cancelado</span></h2>
-                            <div class="flex justify-end pt-2 space-x-4 align-center">
-                                <i class="fa-solid fa-eye cursor-pointer"></i>
-                            </div>
-                            <hr>
-            
-                        
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-            </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-purple-700 mb-6">Dashboard de Pedidos</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Listado de pedidos -->
+                <li class="bg-blue-200 p-4 rounded-lg">
+                    <!-- Detalles del pedido -->
+                </li>
+                <li class="bg-blue-200 p-4 rounded-lg">
+                    <!-- Detalles del pedido -->
+                </li>
+                <!-- ... más elementos de la lista ... -->
+            </ul>
         </div>
     </div>
-</div>
+</body>
