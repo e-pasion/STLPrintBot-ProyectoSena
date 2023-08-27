@@ -22,7 +22,7 @@ export class CheckoutComponent implements OnInit{
   selectedDepartment:any="";
   validateShip:boolean=false;
   shipPrice=0;
-  shipDate=0;
+  shipDate: Date | null = null;
   discountPrice=0;
   code="";
   
@@ -39,15 +39,17 @@ export class CheckoutComponent implements OnInit{
     })
   }
   ngOnInit(): void {
-    this.findTotalPrice();
-    this.findProducts()
     this.getDepartments()
+    this.findTotalPrice();
+    this.findCart()
   }
 
-  submitDirection(){
+  
+
+  async submitDirection(){
       this.validateShip=true;
       this.mapIsEnabled=true;
-      const encodedAddress = encodeURIComponent(this.shipForm.get('address')?.value+" "+this.shipForm.get('city')?.value);
+      const encodedAddress = encodeURIComponent(this.shipForm.get('address')?.value+" "+this.shipForm.get('city')?.value+" "+this.shipForm.get('department')?.value);
       const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}&zoom=20&key=AIzaSyCEX3tGvVECoFH9a0Na8lPk2oChRALPnkc`;
       this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
       this.findShipPrice()
@@ -64,7 +66,7 @@ export class CheckoutComponent implements OnInit{
         console.log(data);
         this.shipPrice=data.shipPrice;
         this.shipDate=data.shipDate;
-
+        this.saveShipData()
       },
       error:(e)=>{
         console.log(e);
@@ -92,16 +94,24 @@ export class CheckoutComponent implements OnInit{
     })
   }
   getCities(){
-    console.log(this.selectedDepartment);
-    this.cities=(this.departments.find((deparment:any)=>deparment.id==this.shipForm.get('department')?.value)).ciudades;
-    console.log(this.cities);
+    this.cities=(this.departments.find((deparment:any)=>deparment.departamento==this.shipForm.get('department')?.value)).ciudades;
   }
 
-  findProducts(){
+  findCart(){
     this.crudService.getAll('cart/').subscribe({
       next:(data)=>{
-        this.products=data;
-        console.log(this.products)
+        this.products=data.products;
+        if(data.shipData) {
+          this.shipForm.patchValue(data.shipData)
+          this.shipPrice=data.shipData.shipPrice
+          this.shipDate=data.shipData.estimatedDate
+          this.getCities();
+        };
+        if(data.codeUsed){
+          console.log(data.codeUsed);
+          this.discountPrice=Math.round(this.productPrice*(data.codeUsed.discount/100)/50)*50;
+        }
+        console.log(data)
       },
       error:(e)=>{
         console.log(e);
@@ -126,22 +136,37 @@ export class CheckoutComponent implements OnInit{
     })
   }
 
-
-  makePayment(){
+  saveShipData(){
+    console.log(this.shipPrice);
     const shipData={
       firstName:this.shipForm.get('firstName')?.value,
       lastName:this.shipForm.get('lastName')?.value,
-      numberPhone:this.shipForm.get('numberPhone')?.value,
       address:this.shipForm.get('address')?.value,
+      department:this.shipForm.get('department')?.value,
       city:this.shipForm.get('city')?.value,
+      numberPhone:this.shipForm.get('numberPhone')?.value,
       optionalNotes:this.shipForm.get('optionalNotes')?.value ||"",
-      code:this.code
+      estimatedDate:this.shipDate,
+      shipPrice:this.shipPrice
     }
-
-
-    this.crudService.save(shipData,"payment").subscribe({
+    this.crudService.save(shipData,"cart/shipData").subscribe({
       next:(data)=>{
-        window.location.href = data.init_point;
+        console.log(data);
+      }
+    })
+
+  }
+
+  getDateString(date:any){
+    if(date==null) return '';
+    return new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+  }
+
+
+  makePayment(){
+    this.crudService.getAll("payment").subscribe({
+      next:(data)=>{
+        window.location.href = data.link;
       }
     })
   }

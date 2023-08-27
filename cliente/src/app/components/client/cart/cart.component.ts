@@ -80,7 +80,7 @@ export class CartComponent implements OnInit {
   findProducts(){
     this.crudService.getAll('cart/').subscribe({
       next:(data)=>{
-        this.products=data;
+        this.products=data.products;
         console.log(data);
       },
       error:(e)=>{

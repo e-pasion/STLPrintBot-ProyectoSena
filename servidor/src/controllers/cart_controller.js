@@ -1,24 +1,28 @@
 import Cart from "../models/Cart.js";
 import { returnProductPrice, returnShipDate, returnShipPrice} from "../utils/shipUtils.js";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { calculateStlPrice } from "../utils/stlUtils.js";
 
 
-
-export const getCartProducts= async(req,res)=>{
-    const cartFound= await Cart.findOne({userId:req.userId})
+export const getCart= async(req,res)=>{
+  let productsFound=[];
+  const cartFound= await Cart.findOne({userId:req.userId})
     .populate({
         path: "products",
         populate: {
           path: "color",
-        },})
-    let productsFound=cartFound.products;
+        }}).populate("codeUsed");
+  console.log(req.userId);
+  console.log("xd: "+ cartFound);  
+  if(cartFound.products){
+    productsFound=cartFound.products;
     for (let product of productsFound) {
-      let price = await calculateStlPrice(product.weigth);
-      product.price=price;
+    let price = await calculateStlPrice(product.weigth);
+    product.price=price;
     }
-    console.log(productsFound);
-    return res.json(productsFound);
+  }
+  cartFound.products=productsFound;
+  console.log(cartFound);
+  return res.json(cartFound);
 }
 
 export const getProductPrice= async (req,res)=>{
@@ -30,4 +34,11 @@ export const getShipPrice=async(req,res)=>{
   const shipPrice= await returnShipPrice(req.body.city,req.userId)
   const shipDate= await returnShipDate(req.body.city,req.userId)
   return res.json({shipPrice,shipDate});
+}
+
+export const saveShipData= async(req,res)=>{
+  const shipData = req.body;
+  const cartUpdated = await Cart.findOneAndUpdate({ userId: req.userId }, {shipData}, { new: true });
+  console.log(cartUpdated);
+  return res.json({message:'Ship Data Updated'})
 }

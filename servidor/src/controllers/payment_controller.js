@@ -1,81 +1,43 @@
-import mercadopago from "mercadopago"
-import { NGROKURL } from "../config/config.js";
 import { returnProductPrice, returnShipPrice, returnShipDate, returnDiscountPrice } from "../utils/shipUtils.js";
-import { createDetail } from "./detail_controller.js";
+import Cart from "../models/Cart.js";
+import axios from 'axios'
 
-export const createOrder= async (req,res)=>{
-  console.log(req.body);
-  console.log(req.body.address);
-    mercadopago.configure({
-        access_token:'TEST-8133959242082900-071517-0598bf125b902a9a5c64ab882e998c61-1425002340',
-    })
+const privateKey = 'prv_test_5KiH6Aic7rfqJcdIAt47Y88Fdv2CEQp7';
+const prefixLink='https://checkout.wompi.co/l/';
 
-    const shipPrice= await returnShipPrice(req.body.city,req.userId)
-    const shipDate= await returnShipDate(req.body.city,req.userId)
-    const productPrice=await returnProductPrice(req.userId);
-    const discountPrice=await returnDiscountPrice(req.body.code,productPrice);
-    const result = await mercadopago.preferences.create({
-      
-        items: [ 
-          {
-            "title": "Carrito",
-            "currency_id": "COP",
-            "description": "Comprando el carrito",
-            "category_id": "stl",
-            "quantity": 1,
-            "unit_price": parseInt(productPrice-discountPrice)
-          }
-        ],
-        "metadata": {
-          userId:req.userId,
-          firstName:req.body.firstName,
-          lastName:req.body.lastName,
-          numberPhone:req.body.numberPhone,
-          address:req.body.address,
-          city:req.body.city,
-          optionalNotes:req.body.optionalNotes,
-          shipDate,
-          codeName:req.body.code
-        },
-        payment_methods:{
-          "installments":1
-        },
-        shipments:{
-          cost:parseInt(shipPrice),
-          mode:'not_specified'
-        },
-        binary_mode:true,
-        back_urls:{
-            success:"http://localhost:4200",
-            failure:"http://localhost:4000/api/payment/failure",
-            pending:"http://localhost:4000/api/payment/pending",
-        },notification_url:NGROKURL+"/api/payment/webhook"
-      });
-      
-      console.log(result.body.init_point);
 
-      res.json(result.body);
+const config = {
+    headers: { Authorization: `Bearer ${privateKey}` }
+};
 
+export const createPaymentLink=async(req,res)=>{
+  let discountPrice=0
+  const cartFound=await Cart.findOne({userId:req.userId}).populate('codeUsed');
+  console.log(cartFound);
+  const productPrice=await returnProductPrice(req.userId);
+  if(cartFound.codeUsed) discountPrice=await returnDiscountPrice(cartFound.codeUsed.discount,productPrice);
+  const totalPrice=parseInt(cartFound.shipData.shipPrice)+parseInt(productPrice)-parseInt(discountPrice)
+
+  const paymentData={
+      "name": "Carrito", // Nombre del link de pago
+      "description": "Comprando productos en tu carrito", // Descripción del pago
+      "single_use": false, // `false` current caso de que el link de pago pueda recibir múltiples transacciones APROBADAS o `true` si debe dejar de aceptar transacciones después del primer pago APROBADO
+      "collect_shipping": false, // Si deseas que el cliente inserte su información de envío current el checkout, o no
+      "currency": "COP",  //Únicamente está disponible pesos colombianos (COP) current el momento. En el futuro soportaremos mas monedas
+      "amount_in_cents": totalPrice*100, // Si el pago current por un monto especifico, si no lo incluyes el pagador podrá elegir el valor a pagar
+      "redirect_url": 'http://localhost:4200/', // URL donde será redirigido el cliente una vez termine el proceso de pago
+      "image_url": 'https://eltallerdehector.com/wp-content/uploads/2022/06/88435-logo-batman-3d-png-free.png', // Dirección de la imagen que quieras presentar current el link de pago
+      "sku": cartFound._id
 }
 
-export const receiveWebhook= async (req,res)=>{
-    try {
-      let data;
-        const payment = req.query;
-        console.log(payment);
-        if (payment.type === "payment") {
-          data = await mercadopago.payment.findById(payment["data.id"]);
-          console.log(data);
-          console.log('-----------------------------------------------------------');
-          console.log(data.body.metadata);
-          console.log(data.body.transaction_details.total_paid_amount);
-          createDetail(data.body.metadata,data.body.transaction_details.total_paid_amount)
-        }
-        res.sendStatus(204);
-      } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Something goes wrong" });
-      }
+    axios.post('https://sandbox.wompi.co/v1/payment_links', paymentData,config)
+    .then(response => {
+        console.log(response.data);
+        res.json({'link': prefixLink+response.data.data.id});
+    })
+    .catch(error => {
+        console.error('Error al realizar el pago:', error.message);
+    });
 
 }
 

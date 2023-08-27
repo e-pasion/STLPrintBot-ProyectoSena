@@ -1,6 +1,6 @@
 import Code from "../models/Code.js";
 import User from "../models/User.js"
-
+import Cart from "../models/Cart.js";
 export const getCodes = async (req, res)=>{
 
     try {
@@ -77,6 +77,7 @@ export const verifyCode= async(req,res)=>{
         console.log(req.body.price);
         const price=Math.round(req.body.price*(code.discount/100)/50)*50;
         console.log(price);
+        await Cart.findOneAndUpdate({ userId: req.userId }, {codeUsed:code._id}, { new: true });
         return res.json({
             discount:code.discount,
             price

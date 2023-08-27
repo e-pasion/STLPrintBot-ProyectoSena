@@ -10,15 +10,12 @@
             <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px">
                     <li class="mr-2">
-                        <a (click)="changeStatus('processing')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.processing}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En proceso</a>
+                        <a (click)="changeStatus('processing')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.processing}" class="inline-block p-4 border-b-2 rounded-t-lg cursor-pointer">En proceso</a>
                     </li>
                     <li class="mr-2">
-                        <a (click)="changeStatus('sending')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.sending}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">En envio</a>
+                        <a (click)="changeStatus('sending')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.sending}" class="inline-block p-4 border-b-2 rounded-t-lg cursor-pointer">En envio</a>
                     </li>
-                    <li class="mr-2">
-                        <a (click)="changeStatus('finished')" [ngClass]=" {'text-blue-600 , border-blue-600':statusToggle.finished}" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg cursor-pointer">Terminados</a>
-                    </li>
-                    
+
                 </ul>
             </div>
 
@@ -35,10 +32,10 @@
                       <tbody>
                           <tr *ngFor="let order of orders"class="bg-white border-b">
                               <td class="px-6 py-3">{{order._id}}</td>
-                              <td class="px-6 py-3"> {{order.shipData.estimatedDate}} </td>
+                              <td class="px-6 py-3"> {{getDateString(order.shipData.estimatedDate)}} </td>
                               <td class="px-6 py-3 flex">
-                                <i class="fa-solid fa-eye  text-orange-500 cursor-pointer" (click)="getProducts(order._id)"></i>
-                                <i class="fa-solid fa-check mx-2 text-red-400 cursor-pointer"></i>
+                                <i class="fa-solid fa-eye  text-orange-500 cursor-pointer" (click)="getOrders(order._id)"></i>
+                                <i class="fa-solid fa-check mx-2 text-red-400 cursor-pointer" (click)="statusToggle.processing?changeOrderStatus(order._id,'sending'):changeOrderStatus(order._id,'finished')"></i>
                               </td>
                           </tr>
                       
@@ -70,38 +67,55 @@
 
 <div  *ngIf="!productsIsHidden"  class="fixed inset-0 flex items-center justify-center z-50">
     <div class="absolute inset-0 bg-black opacity-60"></div>
+    <div class="flex flex-col-reverse sm:flex-row-reverse">
+        <div *ngIf="statusToggle.sending" class=" w-80 bg-white z-10 -translate-y-2 -translate-x-0 sm:-translate-x-2 sm:-translate-y-0">
+            <iframe class="w-full h-full"  frameborder="0" style="border:0" [src]="mapUrl" allowfullscreen></iframe>
+        </div>
     <div [@opacity0To100] class="bg-white  pt-6  rounded-lg shadow-lg z-10 w-80 max-w-80 opacity-100">
         <div class="flex justify-between px-6">
-            <p class="text-xl">Productos</p>
+            <p [ngClass]="statusToggle.processing?'opacity-100':'opacity-0'"  class="text-xl">Productos</p>
             <i class="fa-solid fa-xmark  text-orange-500 cursor-pointer" (click)="closeProducts()"></i>
         </div>
-        <div class="max-h-56 overflow-auto w-full px-6 snap-y snap-mandatory">
-        <div *ngFor="let product of products; let i = index" class="flex py-6 snap-start">
-            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-              <img [src]="product.path.downloadImg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
-            </div>
-
-            <div class="ml-4 flex flex-1 flex-col">
-              <div>
-                
-                <div class="flex justify-between text-base font-medium text-gray-900 ">
-                  <h3><a href="#">{{"Producto "+ (i+1)}}</a></h3>
+        <div *ngIf="statusToggle.processing" class="max-h-56 overflow-auto w-full px-6 snap-y snap-mandatory">
+            <div *ngFor="let product of products; let i = index" class="flex py-6 snap-start">
+                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <img [src]="product.path.downloadImg" alt="" class="h-full w-full object-cover object-center">
                 </div>
-                <div class="">
-                    <p class="mt-1 text-sm text-gray-500">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Color: "+product.color.name}}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.size.x.toFixed(0)+"cm, y:"+product.size.y.toFixed(0)+"cm, z:"+product.size.z.toFixed(0)+"cm]"}}</p>
-                  </div>
-              </div>
-              <div class="flex w-full justify-end mt-3">
-                <a href="{{product.path.downloadStl}}"><i class="fa-solid fa-download"></i></a>
+                <div class="ml-4 flex flex-1 flex-col">
+                    <div>
+                        <div class="flex justify-between text-base font-medium text-gray-900 ">
+                            <h3><a href="#">{{"Producto "+ (i+1)}}</a></h3>
+                        </div>
+                        <div class="">
+                            <p class="mt-1 text-sm text-gray-500">{{"Peso: "+product.weigth.toFixed(1) +"g"}}</p>
+                            <p class="mt-1 text-sm text-gray-500">{{"Relleno: "+product.fill.toFixed(0) +"%"}}</p>
+                            <p class="mt-1 text-sm text-gray-500">{{"Color: "+product.color.name}}</p>
+                            <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.size.x.toFixed(0)+"cm, y:"+product.size.y.toFixed(0)+"cm, z:"+product.size.z.toFixed(0)+"cm]"}}</p>
+                        </div>
+                    </div>
+                    <div class="flex w-full justify-end mt-3">
+                        <a href="{{product.path.downloadStl}}"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div *ngIf="statusToggle.sending">
+            <div class="w-full flex flex-col justify-center items-center mb-8 px-6">
+                <div class="w-24 h-24 rounded-full bg-blue-50 shadow-sm flex justify-center items-center">
+                    <i class="fa-solid fa-dolly text-5xl text-blue-800 "></i>
+                </div>
+                <div class="my-4">
+                    <p class="">Informacion de envio: </p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Nombre: "+orderFound.shipData.firstName+" "+orderFound.shipData.lastName}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Direccion: "+orderFound.shipData.address}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Celular: "+ orderFound.shipData.numberPhone}}</p>
+                    <p *ngIf="orderFound.shipData.optionalNotes" class="mt-1 text-sm text-gray-500">{{"Nota: " + orderFound.shipData.optionalNotes }}</p>
+                </div>
 
             </div>
 
         </div>
     </div>
-      
-
-    </div>
+</div>
+</div>

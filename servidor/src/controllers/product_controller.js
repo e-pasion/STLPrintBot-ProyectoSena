@@ -88,7 +88,7 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-const deleteProductStorage = async(pathImg,pathStl)=>{
+export const deleteProductStorage = async(pathImg,pathStl)=>{
   try {
     const storage = getStorage();
     const imgRef = ref(storage, pathImg);

@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { opacity0To100 } from 'src/app/utils/animation';
@@ -15,10 +16,13 @@ export class OrderComponent implements OnInit {
   showingRange: string='';
   currentPage: number=1;
   orders:any=[];
+  orderFound:any;
   products:any=[];
   productsIsHidden=true;
+  mapUrl: SafeResourceUrl | undefined;
 
-  constructor(private alertService:SweetAlertServiceService, private crudService:CrudServiceService){}
+
+  constructor(private alertService:SweetAlertServiceService, private crudService:CrudServiceService,private sanitizer: DomSanitizer){}
   ngOnInit(): void {
     this.getAllOrders();
   }
@@ -72,10 +76,17 @@ export class OrderComponent implements OnInit {
     this.getAllOrders()
   }
 
-  getProducts(id:string){
-    const orderFound= this.orders.find((order:any)=> order._id==id)
-    this.products=orderFound.products
+  getOrders(id:string){
+    this.orderFound= this.orders.find((order:any)=> order._id==id)
+    this.products=this.orderFound.products
     this.productsIsHidden=false;
+
+    if(this.statusToggle.sending){
+      const encodedAddress = encodeURIComponent(this.orderFound.shipData.address+" "+this.orderFound.shipData.city+" "+this.orderFound.shipData.department);
+      console.log(this.orderFound.shipData.address+" "+this.orderFound.shipData.city+" "+this.orderFound.shipData.department);
+      const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}&zoom=20&key=AIzaSyCEX3tGvVECoFH9a0Na8lPk2oChRALPnkc`;
+      this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
+    }
   }
 
   closeProducts(){
@@ -91,20 +102,30 @@ export class OrderComponent implements OnInit {
     return `Mostrando ${firstItemIndex} a ${lastItemIndex} de ${this.paginationData.totalDocs} Entradas`;
   }
 
-  // downloadStl(id:any){
-  //   this.crudService.getFile('product/download').subscribe({
-  //     next:(data){
-  //       const blob = new Blob([data], { type: 'application/octet-stream' });
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = id;
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //       window.URL.revokeObjectURL(url);
-  //     }
-  //   })
-  // }
+  changeOrderStatus(orderId:string,status:string){
+    let msg='';
+    if(status=='finished') msg='¿Estás seguro de que deseas finalizar el pedido? Esta acción es irreversible.' 
+    else if(status=='sending') msg='"¿Estás seguro de que deseas enviar este archivo para el envío? Esta acción es irreversible."'
+
+    this.alertService.question(msg,"si","no").then((result) => {
+      if (result.isConfirmed) {
+        const data={
+          orderId,
+          status
+        }
+        this.crudService.updateWithoutId(data,'detail/status').subscribe({
+          next:(data)=> console.log(data),
+          error:(error)=> console.log(error),
+          complete: ()=> this.getAllOrders()
+        })
+      }
+    })
+  }
+
+
+  getDateString(date:any){
+    if(date==null) return '';
+    return new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+  }
 
 }

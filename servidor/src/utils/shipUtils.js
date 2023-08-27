@@ -42,10 +42,8 @@ export const returnTotalWeigth= async (userId)=>{
   return weigth;
 }
 
-export const returnDiscountPrice = async(codeName,price)=>{
-  const code = await Code.findOne({ code: codeName });
-  if(!code) return 0;
-  const discountPrice= Math.round(price*(code.discount/100)/50)*50;
+export const returnDiscountPrice = async(codeDiscount,price)=>{
+  const discountPrice= Math.round(price*(codeDiscount/100)/50)*50;
   console.log(discountPrice);
   return discountPrice;
 }
@@ -81,7 +79,7 @@ function calculateEstimatedDate(shipDays) {
   const currentDate = new Date();
   const estimatedDate = new Date(currentDate);
   estimatedDate.setDate(currentDate.getDate() + shipDays);
-  return estimatedDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+  return estimatedDate;
 }
 
 export const adjustPrice= (price)=>{

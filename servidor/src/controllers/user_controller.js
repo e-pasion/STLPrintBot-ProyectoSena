@@ -23,8 +23,10 @@ export const getUser = async (req, res) => {
       const roleAdmin=await Role.findOne({name:'admin'});
 
       const query = {
-        roles: new mongoose.Types.ObjectId(roleEmployee._id), // Convertir a ObjectId
-        roles: { $ne: new mongoose.Types.ObjectId(roleAdmin._id) }, // No tener el rol "admin"
+        $and: [
+          { roles: new mongoose.Types.ObjectId(roleEmployee._id) },
+          { roles: { $ne: new mongoose.Types.ObjectId(roleAdmin._id) } }
+        ]
       };
 
       if (status === 'true' || status === 'false') {
@@ -43,6 +45,7 @@ export const getUser = async (req, res) => {
         limit: parseInt(limit,10) || 10,
       }
       const result = await User.paginate(query,options);
+      
       res.json(result);
     } catch (error) {
       res.status(400).send(error.message)

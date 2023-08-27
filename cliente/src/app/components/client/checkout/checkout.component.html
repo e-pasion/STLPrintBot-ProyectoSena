@@ -62,7 +62,7 @@
                             <div class="w-full lg:w-1/2">
                                 <select formControlName="department" (change)="getCities()" name="departments" class="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
                                     <option value="" disabled >Seleccione un departamento:</option>
-                                    <option *ngFor="let derpartment of departments;let i=index" [value]="derpartment.id">{{derpartment.departamento}}</option>
+                                    <option *ngFor="let derpartment of departments;let i=index" [value]="derpartment.departamento">{{derpartment.departamento}}</option>
                                 </select>
 
                                 <div *ngIf="shipForm.get('department')?.invalid && shipForm.get('department')?.touched">
@@ -118,7 +118,7 @@
                         Descuento por cupon<span class="ml-2">{{'$'+discountPrice}}</span></div>
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                        Fecha de entrega estimada:<span class="ml-2">{{shipDate}}</span></div>
+                        Fecha de entrega estimada:<span class="ml-2">{{getDateString(shipDate)}}</span></div>
                     <div
                         class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
                         Total<span class="ml-2">{{'$'+(productPrice-discountPrice+shipPrice)}}</span></div>
