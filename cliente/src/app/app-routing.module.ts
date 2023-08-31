@@ -19,6 +19,7 @@ import { OrderComponent } from './components/dashboard/order/order.component';
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
 import { EditAddressComponent } from './components/client/edit-address/edit-address.component';
+import { ServicesComponent } from './components/client/services/services.component';
 
 const routes: Routes = [
   //client
@@ -27,8 +28,9 @@ const routes: Routes = [
   {path:"profile",canActivate:[authGuard,clientGuard],component:ProfileComponent},
   {path:"edit-profile",canActivate:[authGuard,clientGuard],component:EditProfileComponent},
   {path:"edit-address",canActivate:[authGuard,clientGuard],component:EditAddressComponent},
-  {path:"calculator",component:CalculatorComponent},
+  {path:"cotizator",component:CalculatorComponent},
   {path:"edit-product/:id",canActivate:[authGuard,clientGuard],component:CalculatorComponent},
+  {path:'services',component:ServicesComponent},
   {path:"cart",component:CartComponent},
   {path:"checkout",component:CheckoutComponent},
 
