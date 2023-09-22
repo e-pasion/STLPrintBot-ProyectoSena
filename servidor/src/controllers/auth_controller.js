@@ -67,12 +67,10 @@ export const signIn= async(req,res)=>{
         })
         console.log(token);
         res.cookie('token',token,{
-            httpOnly: true,
-        path: "/",
-         domain: "localhost",
-        secure: false,
-        sameSite: "none", 
-        maxAge: 3600000, 
+            sameSite: 'None', 
+            secure: false,     
+            httpOnly: false,   
+            maxAge: 3600,  
         });
         res.status(200).json({ message: 'Signin Successful' });
     } catch (error) {
