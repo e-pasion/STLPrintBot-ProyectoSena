@@ -1,39 +1,186 @@
 <div class="flex-grow">
-    <app-navbar></app-navbar>
+  <app-navbar></app-navbar>
 </div>
 
-<body class="bg-gradient-to-br from-blue-900 to-purple-900 min-h-screen flex flex-col justify-center items-center">
-    <div class="bg-white w-11/12 max-w-3xl p-6 rounded-lg shadow-lg">
-        <div class="flex items-center justify-between mb-6">
-            <h1 class="text-3xl font-semibold text-purple-900">¡Hola, Usuario!</h1>
-            <a (click)="logout()" class="text-blue-500 hover:underline">Cerrar sesión</a>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-purple-100 p-6 rounded-lg">
-                <h2 class="text-xl font-medium text-purple-900 mb-4">Información de la cuenta</h2>
-                <h3 class="text-l font-semibold ">Datos de Contacto</h3>
-                <p class="text-xs sm:text-base dark:text-gray-400">Juanito Alimaña<!-- {{userData.name}} --></p>
-                <p class="text-xs sm:text-base dark:text-gray-400 ">juanito@gmail.com<!-- {{userData.email}} --></p>
-            </div>
-            <div class="bg-purple-100 p-6 rounded-lg">
-                <h2 class="text-xl font-semibold text-purple-900 mb-4">Libreta de direcciones</h2>
-                <!-- Contenido de la libreta de direcciones -->
-            </div>
-        </div>
-
-        <div>
-            <h2 class="text-xl font-semibold text-purple-700 mb-6">Dashboard de Pedidos</h2>
-            <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Listado de pedidos -->
-                <li class="bg-blue-200 p-4 rounded-lg">
-                    <!-- Detalles del pedido -->
-                </li>
-                <li class="bg-blue-200 p-4 rounded-lg">
-                    <!-- Detalles del pedido -->
-                </li>
-                <!-- ... más elementos de la lista ... -->
-            </ul>
-        </div>
+<div
+  class="fondo  min-h-screen flex flex-col justify-center items-center"
+>
+  <div class="backdrop-blur-sm  bg-white/25 w-2/4 p-6 border border-gray-200 rounded-lg shadow">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-bold text-white">¡Hola, Usuario!</h1>
+      <a (click)="logout()" class="text-blue-500 hover:underline"
+        >Logout</a
+      >
     </div>
-</body>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="fondo p-6 rounded-lg shadow-lg shadow-slate-600">
+        <h2 class="text-xl font-medium text-white mb-4 flex justify-center">
+          Información de la cuenta
+        </h2>
+        <div
+          class="flex flex-col w-full justify-center shadow-md rounded-xl sm:shadow-none pb-2"
+        >
+          <img
+            src="https://source.unsplash.com/150x150/?portrait?3"
+            alt=""
+            class="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square shadow-md shadow-slate-300"
+          />
+        </div>
+        <h2 class="text-l font-semibold text-white">Datos de Contacto</h2>
+        <p class="text-xs sm:text-base dark:text-gray-300">
+          Juanito Alimaña<!-- {{userData.name}} -->
+        </p>
+        <p class="text-xs sm:text-base dark:text-gray-300 ">
+          juanito@gmail.com<!-- {{userData.email}} -->
+        </p>
+        <div class="flex justify-end pt-2 space-x-4 align-center text-white">
+          <i
+            class="fa-solid cursor-pointer fa-gear"
+            routerLink="/edit-profile"
+            [ngClass]="{ 'fa-spin': isHoveredSettings }"
+            (mouseenter)="isHoveredSettings = true"
+            (mouseleave)="isHoveredSettings = false"
+          ></i>
+          <i
+            class="fa-solid cursor-pointer fa-arrow-right-from-bracket"
+            (click)="logout()"
+            [ngClass]="{ 'fa-flip': isHoveredExit }"
+            (mouseenter)="isHoveredExit = true"
+            (mouseleave)="isHoveredExit = false"
+          ></i>
+        </div>
+      </div>
+      <div class="fondo p-6 rounded-lg shadow-lg shadow-slate-600">
+        <h1 class="text-xl font-semibold text-white mb-4 flex justify-center">
+          Libreta de direcciones
+        </h1>
+        <h2 class="text-l font-semibold text-white">
+          Direccion de facturacion predeterminada
+        </h2>
+        <p class="text-xs sm:text-base dark:text-gray-300">
+          Juanito Alimaña<!-- {{userData.name}} -->
+        </p>
+        <p class="text-xs sm:text-base dark:text-gray-300">3217858964</p>
+        <p class="text-xs sm:text-base dark:text-gray-300">
+          CL 10 25 59 MEDELLIN, ANT.
+        </p>
+
+        <h2 class="text-l font-semibold pt-10 text-white">
+          Direccion de envio predeterminada
+        </h2>
+        <p class="text-xs sm:text-base dark:text-gray-300">
+          No se ha establecido una direccion de envio por defecto.
+        </p>
+        <div class="flex justify-end pt-2 space-x-4 align-center text-white">
+          <i
+            class="fa-solid cursor-pointer fa-gear"
+            routerLink="/edit-address"
+            [ngClass]="{ 'fa-spin': isHoveredSettings }"
+            (mouseenter)="isHoveredSettings = true"
+            (mouseleave)="isHoveredSettings = false"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-white">
+      <h2 class="flex justify-center text-2xl font-semibold mb-6 text-white">
+        Dashboard de Pedidos
+      </h2>
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <li class="fondo shadow-lg shadow-slate-600 p-4 rounded-lg">
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Pedido #:<span class="text-xs sm:text-base dark:text-gray-400">
+              1001148506</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Fecha:<span class="text-xs sm:text-base dark:text-gray-400">
+              21/07/2023</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Enviar a:<span class="text-xs sm:text-base dark:text-gray-400">
+              {{ userData.name }}</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Total:<span class="text-xs sm:text-base dark:text-gray-400">
+              $348.500</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Estado:<span class="text-xs sm:text-base dark:text-green-400">
+              Enviado</span
+            >
+          </h2>
+          <div class="flex justify-end pt-2 space-x-4 align-center">
+            <i class="fa-solid fa-eye cursor-pointer" ></i>
+        </div>
+        </li>
+        <li class="fondo shadow-lg shadow-slate-600 p-4 rounded-lg">
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Pedido #:<span class="text-xs sm:text-base dark:text-gray-400">
+              1001148506</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Fecha:<span class="text-xs sm:text-base dark:text-gray-400">
+              21/07/2023</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Enviar a:<span class="text-xs sm:text-base dark:text-gray-400">
+              {{ userData.name }}</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Total:<span class="text-xs sm:text-base dark:text-gray-400">
+              $348.500</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Estado:<span class="text-xs sm:text-base dark:text-yellow-400">
+              Pendiente</span
+            >
+          </h2>
+          <div class="flex justify-end pt-2 space-x-4 align-center">
+            <i class="fa-solid fa-eye cursor-pointer" ></i>
+        </div>
+        </li>
+        <li class="fondo shadow-lg shadow-slate-600 p-4 rounded-lg">
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Pedido #:<span class="text-xs sm:text-base dark:text-gray-400">
+              1001148506</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Fecha:<span class="text-xs sm:text-base dark:text-gray-400">
+              21/07/2023</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Enviar a:<span class="text-xs sm:text-base dark:text-gray-400">
+              {{ userData.name }}</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Total:<span class="text-xs sm:text-base dark:text-gray-400">
+              $348.500</span
+            >
+          </h2>
+          <h2 class="text-xs sm:text-base font-semibold break-words">
+            Estado:<span class="text-xs sm:text-base dark:text-red-400">
+              Cancelado</span
+            >
+          </h2>
+          <div class="flex justify-end pt-2 space-x-4 align-center">
+            <i class="fa-solid fa-eye cursor-pointer" ></i>
+        </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
