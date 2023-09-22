@@ -25,7 +25,9 @@ import { PriceComponent } from './components/dashboard/price/price.component';
 import { OrderComponent } from './components/dashboard/order/order.component';
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component'
 import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
-import { EditAddressComponent } from './components/client/edit-address/edit-address.component'
+import { EditAddressComponent } from './components/client/edit-address/edit-address.component';
+import { ServicesComponent } from './components/client/services/services.component';
+import { ContactUsComponent } from './components/client/contact-us/contact-us.component'
 
 
 
@@ -52,7 +54,9 @@ import { EditAddressComponent } from './components/client/edit-address/edit-addr
     OrderComponent,
     CreateColorComponent,
     EditProfileComponent,
-    EditAddressComponent
+    EditAddressComponent,
+    ServicesComponent,
+    ContactUsComponent
    
   ],
   imports: [
