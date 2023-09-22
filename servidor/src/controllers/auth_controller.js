@@ -68,7 +68,7 @@ export const signIn= async(req,res)=>{
         console.log(token);
         res.cookie('token',token,{
             sameSite: 'None', 
-            secure: false,     
+            secure: true,     
             httpOnly: false,   
             maxAge: 3600,  
         });
