@@ -66,7 +66,14 @@ export const signIn= async(req,res)=>{
             expiresIn:'1d'
         })
         console.log(token);
-        res.cookie('token',token);
+        res.cookie('token',token,{
+            httpOnly: true,
+        path: "/",
+         domain: "localhost",
+        secure: false,
+        sameSite: "none", 
+        maxAge: 3600000, 
+        });
         res.status(200).json({ message: 'Signin Successful' });
     } catch (error) {
         res.status(400).json({message:error})
