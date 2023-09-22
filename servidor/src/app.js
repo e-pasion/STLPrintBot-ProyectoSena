@@ -21,11 +21,11 @@ import cors from "cors"
 
 const app= express();
 // createRoles();
-createAdmin();
-createPrices();
+// createAdmin();
+// createPrices();
 
 app.use(cors({
-    origin: "https://ava3d.netlify.app",
+    origin: "http://localhost:4200",
     credentials: true
 }))
 app.use(express.json());

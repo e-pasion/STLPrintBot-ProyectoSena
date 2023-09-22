@@ -10,8 +10,8 @@ declare const StlViewer:any;
 })
 export class StlServiceService {
   defaultColor:string="#2196f3";
-  // url='http://localhost:4000/api/'
-  url='https://stlprintbotbackend.onrender.com/api/';
+  url='http://localhost:4000/api/'
+  // url='https://stlprintbotbackend.onrender.com/api/';
 
 
   constructor(private http: HttpClient,private fileService:FileServiceService) {}
