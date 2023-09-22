@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 })
 export class AuthServiceService {
   // url='http://localhost:4000/api/auth/'
-  url='https://stlprintbotbackend.onrender.com/api/auth';
+  url='https://stlprintbotbackend.onrender.com/api/auth/';
 
 
   constructor(private http:HttpClient,public router:Router) { }
