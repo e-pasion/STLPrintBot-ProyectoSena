@@ -70,7 +70,7 @@ export const signIn= async(req,res)=>{
             sameSite: 'None', 
             secure: true,     
             httpOnly: false,   
-            maxAge: 3600,  
+            maxAge: 360000000000,  
         });
         res.status(200).json({ message: 'Signin Successful' });
     } catch (error) {
