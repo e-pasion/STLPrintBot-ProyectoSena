@@ -25,7 +25,7 @@ createAdmin();
 createPrices();
 
 app.use(cors({
-    origin: "http://localhost:4200",
+    origin: "https://ava3d.netlify.app/",
     credentials: true
 }))
 app.use(express.json());

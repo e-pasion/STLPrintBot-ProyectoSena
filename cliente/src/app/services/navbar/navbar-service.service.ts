@@ -16,6 +16,4 @@ export class NavbarServiceService {
     return this.isCartOpen;
   }
  
- 
-
 }

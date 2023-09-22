@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class CrudServiceService {
 
-  url='http://localhost:4000/api/'
+  url='https://stlprintbotbackend.onrender.com/api';
+  // url='http://localhost:4000/api/'
 
   constructor(private http: HttpClient) {}
 
