@@ -6,6 +6,13 @@ import {
 } from "../utils/shipUtils.js";
 import { calculateStlPrice } from "../utils/stlUtils.js";
 
+
+export const getCartLength=async (req,res) =>{
+  const cartFound = await Cart.findOne({ userId: req.userId });
+    const length= cartFound.products.length;
+    return res.json({ length});
+}
+
 export const getCart = async (req, res) => {
   let productsFound = [];
   const cartFound = await Cart.findOne({ userId: req.userId })
@@ -16,8 +23,6 @@ export const getCart = async (req, res) => {
       },
     })
     .populate("codeUsed");
-  console.log(req.userId);
-  console.log("xd: " + cartFound);
   if (cartFound.products) {
     productsFound = cartFound.products;
     for (let product of productsFound) {

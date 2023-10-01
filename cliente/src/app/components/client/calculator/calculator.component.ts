@@ -7,6 +7,7 @@ import { StlServiceService } from 'src/app/services/stl/stl-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
+import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
 declare const StlViewer:any;
 
 
@@ -45,7 +46,7 @@ export class CalculatorComponent implements OnInit,AfterViewInit {
   id: string | null;
   price: number=0;
 
-  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private aRoute:ActivatedRoute){
+  constructor(private stlService:StlServiceService,private sweetAlertService:SweetAlertServiceService, private crudService:CrudServiceService, private fileService:FileServiceService,private authService:AuthServiceService, private navbarService:NavbarServiceService,private aRoute:ActivatedRoute){
     this.id=this.aRoute.snapshot.paramMap.get('id');
   }
   
@@ -184,6 +185,7 @@ export class CalculatorComponent implements OnInit,AfterViewInit {
           this.sweetAlertService.terminateLoading()
           console.log(e);
         },complete:()=>{
+          this.navbarService.updateCartLength(1);
           this.sweetAlertService.terminateLoading()
           this.sweetAlertService.success("El producto fue añadido al carrito correctamente")
           this.removeStlViewer();

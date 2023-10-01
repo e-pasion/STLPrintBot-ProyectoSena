@@ -1,4 +1,5 @@
-<nav class=" flex justify-between px-6 py-3"  (scroll)="onScroll()" [ngClass]="navbarFixed?'fixed':'notFixed'" [ngClass]="userIsInHome()?'bg-transparent':'bg-blue-100 shadow-md'" >
+
+<nav class=" flex justify-between px-6 py-3 relative"  [ngClass]="navbarFixed?'fixed':'notFixed'" [ngClass]="userIsInHome()?'bg-transparent':'bg-blue-100 shadow-md'" >
 
     <div>
         <a class="text-3xl text-purple-900 font-bold font-heading" href="#">
@@ -7,7 +8,7 @@
     </div>
 
 
-    <ul class="hidden md:flex justify-end font-bold font-sans font-heading items-center ">
+    <ul class="hidden sm:flex justify-end font-bold font-sans font-heading items-center ">
         <li class="mx-2  border border-b-transparent hover:border-b-purple-900 duration-300"><a routerLink="" routerLinkActive="text-purple-900  "   [routerLinkActiveOptions]="{ exact: true}" >Inicio</a></li>
         <li class="mx-2 border border-b-transparent hover:border-b-purple-900 duration-300"><a routerLink="/cotizator" routerLinkActive="text-purple-900">Cotizador</a></li>
         <li class="mx-2 border border-b-transparent hover:border-b-purple-900 duration-300"><a routerLink="/services" routerLinkActive="text-purple-900">Servicios</a></li>
@@ -15,21 +16,43 @@
 
     </ul>
 
-    <div class="font-bold font-heading">
+    <div class="font-bold font-heading flex">
             <a class="mx-2  text-2xl cursor-pointer" (click)="openCart()" [ngClass]="{'text-purple-900':userIsInCheckout()}">
-                <i class="fa-solid fa-cart-shopping"></i>
+                <div class="relative">
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <div class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-blue-900 text-xs text-white flex justify-center items-center">
+                        {{ navbarService.cartLength }}
+                    </div>
+                </div>
             </a>
         
             <a class="mx-2 text-2xl" [routerLink]="userIsLogged() ? '/profile':'/auth'" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="text-purple-900" >
                 <i class="fa-solid fa-user" ></i>
             </a>
 
-            <a class="mx-2 text-2xl md:hidden"  >
-                <i class="fa-solid fa-bars"></i>
+            <a class="mx-2 text-2xl  sm:hidden"  >
+                <i class="fa-solid fa-bars" (click)="openSideNavbar()"></i>
             </a>
 
     </div>
 </nav>
+
+<div *ngIf="sideNavbarOpen" class="w-full h-screen flex absolute top-0 left-0 z-50">
+    <div class="h-full w-4/5 bg-white shadow text-gray-900">
+        <ul class="flex flex-col font-medium rounded-lg  ">
+            <li><a class="block py-2 pl-3 pr-4 rounded" routerLink="" routerLinkActive="text-white bg-blue-700"   [routerLinkActiveOptions]="{ exact: true}" >Inicio</a></li>
+            <li><a class="block py-2 pl-3 pr-4 rounded" routerLink="/cotizator" routerLinkActive="text-white bg-blue-700">Cotizador</a></li>
+            <li><a class="block py-2 pl-3 pr-4 rounded" routerLink="/services" routerLinkActive="text-white bg-blue-700">Servicios</a></li>
+            <li><a class="block py-2 pl-3 pr-4 rounded" routerLink="/contact" routerLinkActive="text-white bg-blue-700">Contactanos</a></li>
+        </ul>
+      </div>
+      <div class="bg-transparent w-1/5" (click)="closeSideNavbar()">
+
+      </div>
+
+</div>
+
 
  <app-cart *ngIf="isCartOpen()"   class= " "></app-cart>
 

@@ -55,7 +55,7 @@ export const signIn = async (req, res) => {
     const userFound = await User.findOne({ email: req.body.email }).populate(
       "roles"
     );
-    if (!userFound) return res.status(404).json("User not found");
+    if (!userFound) return res.status(404).json({message:"Correo incorrecto"});
     const matchPassword = await User.comparePassword(
       req.body.password,
       userFound.password
@@ -63,7 +63,7 @@ export const signIn = async (req, res) => {
     if (!matchPassword)
       return res
         .status(401)
-        .json({ token: null, message: "Incorrect password" });
+        .json({ token: null, message: "Contraseña incorrecta" });
     const roleNames = userFound.roles.map((rol) => rol.name);
     const token = jwt.sign(
       {
@@ -78,9 +78,6 @@ export const signIn = async (req, res) => {
     );
     console.log(token);
     res.cookie("token", token, {
-      sameSite: "None",
-      secure: true,
-      httpOnly: false,
       maxAge: 360000000000,
     });
     res.status(200).json({ message: "Signin Successful" });

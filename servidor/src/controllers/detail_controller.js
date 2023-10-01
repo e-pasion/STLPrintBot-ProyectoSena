@@ -3,17 +3,16 @@ import Code from "../models/Code.js";
 import Detail from "../models/Detail.js";
 import User from "../models/User.js";
 import Product from "../models/Product.js";
-import { deleteProductStorage } from "./product_controller.js";
+import { deleProductFromFirebase } from "../utils/firebaseUtils.js";
 import axios from "axios";
+import {PRIVATE_KEY} from "../config/config.js"
 
-const privateKey = "prv_test_5KiH6Aic7rfqJcdIAt47Y88Fdv2CEQp7";
 const config = {
-  headers: { Authorization: `Bearer ${privateKey}` },
+  headers: { Authorization: `Bearer ${PRIVATE_KEY}` },
 };
 
 export const createDetail = async (req, res) => {
   try {
-    console.log(req.body.data.transaction);
     const res = await axios.get(
       `https://sandbox.wompi.co/v1/payment_links/${req.body.data.transaction.payment_link_id}`,
       config
@@ -86,7 +85,7 @@ export const getAllDetails = async (req, res) => {
 
 export const updateDetailStatus = async (req, res) => {
   try {
-    console.log(req.body.status);
+    
     if (req.body.status == "finished") {
       const detail = await Detail.findByIdAndUpdate(
         req.body.orderId,
@@ -94,17 +93,21 @@ export const updateDetailStatus = async (req, res) => {
         { new: true }
       ).populate("products");
       for (let product of detail.products) {
-        await deleteProductStorage(product.path.pathImg, product.path.pathStl);
+        await deleProductFromFirebase(product.path.pathImg, product.path.pathStl);
         await Product.deleteOne({ _id: product._id });
       }
       await Detail.findByIdAndUpdate(req.body.orderId, {
         $set: { products: [] },
       });
-    } else if (req.body.status == "sending") {
+    } 
+    
+    
+    else if (req.body.status == "sending") {
       await Detail.findByIdAndUpdate(req.body.orderId, {
         status: req.body.status,
       });
     }
+
 
     return res.json({ message: "order update" });
   } catch (error) {

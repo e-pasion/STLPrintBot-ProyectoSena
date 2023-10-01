@@ -9,8 +9,8 @@ const userSchema= new Schema({
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
     status:{type:Boolean},
-    // address:{type:String},
-    // numberPhone:{type:number},
+    address:{type:String,default:""},
+    numberPhone:{type:String,default:""},
     roles:[{
         ref:"Role",
         type: Schema.Types.ObjectId

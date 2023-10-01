@@ -84,7 +84,6 @@ export class AuthComponent implements OnInit {
       password:this.loginForm.get('loginPassword')?.value
     }
 
-    console.log(USER);
     this.authService.signIn(USER).subscribe({
       next: (data)=>{
         console.log(data)
@@ -99,7 +98,7 @@ export class AuthComponent implements OnInit {
       },
       error: (e)=>{
         console.log(e);
-        this.alertService.error("Hubo un error al iniciar sesion")
+        this.alertService.error(e.error.message ||"Hubo un error al iniciar sesion")
         this.loginForm.reset()
       },
     }
@@ -126,7 +125,7 @@ export class AuthComponent implements OnInit {
 
       },
       error: (e)=>{
-        this.alertService.error("Hubo un error en el registro intentelo denuevo")
+        this.alertService.error(e.error.message || "Hubo un error al registrarse intentalo mas tarde")
         this.registerForm.reset()
       },
     }

@@ -28,8 +28,6 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.findProducts();
-
-    
   }
 
   calculatePrice(price:number,quantity:number){
@@ -100,6 +98,7 @@ export class CartComponent implements OnInit {
         this.alertService.loading('Borrando archivo')
         this.crudService.delete(id,"calculator").subscribe({
           complete:()=>{
+            this.navbarService.updateCartLength(-1);
             this.findProducts()
             this.alertService.terminateLoading()
           },

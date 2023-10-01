@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
+import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
 import {opacity0To100, changeWidth0To1002} from 'src/app/utils/animation';
 
@@ -12,15 +13,19 @@ import {opacity0To100, changeWidth0To1002} from 'src/app/utils/animation';
 })
 export class NavbarComponent {
   navbarFixed: boolean = false;
+  cartLength=0;
+  sideNavbarOpen=false;
   
   
-  constructor(private navbarService:NavbarServiceService,private authService:AuthServiceService,private router:Router) { 
+  constructor(public navbarService:NavbarServiceService,private authService:AuthServiceService,private crudService:CrudServiceService,private router:Router) { 
   }
 
-  @HostListener('window:scroll',['$event']) onScroll()
-{
-  console.log("object");
-}
+  closeSideNavbar(){
+    this.sideNavbarOpen=false;
+  }
+  openSideNavbar(){
+    this.sideNavbarOpen=true;
+  }
   
   userIsInCheckout(){
     return this.router.url === '/checkout';
@@ -42,5 +47,8 @@ export class NavbarComponent {
   userIsLogged(){
     return this.authService.isLoggedIn()&&this.authService.isClient();
   }
+
+
+ 
 
 }

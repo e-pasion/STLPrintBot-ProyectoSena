@@ -10,27 +10,23 @@ import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-aler
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  isHoveredSettings: boolean = false;
-  isHoveredDirections: boolean = false;
-  isHoveredExit: boolean = false;
-  userData={
-    name:"",
-    email:""
-  }
+  userData:any;
   constructor(private crudService:CrudServiceService,private authService:AuthServiceService,private router:Router,private alertService:SweetAlertServiceService){}
 
   ngOnInit(): void {
-    // this.crudService.get("user",this.authService.getUserId()).subscribe({
-    //   next: (data)=>{
-    //     this.userData={
-    //       name:data.firstName+ " "+data.lastName,
-    //       email:data.email
-    //     }
-    //   },
-    //   error: (e)=>{
-    //     console.log(e)
-    //   },
-    // })
+    this.getUserData();
+  }
+
+  getUserData(){
+        this.crudService.getAll("user").subscribe({
+      next: (data)=>{
+        console.log(data);
+        this.userData=data;
+      },
+      error: (e)=>{
+        console.log(e)
+      },
+    })
   }
 
   logout(){

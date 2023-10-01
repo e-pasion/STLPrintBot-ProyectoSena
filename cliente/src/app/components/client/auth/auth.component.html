@@ -66,7 +66,7 @@
                     <form class="space-y-4 " [formGroup]="registerForm" (submit)="register()">
                         <div>
                             <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900">Nombre</label>
-                            <input formControlName="firstName" type="text" name="firstName" id="firstName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
+                            <input formControlName="firstName" type="text" name="firstName" id="firstName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo" required="">
                             <div *ngIf="registerForm.get('firstName')!.errors && registerForm.get('firstName')!.touched" class="text-md font-thin text-red-600">
                                 <div *ngIf="registerForm.get('firstName')!.hasError('required')">El nombre es obligatorio.</div>
                                 <div *ngIf="registerForm.get('firstName')!.hasError('lengthWithoutSpaces') && !registerForm.get('firstName')!.hasError('required')">El nombre debe tener mas de 4 letras y menos de 50.</div>
@@ -75,7 +75,7 @@
 
                         <div>
                             <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900">Apellido</label>
-                            <input formControlName="lastName" type="text" name="lastName" id="lastName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Gustavo Mesa" required="">
+                            <input formControlName="lastName" type="text" name="lastName" id="lastName" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Mesa" required="">
                             <div *ngIf="registerForm.get('lastName')!.errors && registerForm.get('lastName')!.touched" class="text-md font-thin text-red-600">
                                 <div *ngIf="registerForm.get('lastName')!.hasError('required')">El apellido es obligatorio.</div>
                               </div>
