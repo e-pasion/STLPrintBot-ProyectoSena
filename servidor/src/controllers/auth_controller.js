@@ -29,41 +29,23 @@ export const signUp = async (req, res) => {
   }
 };
 
-export const signUpEmployee = async (req, res) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
-
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password: await User.encryptPassword(password),
-      status: true,
-    });
-    const role = await Role.findOne({ name: "employee" }); //busca el id del rol que se le pase para asignarlo al
-    newUser.roles = [role._id];
-    await newUser.save();
-    res.status(200).json({ employee: "is created" });
-  } catch (error) {
-    res.status(400).json({ message: error });
-  }
-};
 
 export const signIn = async (req, res) => {
   try {
-    console.log(req.body);
     const userFound = await User.findOne({ email: req.body.email }).populate(
       "roles"
     );
-    if (!userFound) return res.status(404).json({message:"Correo incorrecto"});
+    if (!userFound)
+      return res.status(404).json({ message: "Correo incorrecto" });
     const matchPassword = await User.comparePassword(
       req.body.password,
       userFound.password
     );
-    if (!matchPassword)
+    if (!matchPassword) {
       return res
         .status(401)
         .json({ token: null, message: "Contraseña incorrecta" });
+    }
     const roleNames = userFound.roles.map((rol) => rol.name);
     const token = jwt.sign(
       {
@@ -81,6 +63,29 @@ export const signIn = async (req, res) => {
       maxAge: 360000000000,
     });
     res.status(200).json({ message: "Signin Successful" });
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+};
+
+export const validatePassword = async (req, res) => {
+  try {
+    const userFound = await User.findById(req.userId);
+    console.log(userFound);
+    console.log(req.body);
+    if (!userFound) return res.status(404).json({ message: "User not found" });
+    const matchPassword = await User.comparePassword(
+      req.body.password,
+      userFound.password
+    );
+
+    if (!matchPassword) {
+      return res
+        .status(401)
+        .json({ token: null, message: "Contraseña incorrecta" });
+    }
+
+    res.status(200).json({ message: "Contraseña correcta" });
   } catch (error) {
     res.status(400).json({ message: error });
   }

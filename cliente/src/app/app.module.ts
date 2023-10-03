@@ -11,21 +11,15 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
 import { HomeComponent } from './components/client/home/home.component';
 import { NavbarComponent } from './components/client/navbar/navbar.component';
 import { ProfileComponent } from './components/client/profile/profile.component';
-import { NavbarTopComponent } from './components/dashboard/navbar-top/navbar-top.component';
 import { NavbarSideComponent } from './components/dashboard/navbar-side/navbar-side.component';
 import { CalculatorComponent } from './components/client/calculator/calculator.component';
 import { CartComponent } from './components/client/cart/cart.component';
 import { CheckoutComponent } from './components/client/checkout/checkout.component';
-import { FooterComponent } from './components/client/footer/footer.component';
-import { EmployeeComponent } from './components/dashboard/employee/employee.component';
 import { ColorComponent } from './components/dashboard/color/color.component';
-import { StatsComponent } from './components/dashboard/stats/stats.component';
 import { CodeComponent } from './components/dashboard/code/code.component';
 import { PriceComponent } from './components/dashboard/price/price.component';
 import { OrderComponent } from './components/dashboard/order/order.component';
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component'
-import { EditProfileComponent } from './components/client/edit-profile/edit-profile.component';
-import { EditAddressComponent } from './components/client/edit-address/edit-address.component';
 import { ServicesComponent } from './components/client/services/services.component';
 import { ContactUsComponent } from './components/client/contact-us/contact-us.component'
 
@@ -40,21 +34,15 @@ import { ContactUsComponent } from './components/client/contact-us/contact-us.co
     HomeComponent,
     NavbarComponent,
     ProfileComponent,
-    NavbarTopComponent,
     NavbarSideComponent,
     CalculatorComponent,
     CartComponent,
     CheckoutComponent,
-    FooterComponent,
-    EmployeeComponent,
     ColorComponent,
-    StatsComponent,
     CodeComponent,
     PriceComponent,
     OrderComponent,
     CreateColorComponent,
-    EditProfileComponent,
-    EditAddressComponent,
     ServicesComponent,
     ContactUsComponent
    

@@ -11,6 +11,8 @@ const userSchema= new Schema({
     status:{type:Boolean},
     address:{type:String,default:""},
     numberPhone:{type:String,default:""},
+    city:{type:String,default:""},
+    department:{type:String,default:""},
     roles:[{
         ref:"Role",
         type: Schema.Types.ObjectId

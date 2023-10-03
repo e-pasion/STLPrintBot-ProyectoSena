@@ -1,16 +1,14 @@
 
 <div class="flex">
-    <div *ngIf="checkIsAdminOrEmployee()">
+    <div *ngIf="checkIsAdmin()">
         <app-navbar-side></app-navbar-side>
     </div>
     <div class="flex-grow">
-        <div *ngIf="!checkIsAdminOrEmployee()">
+        <div *ngIf="!checkIsAdmin()">
             <app-navbar></app-navbar>
         </div>
 
         
-
-
         <p>unauthorized works!</p>
 
 

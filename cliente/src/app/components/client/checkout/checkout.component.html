@@ -17,7 +17,7 @@
 
                 <div class="p-3 w-full bg-blue-50 flex items-center justify-between">
                     <p>Usar la informacion de mi perfil</p>
-                    <button  class="bg-blue-400 hover:bg-blue-500 w-32 px-6 py-1 mr-4 text-white rounded-md">Continuar</button>
+                    <button (click)="getUserData()"  class="bg-blue-400 hover:bg-blue-500 w-32 px-6 py-1 mr-4 text-white rounded-md">Continuar</button>
                 </div>
                 
                 <form [formGroup]="shipForm" class=" rounded-lg p-5 justify-center w-full mx-auto " >
@@ -88,12 +88,8 @@
                             rows="4" placeholder="Notas adicionales"></textarea>
                     </div>
 
-                        <div class="flex items-center justify-between mt-4">
-                            <label class="flex items-center text-sm group text-heading">
-                                <input type="checkbox"
-                                    class="w-5 h-5 border border-gray-300 rounded focus:outline-none focus:ring-1">
-                                <span class="ml-2">Volver esta mi direccion principal</span>
-                            </label>
+                        <div class="flex justify-end mt-4">
+                            
                                 <button (click)="submitDirection()" [disabled]="!shipForm.valid" class="disabled:bg-green-300 disabled:hover:bg-green-300 bg-green-500 hover:bg-green-600 w-32 px-6 py-2 text-white rounded-md">Continuar</button>
                         </div>
                     </div>

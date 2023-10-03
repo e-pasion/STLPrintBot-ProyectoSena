@@ -46,6 +46,33 @@ export class CheckoutComponent implements OnInit{
 
   
 
+
+
+  getUserData() {
+    this.alertService.loading("Cargando informacion")
+    this.crudService.getAll('user').subscribe({
+      next: (data) => {
+        this.shipForm.patchValue({
+          firstName:data.firstName||"",
+          lastName:data.lastName||"",
+          numberPhone:data.numberPhone||"",
+          address:data.address||"",
+          department:data.department||"",
+          city:data.city||"",
+          optionalNotes:"",
+        });
+        this.getCities();
+        this.alertService.terminateLoading();
+      },
+      error: (e) => {
+        console.log(e);
+        this.alertService.terminateLoading();
+        this.alertService.error("Hubo un problema al traer la información")
+      },
+    });
+  }
+
+
   async submitDirection(){
       this.validateShip=true;
       this.mapIsEnabled=true;

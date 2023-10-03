@@ -58,6 +58,28 @@ export const createDetail = async (req, res) => {
   }
 };
 
+export const getAllDetailsById= async(req,res)=>{
+  try {
+    const details=await Detail.find({userId:req.userId});
+    let finishedOrders=[];
+    let nonFinishedOrders=[];
+    details.forEach(detail => {
+      if(detail.status=="finished") finishedOrders.push(detail);
+      else{
+        nonFinishedOrders.push(detail)
+      }
+    });
+
+    res.json({
+      finishedOrders,
+      nonFinishedOrders
+    })
+
+  } catch (err) {
+    res.status(400).send(error.message);
+  }
+}
+
 export const getAllDetails = async (req, res) => {
   try {
     const { page, limit, status } = req.query;

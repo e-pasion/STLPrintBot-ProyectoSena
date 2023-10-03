@@ -13,11 +13,11 @@ export class UnauthorizedComponent implements OnInit {
 
 
   ngOnInit(){
-    this.checkIsAdminOrEmployee();
+    this.checkIsAdmin();
   }
 
-  checkIsAdminOrEmployee(){
-    return this.authService.isAdmin() || this.authService.isEmployee();
+  checkIsAdmin(){
+    return this.authService.isAdmin();
   }
 
   

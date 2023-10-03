@@ -11,7 +11,6 @@ import jwt_decode from 'jwt-decode';
 })
 export class AuthServiceService {
   url='http://localhost:4000/api/auth/'
-  // url='https://stlprintbotbackend.onrender.com/api/auth/';
 
 
   constructor(private http:HttpClient,public router:Router) { }
@@ -20,11 +19,6 @@ export class AuthServiceService {
     console.log(user)
     return this.http.post(this.url+'register',user);
   }
-  signUpEmployee(user:User):Observable<any>{
-    console.log(user)
-    return this.http.post(this.url+'register-employee',user);
-  }
-
 
   signIn(user:User):Observable<any>{
     return this.http.post(this.url+'login',user)
@@ -64,11 +58,6 @@ export class AuthServiceService {
   isClient(){
     const roles=this.getUserRoles();
     return roles.includes('client');
-  }
-
-  isEmployee(){
-    const roles=this.getUserRoles();
-    return roles.includes('employee');
   }
 
   isAdmin(){

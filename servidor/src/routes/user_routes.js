@@ -5,10 +5,8 @@ import { verifyToken } from '../middlewares/authJwt.js';
 
 
 import * as userController from '../controllers/user_controller.js';
-router.get('/employees', userController.getEmployees);
 router.get('/',verifyToken, userController.getUser);
-router.put('/status/:id',userController.toggleEmployeeStatus)
-router.put('/employee/:id',userController.editEmployee)
-router.delete('/employee/:id',userController.removeEmployee)
+router.put('/contact',verifyToken,userController.editContactInfo)
+router.put('/access',verifyToken,userController.updatePasswordAndEmail)
 
 export default router;
