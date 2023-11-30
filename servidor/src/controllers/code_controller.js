@@ -64,20 +64,21 @@ export const getCode = async (req, res)=>{
 export const verifyCode= async(req,res)=>{
     try {
         const code = await Code.findOne({ code: req.body.code });
-        if (!code)return res.status(404).json({ message: 'Code not found' });
+        if (!code)return res.status(404).json({ message: 'Codigo no encontrado' });
         const currentDate = new Date();
         console.log(currentDate);
         console.log(code.finalDate);
-        if (currentDate>code.finalDate) return res.status(400).json({message:'expired code'})
+        if (currentDate>code.finalDate) return res.status(400).json({message:'Codigo expirado'})
         const user= await User.findById(req.userId);
         console.log(user);
         if(user.codesUsed.includes(code._id)){
-            return res.status(400).json({message:'Code already used'})
+            return res.status(400).json({message:'Este codigo ya fue utilizado'})
         }
         console.log(req.body.price);
         const price=Math.round(req.body.price*(code.discount/100)/50)*50;
         console.log(price);
-        await Cart.findOneAndUpdate({ userId: req.userId }, {codeUsed:code._id}, { new: true });
+        const userFound=await User.findById(req.userId);
+        await Cart.findByIdAndUpdate(userFound.cart, {codeUsed:code._id}, { new: true });
         return res.json({
             discount:code.discount,
             price

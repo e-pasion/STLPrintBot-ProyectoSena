@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
+import { FileServiceService } from 'src/app/services/file/file-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { opacity0To100 } from 'src/app/utils/animation';
 
@@ -22,7 +23,7 @@ export class OrderComponent implements OnInit {
   mapUrl: SafeResourceUrl | undefined;
 
 
-  constructor(private alertService:SweetAlertServiceService, private crudService:CrudServiceService,private sanitizer: DomSanitizer){}
+  constructor(private alertService:SweetAlertServiceService, private crudService:CrudServiceService,private sanitizer: DomSanitizer, private fileService:FileServiceService){}
   ngOnInit(): void {
     this.getAllOrders();
   }
@@ -78,12 +79,11 @@ export class OrderComponent implements OnInit {
 
   getOrders(id:string){
     this.orderFound= this.orders.find((order:any)=> order._id==id)
-    this.products=this.orderFound.products
+    this.products=this.orderFound.cartUsed.products
     this.productsIsHidden=false;
 
     if(this.statusToggle.sending){
-      const encodedAddress = encodeURIComponent(this.orderFound.shipData.address+" "+this.orderFound.shipData.city+" "+this.orderFound.shipData.department);
-      console.log(this.orderFound.shipData.address+" "+this.orderFound.shipData.city+" "+this.orderFound.shipData.department);
+      const encodedAddress = encodeURIComponent(this.orderFound.cartUsed.shipData.address+" "+this.orderFound.cartUsed.shipData.city+" "+this.orderFound.cartUsed.shipData.department);
       const mapUrl = `https://www.google.com/maps/embed/v1/place?q=${encodedAddress}&zoom=20&key=AIzaSyCEX3tGvVECoFH9a0Na8lPk2oChRALPnkc`;
       this.mapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
     }
@@ -105,7 +105,7 @@ export class OrderComponent implements OnInit {
   changeOrderStatus(orderId:string,status:string){
     let msg='';
     if(status=='finished') msg='¿Estás seguro de que deseas finalizar el pedido? Esta acción es irreversible.' 
-    else if(status=='sending') msg='"¿Estás seguro de que deseas enviar este archivo para el envío? Esta acción es irreversible."'
+    else if(status=='sending') msg='"¿Estás seguro de que deseas cambiar el estado del pedido a en envio? Esta acción es irreversible."'
 
     this.alertService.question(msg,"si","no").then((result) => {
       if (result.isConfirmed) {
@@ -126,6 +126,34 @@ export class OrderComponent implements OnInit {
   getDateString(date:any){
     if(date==null) return '';
     return new Date(date).toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+  }
+
+  returnDateColor(date:any){
+    const difference =new Date(date).getTime()- new Date().getTime();
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    console.log(days)
+    if (days >= 3) {
+      return 'bg-green-100';
+    } else if (days>=0) {
+      return 'bg-yellow-100';
+    } else{
+      return 'bg-red-100';
+    }
+  }
+
+  generatePDF(id:any){
+    this.alertService.loading("Generando pdf...");
+    this.fileService.generatePDF(id)
+    .subscribe({
+      next:(data: ArrayBuffer)=>{
+        const blob = new Blob([data], { type: 'application/pdf' });
+      const pdfUrl = URL.createObjectURL(blob);
+      window.open(pdfUrl, '_blank');
+      this.alertService.terminateLoading();
+      },error:(error)=>{
+        this.alertService.error("Error al generar el PDF");
+      }
+    })
   }
 
 }

@@ -16,6 +16,7 @@ import { PriceComponent } from './components/dashboard/price/price.component';
 import { OrderComponent } from './components/dashboard/order/order.component';
 import { CreateColorComponent } from './components/dashboard/color/create-color/create-color.component';
 import { ServicesComponent } from './components/client/services/services.component';
+import { ContactUsComponent } from './components/client/contact-us/contact-us.component';
 
 const routes: Routes = [
   //client
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path:'services',component:ServicesComponent},
   {path:"cart",component:CartComponent},
   {path:"checkout",canActivate:[authGuard,clientGuard],component:CheckoutComponent},
+  {path:"contactus",component:ContactUsComponent},
 
   //dashboard
   {path:"dashboard/color",canActivate:[authGuard,adminGuard],component:ColorComponent},

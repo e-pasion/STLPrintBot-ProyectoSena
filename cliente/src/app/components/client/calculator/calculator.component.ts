@@ -61,9 +61,10 @@ export class CalculatorComponent implements OnInit,AfterViewInit {
 
 
   getAllColors(){
-    this.crudService.getAll(`color`).subscribe({
+    this.crudService.getAll(`color/all`).subscribe({
       next:(data)=>{
-        this.colors=data.docs;
+        console.log(data);
+        this.colors=data;
         if (this.colors.length > 0) {
           this.stlData.color = this.colors[0].code; // Establece el primer color como valor inicial
         }

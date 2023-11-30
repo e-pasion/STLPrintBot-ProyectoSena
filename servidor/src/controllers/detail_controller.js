@@ -25,12 +25,13 @@ export const createDetail = async (req, res) => {
       config
     );
     const cartFound = await Cart.findById(res.data.data.sku);
+    const userFound= await User.findOne({cart:cartFound._id});
     if (!cartFound) return;
     if (cartFound.codeUsed) {
       const codeFound = await Code.findById(cartFound.codeUsed);
       if (codeFound) {
         await User.findByIdAndUpdate(
-          cartFound.userId,
+          userFound._id,
           { $push: { codesUsed: codeFound._id } }, // Agregar el codeId a la lista codesUsed
           { new: true }
         );
@@ -38,20 +39,19 @@ export const createDetail = async (req, res) => {
     }
 
     const newDetail = new Detail({
-      userId: cartFound.userId,
-      products: cartFound.products,
-      shipData: cartFound.shipData,
+      cartUsed: cartFound,
+      userId: userFound._id,
       totalPrice: req.body.data.transaction.amount_in_cents / 100,
     });
 
     const savedDetail = await newDetail.save();
     if (savedDetail) {
-      await Cart.findByIdAndDelete(cartFound._id);
       const newCart = new Cart({
-        userId: cartFound.userId,
         products: [],
       });
       await newCart.save();
+      userFound.cart=newCart;
+      await userFound.save();
     }
   } catch (error) {
     console.log(error);
@@ -60,7 +60,7 @@ export const createDetail = async (req, res) => {
 
 export const getAllDetailsById= async(req,res)=>{
   try {
-    const details=await Detail.find({userId:req.userId});
+    const details=await Detail.find({userId:req.userId}).populate("cartUsed");
     let finishedOrders=[];
     let nonFinishedOrders=[];
     details.forEach(detail => {
@@ -76,7 +76,7 @@ export const getAllDetailsById= async(req,res)=>{
     })
 
   } catch (err) {
-    res.status(400).send(error.message);
+    res.status(400).send(err.message);
   }
 }
 
@@ -90,12 +90,14 @@ export const getAllDetails = async (req, res) => {
     const options = {
       page: parseInt(page, 10) || 1,
       limit: parseInt(limit, 10) || 10,
+      populate:{
+        path:"cartUsed",
       populate: {
         path: "products",
         populate: {
           path: "color",
         },
-      },
+      },}
     };
     const result = await Detail.paginate(query, options);
     res.json(result);
@@ -113,14 +115,17 @@ export const updateDetailStatus = async (req, res) => {
         req.body.orderId,
         { status: req.body.status },
         { new: true }
-      ).populate("products");
-      for (let product of detail.products) {
+      ).populate({
+        path:"cartUsed",
+        populate: {
+          path: "products",
+        }
+      });
+      console.log(detail)
+      for (let product of detail.cartUsed.products) {
         await deleProductFromFirebase(product.path.pathImg, product.path.pathStl);
         await Product.deleteOne({ _id: product._id });
       }
-      await Detail.findByIdAndUpdate(req.body.orderId, {
-        $set: { products: [] },
-      });
     } 
     
     

@@ -83,7 +83,7 @@
                   <tr *ngFor="let order of nonFinishedOrders"class="bg-white border-b text-center">
                     <td class="px-6 py-3">{{order._id}}</td>
                     <td class="px-6 py-3">{{order.totalPrice}}</td>
-                    <td class="px-6 py-3"> {{getDateString(order.shipData.estimatedDate)}} </td>
+                    <td class="px-6 py-3"> {{getDateString(order.cartUsed.shipData.estimatedDate)}} </td>
                     <td *ngIf="order.status=='processing'" class="px-6 py-3 "><h1 class="bg-blue-200 font-semibold text-black p-1 rounded-3xl">En Progreso</h1></td>
                     <td *ngIf="order.status=='sending'" class="px-6 py-3 "><h1 class="bg-yellow-200 font-semibold text-black p-1 rounded-3xl">Enviado</h1></td>
                 </tr>
@@ -130,7 +130,7 @@
                   <tr *ngFor="let order of finishedOrders"class="bg-white border-b ">
                     <td class="px-6 py-3">{{order._id}}</td>
                     <td class="px-6 py-3">{{order.totalPrice}}</td>
-                    <td class="px-6 py-3"> {{getDateString(order.shipData.estimatedDate)}} </td>
+                    <td class="px-6 py-3"> {{getDateString(order.cartUsed.shipData.estimatedDate)}} </td>
                     <td class="px-6 py-3 "><h1 class="bg-green-200 font-semibold text-black  p-1 rounded-3xl">Finalizado</h1></td>
                 </tr>
                 </tbody>

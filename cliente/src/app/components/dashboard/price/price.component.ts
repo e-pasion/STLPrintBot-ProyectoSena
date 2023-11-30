@@ -48,16 +48,25 @@ export class PriceComponent implements OnInit {
   }
 
   updateChanges(){
-    console.log(this.priceData);
-    let prices= this.priceData;
-    this.alertService.loading("Actualizando precios..")
-    this.crudService.update(prices,'price',this.actualId).subscribe({
+    this.alertService.question("¿Estás seguro de que quieres guardar los cambios?","Si","No").then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.priceData);
+        let prices= this.priceData;
+        this.alertService.loading("Actualizando precios..")
+        this.crudService.update(prices,'price',this.actualId).subscribe({
       complete:()=>{
         this.alertService.terminateLoading();
         this.alertService.success("Precios actualizados correctamente");
       },error:(e)=>this.alertService.error("Hubo un error al actualizar los precios")
+      })
+  
+      }
     })
   }
+
+
+
+    
 
 
 

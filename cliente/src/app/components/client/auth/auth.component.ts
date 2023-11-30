@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors,
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/User'
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
+import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 import { changeTranslate0To100 } from 'src/app/utils/animation';
 
@@ -22,7 +23,7 @@ export class AuthComponent implements OnInit {
 
 
 
-  constructor(private fb:FormBuilder,private authService:AuthServiceService,private alertService:SweetAlertServiceService,private router:Router,private aRoute:ActivatedRoute){
+  constructor(private fb:FormBuilder,private authService:AuthServiceService,private alertService:SweetAlertServiceService,private router:Router,private aRoute:ActivatedRoute,private navbarService:NavbarServiceService){
     this.registerForm=this.fb.group({
       firstName:['',[Validators.required]],
       lastName:['',[Validators.required]],
@@ -90,6 +91,7 @@ export class AuthComponent implements OnInit {
         this.alertService.success("Inicio de sesión exitoso")
         if(this.authService.isClient()){
           this.router.navigate(["/profile"])
+          this.navbarService.getCartLength();
         }else{
           this.router.navigate(["/dashboard/color"])
         }

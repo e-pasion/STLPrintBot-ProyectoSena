@@ -11,6 +11,16 @@ export const createColor = async (req, res) => {
     }
   };
 
+  export const getAllColorsWithoutFilter=async(req,res)=>{
+    try {
+      const colors= await Color.find({status:true});
+      res.json(colors);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send('Error');
+    }
+  }
+
   export const getAllColors = async (req, res) => {
      try {
       const {page, limit, search, status} = req.query;

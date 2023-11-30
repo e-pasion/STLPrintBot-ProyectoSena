@@ -7,24 +7,30 @@ import { SECRET_KEY } from "../config/config.js";
 export const signUp = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Ese correo electrónico ya está registrado' });
+    }
+    const newCart = new Cart({
+      products: [],
+    });
+    await newCart.save();
     const newUser = new User({
       firstName,
       lastName,
       email,
       password: await User.encryptPassword(password),
+      cart:newCart
     });
     const role = await Role.findOne({ name: "client" }); //busca el id del rol que se le pase para asignarlo al
     newUser.roles = [role._id];
-    const savedUser = await newUser.save();
+    
+    await newUser.save();
 
-    const newCart = new Cart({
-      userId: savedUser._id,
-      products: [],
-    });
-
-    await newCart.save();
     res.status(200).json({ user: "Is created" });
   } catch (error) {
+    console.log(error)
     res.status(400).json({ message: error });
   }
 };
@@ -36,7 +42,7 @@ export const signIn = async (req, res) => {
       "roles"
     );
     if (!userFound)
-      return res.status(404).json({ message: "Correo incorrecto" });
+      return res.status(404).json({ message: "No existe un usuario con este correo" });
     const matchPassword = await User.comparePassword(
       req.body.password,
       userFound.password

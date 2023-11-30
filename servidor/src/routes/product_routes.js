@@ -16,7 +16,7 @@ router.post('/',[verifyToken,upload.array('dataFiles',2)],productController.crea
 router.get('/:id',[verifyToken],productController.getProduct)
 router.delete('/:id',[verifyToken],productController.deleteProduct)
 router.put('/quantity/:id',[verifyToken],productController.updateQuantityProduct);
-
+router.get('/pdf/:id',[verifyToken],productController.generatePDF);
 
 
 

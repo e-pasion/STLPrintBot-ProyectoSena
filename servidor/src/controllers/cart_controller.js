@@ -1,4 +1,5 @@
 import Cart from "../models/Cart.js";
+import User from "../models/User.js";
 import {
   returnProductPrice,
   returnShipDate,
@@ -8,14 +9,20 @@ import { calculateStlPrice } from "../utils/stlUtils.js";
 
 
 export const getCartLength=async (req,res) =>{
-  const cartFound = await Cart.findOne({ userId: req.userId });
-    const length= cartFound.products.length;
+  const userFound= await User.findById(req.userId);
+  const cartFound = await Cart.findById(userFound.cart).populate("products");
+  let length=0;
+  cartFound?.products.forEach((product)=>{
+    length+=product.quantity;
+  })
+    console.log(cartFound)
     return res.json({ length});
 }
 
 export const getCart = async (req, res) => {
   let productsFound = [];
-  const cartFound = await Cart.findOne({ userId: req.userId })
+  const userFound= await User.findById(req.userId);
+  const cartFound = await Cart.findById(userFound.cart)
     .populate({
       path: "products",
       populate: {
@@ -48,11 +55,8 @@ export const getShipPrice = async (req, res) => {
 
 export const saveShipData = async (req, res) => {
   const shipData = req.body;
-  const cartUpdated = await Cart.findOneAndUpdate(
-    { userId: req.userId },
-    { shipData },
-    { new: true }
-  );
+  const userFound= await User.findById(req.userId);
+  const cartUpdated = await Cart.findByIdAndUpdate(userFound.cart,{shipData},{new:true});
   console.log(cartUpdated);
   return res.json({ message: "Ship Data Updated" });
 };

@@ -1,11 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileServiceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   dataURLtoFile=(dataUrl:string, fileName:string)=>{
  
@@ -37,4 +39,10 @@ fixPath=(path:string,type:string)=>{
     }
     return true;
   }
+
+  generatePDF(id: any): Observable<ArrayBuffer> {
+    return this.http.get(`http://localhost:4000/api/calculator/pdf/${id}`, { responseType: 'arraybuffer' });
+  }
 }
+
+

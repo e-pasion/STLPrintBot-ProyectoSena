@@ -100,28 +100,6 @@ export class ColorComponent {
     this.getAllColors()
   }
 
-  removeColor(id:any){
-    this.alertService.question('¿Seguro quieres borrar este color?','Borrar','No borrar')
-        .then((result) => {
-      if (result.isConfirmed) {
-        if(this.colors.length==1 && this.paginationData.prevPage!=null){
-          this.currentPage=this.currentPage-1;
-          this.params=this.params.set('page', this.currentPage);
-
-        }
-
-        this.crudService.delete(id,"color").subscribe({
-          complete:()=>{
-            console.log('Color deleted');
-            this.getAllColors();
-          },error:()=>{
-            console.log('Error deleted color');
-          }
-        })
-      } 
-    }
-    )
-  }
 
 
 }

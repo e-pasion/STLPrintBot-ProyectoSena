@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthServiceService } from 'src/app/services/auth/auth-service.service';
 import { CrudServiceService } from 'src/app/services/crud/crud-service.service';
 import { LocationServiceService } from 'src/app/services/location/location-service.service';
+import { NavbarServiceService } from 'src/app/services/navbar/navbar-service.service';
 import { SweetAlertServiceService } from 'src/app/services/sweetAlert/sweet-alert-service.service';
 
 @Component({
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit {
     private authService: AuthServiceService,
     private router: Router,
     private alertService: SweetAlertServiceService,
-    private locationService: LocationServiceService
+    private locationService: LocationServiceService,
+    private navbarService: NavbarServiceService
   ) {
     this.contactForm = fb.group({
       numberPhone: ['', Validators.required],
@@ -175,9 +177,8 @@ export class ProfileComponent implements OnInit {
         this.validateFormActive=true;
       },
       error:(err)=> {
-        console.log(err);
         this.alertService.terminateLoading();
-        this.alertService.error("Hubo un error al actualizar los datos");
+        this.alertService.error(err.error.message || "Hubo un error al actualizar los datos");
       },
     });
   }
@@ -207,6 +208,7 @@ export class ProfileComponent implements OnInit {
     this.authService.doLogout().subscribe({
       complete: () => {
         this.alertService.terminateLoading();
+        this.navbarService.getCartLength();
         this.router.navigate(['/auth']);
       },
       error: (err) => {

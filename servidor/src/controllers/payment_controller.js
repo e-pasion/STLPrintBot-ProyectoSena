@@ -1,7 +1,8 @@
-import { returnProductPrice, returnShipPrice, returnShipDate, returnDiscountPrice } from "../utils/shipUtils.js";
+import { returnProductPrice,returnDiscountPrice } from "../utils/shipUtils.js";
 import {PRIVATE_KEY} from "../config/config.js"
 import Cart from "../models/Cart.js";
 import axios from 'axios'
+import User from "../models/User.js";
 
 
 const config = {
@@ -10,7 +11,8 @@ const config = {
 
 export const createPaymentLink=async(req,res)=>{
   let discountPrice=0
-  const cartFound=await Cart.findOne({userId:req.userId}).populate('codeUsed');
+  const userFound= await User.findById(req.userId);
+  const cartFound=await Cart.findById(userFound.cart).populate('codeUsed');
   console.log(cartFound);
   const productPrice=await returnProductPrice(req.userId);
   if(cartFound.codeUsed) discountPrice=await returnDiscountPrice(cartFound.codeUsed.discount,productPrice);

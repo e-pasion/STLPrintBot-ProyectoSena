@@ -20,9 +20,9 @@ import cors from "cors"
 
 
 const app= express();
-// createRoles();
-// createAdmin();
-// createPrices();
+createRoles();
+createAdmin();
+createPrices();
 
 app.use(cors({
     origin: "http://localhost:4200",

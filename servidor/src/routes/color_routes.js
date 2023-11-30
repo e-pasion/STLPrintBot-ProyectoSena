@@ -7,6 +7,7 @@ const router = Router();
 
 router.post('/',[verifyToken,isAdmin], colorController.createColor);
 router.get('/', colorController.getAllColors);
+router.get('/all/', colorController.getAllColorsWithoutFilter);
 router.get('/:id', colorController.getColor);
 router.put('/:id',[verifyToken,isAdmin], colorController.updateColor);
 router.put('/status/:id',[verifyToken,isAdmin], colorController.toggleColorStatus);

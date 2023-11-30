@@ -1,6 +1,5 @@
 import { model,Schema } from "mongoose";
 import bcrypt from 'bcryptjs'
-import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 const userSchema= new Schema({
@@ -9,10 +8,10 @@ const userSchema= new Schema({
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
     status:{type:Boolean},
-    address:{type:String,default:""},
-    numberPhone:{type:String,default:""},
-    city:{type:String,default:""},
-    department:{type:String,default:""},
+    address:{type:String},
+    numberPhone:{type:String},
+    city:{type:String},
+    department:{type:String},
     roles:[{
         ref:"Role",
         type: Schema.Types.ObjectId
@@ -20,7 +19,11 @@ const userSchema= new Schema({
     codesUsed:[{
         ref:"Code",
         type: Schema.Types.ObjectId
-    }]
+    }],
+    cart:{
+        ref:"Cart",
+        type: Schema.Types.ObjectId
+    }
 
 },{
     versionKey:false

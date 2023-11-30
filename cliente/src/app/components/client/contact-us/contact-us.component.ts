@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class ContactUsComponent {
 
+  goWP(message:string){
+    window.open(`https://wa.me/3003735155?text=${encodeURIComponent(message)}`, "_blank");
+}
+
+openLink(link:string){
+  window.open(link, "_blank");
+}
+
 }

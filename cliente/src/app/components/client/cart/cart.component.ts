@@ -51,11 +51,12 @@ export class CartComponent implements OnInit {
   increaseQuantity(index:number){
     this.updateQuantity(index,1);
     this.products[index].quantity++;
+    this.navbarService.getCartLength();
   }
   decreaseQuantity(index:number){
     this.updateQuantity(index,-1);
-    if(this.products[index].quantity>1)
-    this.products[index].quantity--;
+    if(this.products[index].quantity>1) this.products[index].quantity--;
+    this.navbarService.getCartLength();
   }
 
   updateQuantity(index:number,increment:number){
@@ -98,7 +99,7 @@ export class CartComponent implements OnInit {
         this.alertService.loading('Borrando archivo')
         this.crudService.delete(id,"calculator").subscribe({
           complete:()=>{
-            this.navbarService.updateCartLength(-1);
+            this.navbarService.getCartLength();
             this.findProducts()
             this.alertService.terminateLoading()
           },

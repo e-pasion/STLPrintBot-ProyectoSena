@@ -164,27 +164,4 @@ export class CodeComponent {
     this.getAllCodes()
   }
 
-  removeCode(id:any){
-    this.alertService.question('¿Seguro quieres borrar este Codigo?','Borrar','No borrar')
-        .then((result) => {
-      if (result.isConfirmed) {
-        if(this.codes.length==1 && this.paginationData.prevPage!=null){
-          this.currentPage=this.currentPage-1;
-          this.params=this.params.set('page', this.currentPage);
-
-        }
-
-        this.crudService.delete(id,"code").subscribe({
-          complete:()=>{
-            console.log('code deleted');
-            this.getAllCodes();
-          },error:()=>{
-            console.log('Error deleted code');
-          }
-        })
-      } 
-    }
-    )
-  }
-
 }

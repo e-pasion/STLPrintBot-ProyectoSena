@@ -32,7 +32,7 @@
                       <tbody>
                           <tr *ngFor="let order of orders"class="bg-white border-b">
                               <td class="px-6 py-3">{{order._id}}</td>
-                              <td class="px-6 py-3"> {{getDateString(order.shipData.estimatedDate)}} </td>
+                              <td class="px-6 py-3 "> <h3 [class]="returnDateColor(order.cartUsed.shipData.estimatedDate)">{{getDateString(order.cartUsed.shipData.estimatedDate)}}</h3>  </td>
                               <td class="px-6 py-3 flex">
                                 <i class="fa-solid fa-eye  text-orange-500 cursor-pointer" (click)="getOrders(order._id)"></i>
                                 <i class="fa-solid fa-check mx-2 text-red-400 cursor-pointer" (click)="statusToggle.processing?changeOrderStatus(order._id,'sending'):changeOrderStatus(order._id,'finished')"></i>
@@ -93,8 +93,10 @@
                             <p class="mt-1 text-sm text-gray-500">{{"Tamaño: [x: "+product.size.x.toFixed(0)+"cm, y:"+product.size.y.toFixed(0)+"cm, z:"+product.size.z.toFixed(0)+"cm]"}}</p>
                         </div>
                     </div>
-                    <div class="flex w-full justify-end mt-3">
+                    <div class="flex w-full justify-end mt-3 space-x-2">
                         <a href="{{product.path.downloadStl}}"><i class="fa-solid fa-download"></i></a>
+                        <a (click)="generatePDF(product._id)" ><i class="fa-solid fa-file-pdf cursor-pointer"></i></a>
+
                     </div>
                 </div>
             </div>
@@ -107,10 +109,10 @@
                 </div>
                 <div class="my-4">
                     <p class="">Informacion de envio: </p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Nombre: "+orderFound.shipData.firstName+" "+orderFound.shipData.lastName}}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Direccion: "+orderFound.shipData.address}}</p>
-                    <p class="mt-1 text-sm text-gray-500">{{"Celular: "+ orderFound.shipData.numberPhone}}</p>
-                    <p *ngIf="orderFound.shipData.optionalNotes" class="mt-1 text-sm text-gray-500">{{"Nota: " + orderFound.shipData.optionalNotes }}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Nombre: "+orderFound.cartUsed.shipData.firstName+" "+orderFound.cartUsed.shipData.lastName}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Direccion: "+orderFound.cartUsed.shipData.address}}</p>
+                    <p class="mt-1 text-sm text-gray-500">{{"Celular: "+ orderFound.cartUsed.shipData.numberPhone}}</p>
+                    <p *ngIf="orderFound.cartUsed.shipData.optionalNotes" class="mt-1 text-sm text-gray-500">{{"Nota: " + orderFound.cartUsed.shipData.optionalNotes }}</p>
                 </div>
 
             </div>

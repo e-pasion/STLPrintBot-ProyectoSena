@@ -1,6 +1,6 @@
 import Cart from "../models/Cart.js";
-import Code from "../models/Code.js"
-import User from "../models/User.js"
+import Setting from "../models/Setting.js";
+import User from "../models/User.js";
 import { calculateStlPrice } from "./stlUtils.js";
 
 
@@ -17,14 +17,10 @@ const metropolitanCities=[
   "Caldas"
 ]
 
-// export const returnProductPrice= async (userId)=>{
-//   const cartFound= await Cart.findOne({userId:userId}).populate("products");
-//   const totalWeigth= cartFound.totalWeigth;
-//   return calculateStlPrice(totalWeigth);
-// }
 export const returnProductPrice= async (userId)=>{
   let totalPrice=0;
-  const cartFound= await Cart.findOne({userId:userId}).populate("products");
+  const userFound= await User.findById(userId);
+  const cartFound= await Cart.findById(userFound.cart).populate("products");
   let productsFound=cartFound.products;
   for (let product of productsFound) {
     totalPrice+= parseFloat(await calculateStlPrice(product.weigth))*product.quantity
@@ -34,7 +30,8 @@ export const returnProductPrice= async (userId)=>{
 
 export const returnTotalWeigth= async (userId)=>{
   let weigth=0;
-  const cartFound= await Cart.findOne({userId:userId}).populate("products");
+  const userFound= await User.findById(userId);
+  const cartFound= await Cart.findById(userFound.cart).populate("products");
   let productsFound=cartFound.products;
   for (let product of productsFound) {
     weigth+= product.weigth;
@@ -61,15 +58,16 @@ export const returnShipDate=async(city,userId)=>{
 
 
 export const returnShipPrice= async (city,userId)=>{
+  const setting= await Setting.find();
   console.log(city);
-  if(returnProductPrice(userId)>50000){
+  if(returnProductPrice(userId)>setting[0].settings[0].value){
     return 0;
   }
   else if (metropolitanCities.includes(city)){
-    return 8000
+    return setting[0].settings[1].value;
   }
   else{
-    return 12000;
+    return setting[0].settings[2].value;;
   }
 
 }

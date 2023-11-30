@@ -35,8 +35,12 @@ export const getUser = async (req, res) => {
     try {
       const userFound=await User.findById(req.userId)
       if (!userFound) {
-        return res.status(404).send('User not found');
+        return res.status(404).send('Usuario no encontrado');
       }
+      const existingUser = await User.findOne({ email:req.body.email });
+    if (existingUser && existingUser.email!=userFound.email) {
+      return res.status(400).json({ message: 'Ese correo electrónico ya está registrado' });
+    }
       userFound.email=req.body.email;
       userFound.password= await User.encryptPassword(req.body.password);
       await userFound.save();

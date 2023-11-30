@@ -1,4 +1,7 @@
 import nodeStl from "node-stl";
+import pdf from 'html-pdf';
+import fs from 'fs';
+
 import Product from "../models/Product.js";
 import Color from "../models/Color.js";
 import Cart from "../models/Cart.js";
@@ -7,6 +10,8 @@ import {
   saveProductInFirebase,
   deleProductFromFirebase,
 } from "../utils/firebaseUtils.js";
+import { generatePdfHtml } from "../utils/pdfUtils.js";
+import User from "../models/User.js";
 
 export const cotization = async (req, res) => {
   let { volume, fill } = req.body;
@@ -37,8 +42,9 @@ export const createProduct = async (req, res) => {
   });
 
   await newProduct.save();
-  await Cart.findOneAndUpdate(
-    { userId: req.userId },
+  const userFound=await User.findById(req.userId);
+  await Cart.findByIdAndUpdate(
+    userFound.cart,
     { $push: { products: newProduct._id } },
     { new: true }
   );
@@ -75,3 +81,25 @@ export const deleteProduct = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+
+export const generatePDF= async(req,res)=>{
+  try {
+    const productFound = await Product.findOne({ _id: req.params.id }).populate("color");
+    const htmlFilePath = generatePdfHtml(productFound);
+  pdf.create(htmlFilePath).toBuffer((err, buffer) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error al generar el PDF');
+    }
+
+    // Enviar el PDF como respuesta al cliente
+    res.type('pdf');
+    res.end(buffer, 'binary');
+  });
+
+
+  } catch (error) {
+    
+  }
+}
