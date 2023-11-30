@@ -68,7 +68,7 @@ export const verifyCode= async(req,res)=>{
         const currentDate = new Date();
         console.log(currentDate);
         console.log(code.finalDate);
-        if (currentDate>code.finalDate) return res.status(400).json({message:'Codigo expirado'})
+        if (currentDate>code.finalDate || code.status==false ) return res.status(400).json({message:'Codigo expirado'})
         const user= await User.findById(req.userId);
         console.log(user);
         if(user.codesUsed.includes(code._id)){
